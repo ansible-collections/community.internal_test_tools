@@ -76,7 +76,7 @@ from mock import MagicMock
 import ansible.module_utils.basic  # noqa
 import ansible.module_utils.urls  # noqa
 
-from ansible_collections.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 from ansible.module_utils.six.moves.urllib.parse import parse_qs
 
 
