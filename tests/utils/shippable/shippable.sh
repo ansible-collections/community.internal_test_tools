@@ -63,16 +63,10 @@ fi
 
 export ANSIBLE_COLLECTIONS_PATHS="${HOME}/.ansible"
 SHIPPABLE_RESULT_DIR="$(pwd)/shippable"
-TEST_DIR="${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/crypto"
+TEST_DIR="${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/internal_test_tools"
 mkdir -p "${TEST_DIR}"
 cp -aT "${SHIPPABLE_BUILD_DIR}" "${TEST_DIR}"
 cd "${TEST_DIR}"
-
-# STAR: HACK install integration test dependencies
-if [ "${script}" != "units" ] && [ "${script}" != "sanity" ] && [ "${ansible_version}" != "2.9" ]; then
-    retry ansible-galaxy -vvv collection install community.general
-fi
-# END: HACK
 
 
 export PYTHONIOENCODING='utf-8'
