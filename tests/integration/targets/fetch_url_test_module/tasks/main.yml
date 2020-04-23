@@ -1,0 +1,10 @@
+---
+- fetch_url_test_module:
+    call_sequence:
+      - url: https://{{ httpbin_host }}/
+  register: result
+
+- assert:
+    that:
+      - result.call_results | length == 1
+      - result.call_results[0].status == 200
