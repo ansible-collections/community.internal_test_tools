@@ -1,4 +1,5 @@
 # Internal Test Tools Collection
+[![Shippable build status](https://api.shippable.com/projects/5ea04ba9775b9e0007d3a5a4/badge?branch=master)](https://app.shippable.com/projects/5ea04ba9775b9e0007d3a5a4)
 
 This collection provides useful test tools for other collections. It is **NOT** aimed at Ansible users, but at collection developers!
 
@@ -8,8 +9,10 @@ Ansible 2.9 and Ansible `devel` branch.
 
 ## Included content
 
-- tests/units/plugins/modules/utils.py
-- tests/units/utils/fetch_url_module_framework.py
+- tests/unit/compat/ package
+- tests/unit/mock/ package
+- tests/unit/plugins/modules/utils.py
+- tests/unit/utils/fetch_url_module_framework.py
 
 ## Contributing to this collection
 
