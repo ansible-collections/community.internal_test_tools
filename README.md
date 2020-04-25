@@ -1,5 +1,6 @@
 # Internal Test Tools Collection
 [![Shippable build status](https://api.shippable.com/projects/5ea04ba9775b9e0007d3a5a4/badge?branch=master)](https://app.shippable.com/projects/5ea04ba9775b9e0007d3a5a4)
+[![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/community.internal_test_tools)](https://codecov.io/gh/ansible-collections/community.internal_test_tools)
 
 This collection provides useful test tools for other collections. It is **NOT** aimed at Ansible users, but at collection developers!
 
