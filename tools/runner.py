@@ -13,6 +13,7 @@ import os
 import shlex
 import shutil
 import subprocess
+import sys
 
 
 SEPARATOR = '=========================================================================='
@@ -288,7 +289,17 @@ def setup(tests, use_color=True):
             '--disable-pip-version-check'
         ] + reqs
         print(colorize('Running {0}'.format(join_command(command)), 'emph', use_color))
-        subprocess.check_call(command)
+        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate()
+        if stdout:
+            for line in stdout.decode('utf-8').splitlines():
+                print('[stdout] {0}'.format(line))
+        if stderr:
+            for line in stderr.decode('utf-8').splitlines():
+                print('[stderr] {0}'.format(line))
+        if p.returncode != 0:
+            print(colorize('FATAL: Installing packages exited with return code {0}!'.format(p.returncode), 'red', use_color))
+            sys.exit(-1)
 
 
 def main():
