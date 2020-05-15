@@ -7,7 +7,8 @@ authors:
 description: null
 license: GPL-3.0-or-later
 license_file: COPYING
-tags: null
+tags:
+  - collection testing
 repository: https://github.com/ansible-collections/community.internal_test_tools
 documentation: https://github.com/ansible-collection-migration/community.internal_test_tools/tree/master/docs
 homepage: https://github.com/ansible-collections/community.internal_test_tools
