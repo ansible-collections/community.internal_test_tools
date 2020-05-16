@@ -125,6 +125,7 @@ class Test:
 
         self.extensions = data.get('extensions')
         self.prefixes = data.get('prefixes')
+        self.exclude_prefixes = data.get('exclude_prefixes')
         self.files = data.get('files')
         self.text = data.get('text')
         self.ignore_self = data.get('ignore_self')
@@ -151,6 +152,9 @@ class Test:
 
         if self.prefixes:
             targets = [target for target in targets if any(target.startswith(pre) for pre in self.prefixes)]
+
+        if self.exclude_prefixes:
+            targets = [target for target in targets if all(not target.startswith(pre) for pre in self.exclude_prefixes)]
 
         if self.files:
             targets = [target for target in targets if os.path.basename(target) in self.files]
