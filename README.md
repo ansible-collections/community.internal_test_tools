@@ -10,10 +10,11 @@ Ansible 2.9 and Ansible `devel` branch.
 
 ## Included content
 
-- tests/unit/compat/ package
-- tests/unit/mock/ package
-- tests/unit/plugins/modules/utils.py
-- tests/unit/utils/fetch_url_module_framework.py
+- [`tests/unit/compat/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/compat/)
+- [`tests/unit/mock/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/mock/)
+- [`tests/unit/plugins/modules/utils.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/plugins/modules/utils.py/)
+- [`tests/unit/utils/fetch_url_module_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/utils/fetch_url_module_framework.py)
+- [extra sanity test runner](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tools/README.md)
 
 ## Contributing to this collection
 
