@@ -18,7 +18,7 @@ Once ansible-test supports custom code-smell plugins, this tool will be deprecat
 
 The runner looks for tests in `tests/sanity/extra/`. Every test must consist of a JSON config file `<test>.json` and a Python script `<test>.py`. The executable does not need to be executable. It will be invoked as `python<version> tests/sanity/extra/<test>.py <target>...`, where `<target>...` is a list of files that the test is supposed to check. This list will be compiled according to the configuration file.
 
-Besides very similar target selection configurations to ansible-test, it allows to specify `"python": "<version>"` for the Python version to use, and `"requirements": [...]` to install additional Python requirements needed for this test.
+Besides very similar target selection configurations to ansible-test, it allows to specify `"python": "<version>"` for the Python version to use, and `"requirements": [...]` to install additional Python requirements needed for this test. It is also possible to ignore certain prefixes with `exclude_prefixes`.
 
 ### Example usage: lint changelog fragments
 
@@ -31,6 +31,9 @@ This example runs [`ansibulled-changelog lint`](https://github.com/ansible-commu
     "output": "path-line-column-message",
     "prefixes": [
         "changelogs/fragments/"
+    ],
+    "exclude_prefixes": [
+        "changelogs/fragments/."
     ],
     "requirements": [
         "git+git://github.com/ansible-community/ansibulled.git@pip-installable#egg=ansibulled"
