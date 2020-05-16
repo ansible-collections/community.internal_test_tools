@@ -16,7 +16,7 @@ import subprocess
 import sys
 
 
-SEPARATOR = '=========================================================================='
+SEPARATOR = '=' * 74
 DEFAULT_PYTHON = '3.7'
 
 COLORS = {
