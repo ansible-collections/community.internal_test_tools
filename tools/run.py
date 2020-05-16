@@ -115,14 +115,14 @@ def main():
         try:
             run(['docker', 'rm', '-f', container_name], use_color=use_color)
         except Exception as dummy:
-            pass
+            print(colorize('ERROR while removing docker container: {0}'.format(e), 'emph', use_color))
     if result is None:
         sys.exit(-1)
 
     try:
         result = json.loads(result.decode('utf-8'))
     except Exception as e:
-        print(colorize('FATAL ERROR while receiving output: {0}'.format(e), 'emph', use_color))
+        print(colorize('FATAL ERROR while receiving output: {0}'.format(e), 'red', use_color))
         sys.exit(-1)
 
     failed_tests = []
