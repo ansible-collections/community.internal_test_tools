@@ -15,7 +15,7 @@ import subprocess
 import sys
 
 
-CONTAINER = 'quay.io/ansible/default-test-container:1.12'
+CONTAINER = 'quay.io/ansible/default-test-container:1.13'
 
 COLORS = {
     'emph': 1,
