@@ -123,14 +123,14 @@ class Test:
         self.requirements = data.get('requirements', [])
         self.disabled = data.get('disabled')
 
-        self.extensions = data.get('extensions')  # type: t.List[str]
-        self.prefixes = data.get('prefixes')  # type: t.List[str]
-        self.files = data.get('files')  # type: t.List[str]
-        self.text = data.get('text')  # type: t.Optional[bool]
-        self.ignore_self = data.get('ignore_self')  # type: bool
+        self.extensions = data.get('extensions')
+        self.prefixes = data.get('prefixes')
+        self.files = data.get('files')
+        self.text = data.get('text')
+        self.ignore_self = data.get('ignore_self')
 
-        self.all_targets = data.get('all_targets')  # type: bool
-        self.no_targets = data.get('no_targets')  # type: bool
+        self.all_targets = data.get('all_targets')
+        self.no_targets = data.get('no_targets')
         self.include_directories = data.get('include_directories')  # type: bool
         self.include_symlinks = data.get('include_symlinks')  # type: bool
 
@@ -146,8 +146,8 @@ class Test:
                 targets = [target for target in targets if is_binary_file(target)]
 
         if self.extensions:
-            targets = [target for target in targets if os.path.splitext(target)[1] in self.extensions
-                       or (is_subdir(target, 'bin') and '.py' in self.extensions)]
+            targets = [target for target in targets
+                       if os.path.splitext(target)[1] in self.extensions or (is_subdir(target, 'bin') and '.py' in self.extensions)]
 
         if self.prefixes:
             targets = [target for target in targets if any(target.startswith(pre) for pre in self.prefixes)]
@@ -197,18 +197,18 @@ class Test:
 def collect_tests(path='tests/sanity/extra', use_color=True):
     tests = []
     for filepath in glob.glob(os.path.join(path, '*.json')):
-        dir, filename = os.path.split(filepath)
-        basename, ext = os.path.splitext(filename)
+        directory, filename = os.path.split(filepath)
+        basename = os.path.splitext(filename)[0]
         try:
             with open(filepath, 'rb') as filepath_f:
                 data = json.load(filepath_f)
-            executable = os.path.join(dir, basename + '.py')
+            executable = os.path.join(directory, basename + '.py')
             if os.path.exists(executable):
                 tests.append(Test(basename, data, filepath, executable))
             else:
-                print('ERROR: {0} does not exist'.format(executable))
-        except Exception as e:
-            print('ERROR while processing {0}: {1}'.format(filename, e))
+                print(colorize('ERROR: {0} does not exist'.format(executable), 'red', use_color))
+        except Exception as exc:  # pylint: disable=broad-except
+            print(colorize('ERROR while processing {0}: {1}'.format(filename, exc), 'red', use_color))
     return tests
 
 
@@ -238,8 +238,8 @@ def run(result, test, targets, skip=False, use_color=True):
     failed = False
     try:
         print(colorize('Running {0}: {1}'.format(test.name, join_command(command)), 'emph', use_color))
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        process_result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process_result.communicate()
 
         if stdout:
             stdout = stdout.decode('utf-8').splitlines()
@@ -251,11 +251,11 @@ def run(result, test, targets, skip=False, use_color=True):
             for line in stderr:
                 print(colorize('[stderr] {0}'.format(line), 'red', use_color))
             failed = True
-        if int(p.returncode) != 0:
+        if int(process_result.returncode) != 0:
             failed = True
-            print(colorize('[command returned {0}]'.format(p.returncode), 'red', use_color))
-    except Exception as e:
-        errors.append(('', 0, 0, '[internal error] {0}'.format(e)))
+            print(colorize('[command returned {0}]'.format(process_result.returncode), 'red', use_color))
+    except Exception as exc:  # pylint: disable=broad-except
+        errors.append(('', 0, 0, '[internal error] {0}'.format(exc)))
         failed = True
 
     if failed:
@@ -289,16 +289,16 @@ def setup(tests, use_color=True):
             '--disable-pip-version-check'
         ] + reqs
         print(colorize('Running {0}'.format(join_command(command)), 'emph', use_color))
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        process_result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process_result.communicate()
         if stdout:
             for line in stdout.decode('utf-8').splitlines():
                 print('[stdout] {0}'.format(line))
         if stderr:
             for line in stderr.decode('utf-8').splitlines():
                 print('[stderr] {0}'.format(line))
-        if p.returncode != 0:
-            print(colorize('FATAL: Installing packages exited with return code {0}!'.format(p.returncode), 'red', use_color))
+        if process_result.returncode != 0:
+            print(colorize('FATAL: Installing packages exited with return code {0}!'.format(process_result.returncode), 'red', use_color))
             sys.exit(-1)
 
 
@@ -334,7 +334,7 @@ def main():
                     shutil.rmtree(os.path.join(dirpath, dirname), ignore_errors=True)
             for filename in filenames:
                 if filename.endswith('.pyc'):
-                    shutil.rmdir(os.path.join(dirpath, filename))
+                    shutil.rmtree(os.path.join(dirpath, filename))
 
     # Collect targets
     targets = list(args.targets)

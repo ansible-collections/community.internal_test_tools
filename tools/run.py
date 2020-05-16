@@ -40,18 +40,17 @@ def colorize(text, color, use_color=True):
 def run(command, catch_output=False, use_color=True):
     sys.stdout.write(colorize('[RUN] {0}\n'.format(' '.join(command)), 'emph', use_color))
     sys.stdout.flush()
-    if catch_output:
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
-        return p.returncode, stdout, stderr
-    else:
+    if not catch_output:
         return subprocess.call(command), None, None
+    process_result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process_result.communicate()
+    return process_result.returncode, stdout, stderr
 
 
 def get_common_parent(*directories):
     parent = directories[0]
-    for dir in directories[1:]:
-        while os.path.relpath(dir, parent).startswith('..'):
+    for directory in directories[1:]:
+        while os.path.relpath(directory, parent).startswith('..'):
             old_parent, parent = parent, os.path.dirname(parent)
             if old_parent == parent:
                 break
@@ -80,7 +79,7 @@ def main():
     try:
         my_dir = os.path.dirname(__file__)
         root = get_common_parent(root, my_dir)
-    except Exception as e:
+    except Exception:  # pylint: disable=broad-except
         pass
 
     targets = list(args.targets)
@@ -109,20 +108,20 @@ def main():
         dummy, result, stderr = run(['docker', 'exec', container_name, 'cat', output_filename], catch_output=True, use_color=use_color)
         if stderr:
             print(colorize('WARNING: {0}'.format(stderr.decode('utf-8').strip()), 'emph', use_color))
-    except Exception as e:
-        print(colorize('FATAL ERROR during execution: {0}'.format(e), 'emph', use_color))
+    except Exception as exc:  # pylint: disable=broad-except
+        print(colorize('FATAL ERROR during execution: {0}'.format(exc), 'emph', use_color))
     finally:
         try:
             run(['docker', 'rm', '-f', container_name], use_color=use_color)
-        except Exception as dummy:
-            print(colorize('ERROR while removing docker container: {0}'.format(e), 'emph', use_color))
+        except Exception as exc:  # pylint: disable=broad-except
+            print(colorize('ERROR while removing docker container: {0}'.format(exc), 'emph', use_color))
     if result is None:
         sys.exit(-1)
 
     try:
         result = json.loads(result.decode('utf-8'))
-    except Exception as e:
-        print(colorize('FATAL ERROR while receiving output: {0}'.format(e), 'red', use_color))
+    except Exception as exc:  # pylint: disable=broad-except
+        print(colorize('FATAL ERROR while receiving output: {0}'.format(exc), 'red', use_color))
         sys.exit(-1)
 
     failed_tests = []
