@@ -6,7 +6,7 @@ This is a small tool to run sanity tests similar to the [ansible-base-specific c
 
 It does not have useful features such as change detection, but it can be restricted to certain targets. The hope is that eventually, ansible-test will have a plugin infrastructure which allows it to run such tests itself.
 
-The runner can for example be used to lint changelog fragments, to check for unwanted files, or to check for new versions of bundled scripts.
+The runner can, for example, be used to lint changelog fragments, to check for unwanted files, or to check for new versions of bundled scripts.
 
 Note that tests are **always** run in a docker container (using ansible-test's `default` container). There's currently no way to disable that. Also note that as opposed to ansible-test, the runner does not even try to ensure that the files copied into the container are usable as an Ansible collection.
 
