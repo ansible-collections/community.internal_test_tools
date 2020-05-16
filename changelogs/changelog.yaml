@@ -1,0 +1,12 @@
+ancestor: null
+releases:
+  0.1.1:
+    changes:
+      release_summary: Initial release.
+    fragments:
+    - initial.yml
+    modules:
+    - description: Test module for fetch_url test framework
+      name: community.internal_test_tools.fetch_url_test_module
+      namespace: ''
+    release_date: '2020-05-16'
