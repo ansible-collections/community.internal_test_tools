@@ -21,7 +21,8 @@ Ansible 2.9 and Ansible `devel` branch.
 Please follow the general Ansible contributor guidelines; see the [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html).
 
 ## Release notes
-<!--Add a link to a changelog.md file or an external docsite to cover this information. -->
+
+A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/master/changelogs/CHANGELOG.rst).
 
 ## More information
 

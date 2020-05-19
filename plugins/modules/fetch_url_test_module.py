@@ -12,6 +12,7 @@ DOCUMENTATION = r'''
 ---
 module: fetch_url_test_module
 short_description: Test module for fetch_url test framework
+version_added: 0.1.1
 author:
   - Felix Fontein (@felixfontein)
 description:
