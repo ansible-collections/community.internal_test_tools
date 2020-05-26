@@ -22,7 +22,7 @@ Besides very similar target selection configurations to ansible-test, it allows 
 
 ### Example usage: lint changelog fragments
 
-This example runs [`ansibulled-changelog lint`](https://github.com/ansible-community/ansibulled) to lint all changelog fragments. The wrapper script uses Python 3.7, and installs [ansibulled](https://github.com/ansible-community/ansibulled) before running.
+This example runs [`antsibull-changelog lint`](https://github.com/ansible-community/antsibull) to lint all changelog fragments. The wrapper script uses Python 3.7, and installs [antsibull](https://github.com/ansible-community/antsibull) before running.
 
 `tests/sanity/extra/changelog.json`:
 ```.json
@@ -36,7 +36,7 @@ This example runs [`ansibulled-changelog lint`](https://github.com/ansible-commu
         "changelogs/fragments/."
     ],
     "requirements": [
-        "git+git://github.com/ansible-community/ansibulled.git@pip-installable#egg=ansibulled"
+        "git+git://github.com/ansible-community/antsibull.git@pip-installable#egg=antsibull"
     ]
 }
 ```
@@ -66,7 +66,7 @@ def main():
         if ext not in allowed_extensions:
             print('%s:%d:%d: extension must be one of: %s' % (path, 0, 0, ', '.join(allowed_extensions)))
 
-    cmd = ['ansibulled-changelog', 'lint'] + paths
+    cmd = ['antsibull-changelog', 'lint'] + paths
     subprocess.check_call(cmd)
 
 
