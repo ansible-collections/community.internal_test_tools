@@ -15,8 +15,6 @@ import subprocess
 import sys
 
 
-CONTAINER = 'quay.io/ansible/default-test-container:1.13'
-
 COLORS = {
     'emph': 1,
     'gray': 37,
@@ -57,6 +55,20 @@ def get_common_parent(*directories):
     return parent
 
 
+def get_default_container(use_color=True):
+    try:
+        from ansible_test._internal.util import docker_qualify_image
+
+        image = docker_qualify_image('default')
+        if image:
+            return image
+
+        print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
+    except Exception as exc:
+        print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
+    return 'quay.io/ansible/default-test-container:1.14'
+
+
 def main():
     parser = argparse.ArgumentParser(description='Extra sanity test runner.')
     parser.add_argument('--color',
@@ -92,7 +104,7 @@ def main():
         'docker', 'run', '--detach',
         '--workdir', os.path.abspath(cwd),
         '--name', container_name,
-        CONTAINER,
+        get_default_container(use_color=use_color),
         '/bin/sh', '-c', 'sleep 50m',
     ], use_color=use_color)
     try:
