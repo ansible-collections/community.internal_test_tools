@@ -57,7 +57,10 @@ def get_common_parent(*directories):
 
 def get_default_container(use_color=True):
     try:
-        from ansible_test._internal.util import docker_qualify_image
+        try:
+            from ansible_test._internal.util_common import docker_qualify_image
+        except ImportError:
+            from ansible_test._internal.util import docker_qualify_image
 
         image = docker_qualify_image('default')
         if image:
