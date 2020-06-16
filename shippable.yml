@@ -18,13 +18,21 @@ matrix:
     - env: T=devel/units/3.9/1
     - env: T=devel/rhel/8.2/1
 
+    - env: T=2.10/sanity/1
+    - env: T=2.10/units/2.7/1
+    - env: T=2.10/units/3.5/1
+    - env: T=2.10/units/3.6/1
+    - env: T=2.10/units/3.7/1
+    - env: T=2.10/units/3.8/1
+    - env: T=2.10/linux/ubuntu1804/1
+
     - env: T=2.9/sanity/1
     - env: T=2.9/units/2.7/1
     - env: T=2.9/units/3.5/1
     - env: T=2.9/units/3.6/1
     - env: T=2.9/units/3.7/1
     - env: T=2.9/units/3.8/1
-    - env: T=2.9/linux/ubuntu1804/1
+    - env: T=2.9/linux/centos8/1
 
 branches:
   except:
