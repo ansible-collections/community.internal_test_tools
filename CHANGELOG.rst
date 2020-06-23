@@ -5,6 +5,14 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.2.1
+======
+
+Release Summary
+---------------
+
+Re-release because Galaxy did not accept a tag with spaces in ``galaxy.yml``. No other changes.
+
 v0.2.0
 ======
 

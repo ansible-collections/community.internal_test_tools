@@ -19,3 +19,11 @@ releases:
     fragments:
     - runner.yml
     release_date: '2020-06-23'
+  0.2.1:
+    changes:
+      release_summary: Re-release because Galaxy did not accept a tag with spaces
+        in ``galaxy.yml``. No other changes besides that the changelog moved to the
+        root directory.
+    fragments:
+    - 0.2.1.yml
+    release_date: '2020-06-23'

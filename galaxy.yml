@@ -1,13 +1,14 @@
 namespace: community
 name: internal_test_tools
-version: 0.2.0
+version: 0.2.1
 readme: README.md
 authors:
   - Ansible (https://github.com/ansible)
 description: null
 license_file: COPYING
 tags:
-  - collection testing
+  - collection
+  - testing
 repository: https://github.com/ansible-collections/community.internal_test_tools
 #documentation: https://github.com/ansible-collection-migration/community.internal_test_tools/tree/main/docs
 homepage: https://github.com/ansible-collections/community.internal_test_tools
