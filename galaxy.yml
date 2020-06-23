@@ -9,6 +9,6 @@ license_file: COPYING
 tags:
   - collection testing
 repository: https://github.com/ansible-collections/community.internal_test_tools
-documentation: https://github.com/ansible-collection-migration/community.internal_test_tools/tree/master/docs
+#documentation: https://github.com/ansible-collection-migration/community.internal_test_tools/tree/main/docs
 homepage: https://github.com/ansible-collections/community.internal_test_tools
 issues: https://github.com/ansible-collections/community.internal_test_tools/issues

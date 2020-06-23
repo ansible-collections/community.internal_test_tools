@@ -1,5 +1,5 @@
 # Internal Test Tools Collection
-[![Shippable build status](https://api.shippable.com/projects/5ea04ba9775b9e0007d3a5a4/badge?branch=master)](https://app.shippable.com/projects/5ea04ba9775b9e0007d3a5a4)
+[![Shippable build status](https://api.shippable.com/projects/5ea04ba9775b9e0007d3a5a4/badge?branch=main)](https://app.shippable.com/projects/5ea04ba9775b9e0007d3a5a4)
 [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/community.internal_test_tools)](https://codecov.io/gh/ansible-collections/community.internal_test_tools)
 
 This collection provides useful test tools for other collections. It is **NOT** aimed at Ansible users, but at collection developers!
@@ -10,11 +10,11 @@ Ansible 2.9 and Ansible `devel` branch.
 
 ## Included content
 
-- [`tests/unit/compat/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/compat/)
-- [`tests/unit/mock/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/mock/)
-- [`tests/unit/plugins/modules/utils.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/plugins/modules/utils.py/)
-- [`tests/unit/utils/fetch_url_module_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tests/unit/utils/fetch_url_module_framework.py)
-- [extra sanity test runner](https://github.com/ansible-collections/community.internal_test_tools/tree/master/tools/README.md)
+- [`tests/unit/compat/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/compat/)
+- [`tests/unit/mock/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/mock/)
+- [`tests/unit/plugins/modules/utils.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/plugins/modules/utils.py/)
+- [`tests/unit/utils/fetch_url_module_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/utils/fetch_url_module_framework.py)
+- [extra sanity test runner](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md)
 
 ## Contributing to this collection
 
@@ -22,7 +22,7 @@ Please follow the general Ansible contributor guidelines; see the [Ansible Commu
 
 ## Release notes
 
-A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/master/changelogs/CHANGELOG.rst).
+A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/main/changelogs/CHANGELOG.rst).
 
 ## More information
 

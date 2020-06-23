@@ -22,7 +22,7 @@ Besides very similar target selection configurations to ansible-test, it allows 
 
 ### Example usage: lint changelog fragments
 
-This example runs [`antsibull-changelog lint`](https://github.com/ansible-community/antsibull-changelog/blob/master/docs/changelogs.rst#validating-changelog-fragments) to lint all changelog fragments. The wrapper script uses Python 3.7, and installs [antsibull-changelog](https://pypi.org/project/antsibull-changelog/) before running.
+This example runs [`antsibull-changelog lint`](https://github.com/ansible-community/antsibull-changelog/blob/main/docs/changelogs.rst#validating-changelog-fragments) to lint all changelog fragments. The wrapper script uses Python 3.7, and installs [antsibull-changelog](https://pypi.org/project/antsibull-changelog/) before running.
 
 `tests/sanity/extra/changelog.json`:
 ```.json
