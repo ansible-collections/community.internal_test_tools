@@ -10,3 +10,12 @@ releases:
       name: community.internal_test_tools.fetch_url_test_module
       namespace: ''
     release_date: '2020-05-16'
+  0.2.0:
+    changes:
+      major_changes:
+      - There is now a `extra sanity test runner <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
+        which allows to easily run extra sanity tests. This is a stop-gap solution
+        until ansible-test supports sanity test plugins.
+    fragments:
+    - runner.yml
+    release_date: '2020-06-23'
