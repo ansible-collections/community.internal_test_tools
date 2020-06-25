@@ -23,6 +23,10 @@ except ImportError:
     from yaml import SafeDumper as _SafeDumper
 
 
+GALAXY_PATH = 'galaxy.yml'
+RUNTIME_PATH = 'meta/runtime.yml'
+
+
 def load_yaml(path):
     """
     Load and parse YAML file ``path``.
@@ -125,6 +129,24 @@ def scan_flatmap_redirects(redirects):
             record_redirect(plugin_type, plugin_redirects, source, destination)
 
 
+def scan_plugins(plugins, redirects):
+    for plugin_type in PLUGIN_TYPES:
+        plugins_set = plugins[plugin_type]
+        plugin_redirects = redirects[plugin_type]
+        for source, destination in plugin_redirects.items():
+            plugins_set.add(source)
+            plugins_set.add(destination)
+        base_dir = os.path.join('plugins', plugin_type)
+        for root, dirnames, filenames in os.walk(base_dir):
+            for filename in filenames:
+                if not filename.endswith('.py'):
+                    continue
+                if filename in ('__init__', ):
+                    continue
+                path = os.path.join(root, filename)
+                plugins_set.add(path_to_name(path, base_dir))
+
+
 def name_to_path(name, base_dir):
     return os.path.join(base_dir, name.replace('.', os.path.sep) + '.py')
 
@@ -205,16 +227,14 @@ def func_redirect(args):
         print('ERROR: Invalid value for "target". Must be one of "meta", "symlinks" or "both".')
         return 2
 
-    runtime_path = 'meta/runtime.yml'
-
     # Load basic information on collection
-    galaxy = load_yaml('galaxy.yml')
+    galaxy = load_yaml(GALAXY_PATH)
     collection_name = '{namespace}.{name}'.format(**galaxy)
     print('Working on collection {name}'.format(name=collection_name))
 
     # Load meta/runtime
-    if os.path.exists(runtime_path):
-        runtime = load_yaml(runtime_path)
+    if os.path.exists(RUNTIME_PATH):
+        runtime = load_yaml(RUNTIME_PATH)
     else:
         runtime = None
 
@@ -229,6 +249,7 @@ def func_redirect(args):
     scan_file_redirects(redirects)
     extract_meta_redirects(redirects, runtime, collection_name)
 
+    # Scan flatmap redirects
     if args.flatmap:
         scan_flatmap_redirects(redirects)
 
@@ -246,12 +267,75 @@ def func_redirect(args):
         extract_meta_redirects(redirects, runtime, collection_name, remove=True)
     if args.sort_plugin_routing:
         sort_plugin_routing(runtime)
-    store_yaml(runtime_path, runtime)
+    store_yaml(RUNTIME_PATH, runtime)
 
     if symlink_redirects:
         add_file_redirects(redirects)
     else:
         scan_file_redirects(redirects, remove=True)
+
+
+def func_check_ansible_base_redirects(args):
+    # Load basic information on collection
+    galaxy = load_yaml(GALAXY_PATH)
+    collection_name = '{namespace}.{name}'.format(**galaxy)
+    print('Working on collection {name}'.format(name=collection_name))
+
+    # Load meta/runtime
+    if os.path.exists(RUNTIME_PATH):
+        runtime = load_yaml(RUNTIME_PATH)
+    else:
+        runtime = None
+
+    if not runtime:
+        runtime = dict()
+
+    # Load ansible-base's ansible.builtin runtime
+    from ansible import release as ansible_release
+
+    ansible_builtin_runtime_path = os.path.join(
+        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
+
+    ansible_builtin_runtime = load_yaml(ansible_builtin_runtime_path)
+
+    # Collect all redirects and plugins
+    redirects = dict()
+    plugins = dict()
+    for plugin_type in PLUGIN_TYPES:
+        redirects[plugin_type] = dict()
+        plugins[plugin_type] = set()
+
+    scan_file_redirects(redirects)
+    extract_meta_redirects(redirects, runtime, collection_name)
+
+    scan_plugins(plugins, redirects)
+
+    # Check ansible.builtin's runtime against what we have
+    collection_prefix = '{collection_name}.'.format(collection_name=collection_name)
+    for plugin_type in PLUGIN_TYPES:
+        our_plugins = plugins[plugin_type]
+        ansible_builtin_redirects = ansible_builtin_runtime.get(plugin_type)
+        if ansible_builtin_redirects:
+            for plugin_name, plugin_data in ansible_builtin_redirects.items():
+                if 'redirect' in plugin_data:
+                    if plugin_data['redirect'].startswith(collection_prefix):
+                        redirect_name = plugin_data['redirect'][len(collection_prefix):]
+                        if redirect_name not in our_plugins:
+                            print('ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
+                                  '{collection_name}.{redirect_name}, which does not exist!'.format(
+                                plugin_type=plugin_type,
+                                plugin_name=plugin_name,
+                                collection_name=collection_name,
+                                redirect_name=redirect_name,
+                            ))
+                    elif plugin_name in our_plugins:
+                        print('ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
+                              '{redirect_fqcn} and not to ours!'.format(
+                            plugin_type=plugin_type,
+                            plugin_name=plugin_name,
+                            collection_name=collection_name,
+                            redirect_fqcn=plugin_data['redirect'],
+                        ))
 
 
 def main():
@@ -272,6 +356,11 @@ def main():
     redirect_parser.add_argument('--flatmap',
                                  action='store_true',
                                  help='Make sure that all redirections are there needed for flatmapping')
+
+    redirect_parser = subparsers.add_parser('check-ansible-base-redirects',
+                                            help='Compare collection to redirects in ansible-base '
+                                                 '(needs to be installed)')
+    redirect_parser.set_defaults(func=func_check_ansible_base_redirects)
 
     args = parser.parse_args()
 

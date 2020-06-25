@@ -76,4 +76,8 @@ if __name__ == '__main__':
 
 ## ``meta/runtime.yml`` Tool
 
-The ``meta_runtime.py`` tool allows to convert redirections between symlinks and ``meta/runtime.yml`` redirects, and to make sure that all redirects needed for flatmapping modules are around.
+The ``meta_runtime.py`` tool provides several operations and checks on ``meta/runtime.yml`` for collections.
+
+The ``redirect`` subcommand allows to convert redirections between symlinks and ``meta/runtime.yml`` redirects, and to make sure that all redirects needed for flatmapping modules are around.
+
+The ``check-ansible-base-redirects`` subcommand compares ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml`` with this collection. It reports when plugins are routed to non-existing plugins in this collection, and it reports when plugins are routed to other collections which have the same name as plugins in this collection.
