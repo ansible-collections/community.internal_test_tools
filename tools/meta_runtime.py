@@ -7,7 +7,6 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
-import collections
 import argparse
 import os
 import sys
@@ -71,13 +70,14 @@ PLUGIN_TYPES = [
 def record_redirect(plugin_type, record, source, destination):
     if source in record:
         if record[source] != destination:
-            raise Exception('ERROR: {plugin_type} {source} maps to '
-                            'both {destination_1} and {destination_2}'.format(
-                plugin_type=plugin_type,
-                source=source,
-                destination_1=record[source],
-                destination_2=destination,
-            ))
+            raise Exception(
+                'ERROR: {plugin_type} {source} maps to '
+                'both {destination_1} and {destination_2}'.format(
+                    plugin_type=plugin_type,
+                    source=source,
+                    destination_1=record[source],
+                    destination_2=destination,
+                ))
     record[source] = destination
 
 
@@ -183,7 +183,6 @@ def extract_meta_redirects(redirects, runtime, collection_name, remove=False):
 
 def add_meta_redirects(redirects, runtime, collection_name):
     plugin_routing = runtime.get('plugin_routing')
-    collection_prefix = '{name}.'.format(name=collection_name)
     for plugin_type in PLUGIN_TYPES:
         for source, destination in redirects[plugin_type].items():
             if plugin_routing is None:
@@ -321,21 +320,23 @@ def func_check_ansible_base_redirects(args):
                     if plugin_data['redirect'].startswith(collection_prefix):
                         redirect_name = plugin_data['redirect'][len(collection_prefix):]
                         if redirect_name not in our_plugins:
-                            print('ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
-                                  '{collection_name}.{redirect_name}, which does not exist!'.format(
+                            print(
+                                'ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
+                                '{collection_name}.{redirect_name}, which does not exist!'.format(
+                                    plugin_type=plugin_type,
+                                    plugin_name=plugin_name,
+                                    collection_name=collection_name,
+                                    redirect_name=redirect_name,
+                                ))
+                    elif plugin_name in our_plugins:
+                        print(
+                            'WARNING: ansible-base {plugin_type} {plugin_name} redirects to '
+                            '{redirect_fqcn} and not to ours!'.format(
                                 plugin_type=plugin_type,
                                 plugin_name=plugin_name,
                                 collection_name=collection_name,
-                                redirect_name=redirect_name,
+                                redirect_fqcn=plugin_data['redirect'],
                             ))
-                    elif plugin_name in our_plugins:
-                        print('WARNING: ansible-base {plugin_type} {plugin_name} redirects to '
-                              '{redirect_fqcn} and not to ours!'.format(
-                            plugin_type=plugin_type,
-                            plugin_name=plugin_name,
-                            collection_name=collection_name,
-                            redirect_fqcn=plugin_data['redirect'],
-                        ))
 
 
 def main():
