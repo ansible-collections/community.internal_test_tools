@@ -73,3 +73,7 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+## ``meta/runtime.yml`` Tool
+
+The ``meta_runtime.py`` tool allows to convert redirections between symlinks and ``meta/runtime.yml`` redirects, and to make sure that all redirects needed for flatmapping modules are around.
