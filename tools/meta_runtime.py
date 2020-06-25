@@ -329,7 +329,7 @@ def func_check_ansible_base_redirects(args):
                                 redirect_name=redirect_name,
                             ))
                     elif plugin_name in our_plugins:
-                        print('ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
+                        print('WARNING: ansible-base {plugin_type} {plugin_name} redirects to '
                               '{redirect_fqcn} and not to ours!'.format(
                             plugin_type=plugin_type,
                             plugin_name=plugin_name,
