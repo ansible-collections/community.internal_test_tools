@@ -334,7 +334,6 @@ def func_check_ansible_base_redirects(args):
                             '{redirect_fqcn} and not to ours!'.format(
                                 plugin_type=plugin_type,
                                 plugin_name=plugin_name,
-                                collection_name=collection_name,
                                 redirect_fqcn=plugin_data['redirect'],
                             ))
 
