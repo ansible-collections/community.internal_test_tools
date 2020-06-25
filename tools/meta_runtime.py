@@ -10,6 +10,7 @@ __metaclass__ = type
 import collections
 import argparse
 import os
+import sys
 
 import yaml
 
@@ -190,20 +191,7 @@ def sort_plugin_routing(runtime):
         ])
 
 
-def main():
-    parser = argparse.ArgumentParser(description='meta/runtime.yml helper')
-    parser.add_argument('--target',
-                        required=True,
-                        help='Set to "meta", "symlinks", or "both"')
-    parser.add_argument('--sort-plugin-routing',
-                        action='store_true',
-                        help='Sorts plugin routing data in meta/runtime.yml')
-    parser.add_argument('--flatmap',
-                        action='store_true',
-                        help='Make sure that all redirections are there needed for flatmapping')
-
-    args = parser.parse_args()
-
+def func_redirect(args):
     if args.target == 'meta':
         symlink_redirects = False
         meta_redirects = True
@@ -214,7 +202,8 @@ def main():
         symlink_redirects = True
         meta_redirects = True
     else:
-        raise Exception('Invalid value for "target". Must be one of "meta", "symlinks" or "both".')
+        print('ERROR: Invalid value for "target". Must be one of "meta", "symlinks" or "both".')
+        return 2
 
     runtime_path = 'meta/runtime.yml'
 
@@ -265,5 +254,33 @@ def main():
         scan_file_redirects(redirects, remove=True)
 
 
+def main():
+    parser = argparse.ArgumentParser(description='meta/runtime.yml helper')
+
+    subparsers = parser.add_subparsers(metavar='COMMAND')
+
+    redirect_parser = subparsers.add_parser('redirect',
+                                            help='Update redirections (meta/runtime.yml or symlinks)')
+    redirect_parser.set_defaults(func=func_redirect)
+    redirect_parser.add_argument('--target',
+                                 required=True,
+                                 metavar='[ meta | symlinks | both ]',
+                                 help='Set to "meta", "symlinks", or "both"')
+    redirect_parser.add_argument('--sort-plugin-routing',
+                                 action='store_true',
+                                 help='Sorts plugin routing data in meta/runtime.yml')
+    redirect_parser.add_argument('--flatmap',
+                                 action='store_true',
+                                 help='Make sure that all redirections are there needed for flatmapping')
+
+    args = parser.parse_args()
+
+    if getattr(args, 'func', None) is None:
+        parser.print_help()
+        return 2
+
+    return args.func(args)
+
+
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
