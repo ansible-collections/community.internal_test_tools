@@ -362,10 +362,10 @@ def main():
                                  action='store_true',
                                  help='Make sure that all redirections are there needed for flatmapping')
 
-    redirect_parser = subparsers.add_parser('check-ansible-base-redirects',
-                                            help='Compare collection to redirects in ansible-base '
-                                                 '(needs to be installed)')
-    redirect_parser.set_defaults(func=func_check_ansible_base_redirects)
+    check_ansible_base_redirects_parser = subparsers.add_parser('check-ansible-base-redirects',
+                                                                help='Compare collection to redirects in '
+                                                                     'ansible-base (needs to be installed)')
+    check_ansible_base_redirects_parser.set_defaults(func=func_check_ansible_base_redirects)
 
     args = parser.parse_args()
 
