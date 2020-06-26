@@ -129,7 +129,8 @@ def scan_flatmap_redirects(redirects):
             record_redirect(plugin_type, plugin_redirects, source, destination)
 
 
-def scan_plugins(plugins, redirects):
+def scan_plugins(plugins, redirects, runtime):
+    plugin_routing = runtime.get('plugin_routing') or {}
     for plugin_type in PLUGIN_TYPES:
         plugins_set = plugins[plugin_type]
         plugin_redirects = redirects[plugin_type]
@@ -145,6 +146,10 @@ def scan_plugins(plugins, redirects):
                     continue
                 path = os.path.join(root, filename)
                 plugins_set.add(path_to_name(path, base_dir))
+        if plugin_type in plugin_routing:
+            for plugin_name, plugin_data in plugin_routing[plugin_type].items():
+                if 'tombstone' in plugin_data:
+                    plugins_set.add(plugin_name)
 
 
 def name_to_path(name, base_dir):
@@ -307,7 +312,7 @@ def func_check_ansible_base_redirects(args):
     scan_file_redirects(redirects)
     extract_meta_redirects(redirects, runtime, collection_name)
 
-    scan_plugins(plugins, redirects)
+    scan_plugins(plugins, redirects, runtime)
 
     # Check ansible.builtin's runtime against what we have
     collection_prefix = '{collection_name}.'.format(collection_name=collection_name)
