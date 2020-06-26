@@ -1,2 +1,2 @@
 minor_changes:
-- There is now a `meta/runtime.yml helper tool <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_ which allows to convert between symlinks and redirects in ``meta/runtime.yml``, and allows to compare ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml`` with this collection.
+- There is now a `meta/runtime.yml helper tool <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_ which allows to convert between symlinks and redirects in ``meta/runtime.yml``, allows to compare ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml`` with this collection, and verify that plugins mentioned actually exist.

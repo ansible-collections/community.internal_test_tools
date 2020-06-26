@@ -343,6 +343,76 @@ def func_check_ansible_base_redirects(args):
                             ))
 
 
+def func_validate(args):
+    # Load basic information on collection
+    galaxy = load_yaml(GALAXY_PATH)
+    collection_name = '{namespace}.{name}'.format(**galaxy)
+    print('Working on collection {name}'.format(name=collection_name))
+
+    # Load meta/runtime
+    if os.path.exists(RUNTIME_PATH):
+        runtime = load_yaml(RUNTIME_PATH)
+    else:
+        runtime = None
+
+    if not runtime:
+        runtime = dict()
+
+    # Load ansible-base's ansible.builtin runtime
+    from ansible import release as ansible_release
+
+    ansible_builtin_runtime_path = os.path.join(
+        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
+
+    ansible_builtin_runtime = load_yaml(ansible_builtin_runtime_path)
+
+    # Collect all redirects and plugins
+    redirects = dict()
+    empty_redirects = dict()
+    plugins = dict()
+    for plugin_type in PLUGIN_TYPES:
+        redirects[plugin_type] = dict()
+        empty_redirects[plugin_type] = dict()
+        plugins[plugin_type] = set()
+
+    scan_file_redirects(redirects)
+    extract_meta_redirects(redirects, runtime, collection_name)
+
+    scan_plugins(plugins, empty_redirects, runtime, all_plugins=True)
+
+    plugin_routing = runtime.get('plugin_routing') or dict()
+
+    for plugin_type in PLUGIN_TYPES:
+        our_plugins = plugins[plugin_type]
+        our_redirects = redirects[plugin_type]
+
+        missing = our_redirects.keys() - our_plugins
+        while missing:
+            found = False
+            for plugin_name in list(missing):
+                if our_redirects[plugin_name] in our_plugins:
+                    our_plugins.add(plugin_name)
+                    missing.remove(plugin_name)
+                    found = True
+            if not found:
+                break
+
+        if plugin_type in plugin_routing:
+            for plugin_name, plugin_data in plugin_routing[plugin_type].items():
+                if 'redirect' not in plugin_data and plugin_name not in our_plugins:
+                    missing.add(plugin_name)
+
+        if missing:
+            print('{count} {plugin_type} plugin{plural} are missing:'.format(
+                count=len(missing),
+                plugin_type=plugin_type,
+                plural='s' if len(missing) != 1 else '',
+            ))
+            for plugin_name in sorted(missing):
+                print('  {name} (redirected to: {redirect})'.format(
+                    name=plugin_name, redirect=our_redirects.get(plugin_name)))
+
+
 def main():
     parser = argparse.ArgumentParser(description='meta/runtime.yml helper')
 
@@ -366,6 +436,11 @@ def main():
                                                                 help='Compare collection to redirects in '
                                                                      'ansible-base (needs to be installed)')
     check_ansible_base_redirects_parser.set_defaults(func=func_check_ansible_base_redirects)
+
+    validate_parser = subparsers.add_parser('validate',
+                                            help='Makes sure plugins referenced for this collection '
+                                                 'actually exist')
+    validate_parser.set_defaults(func=func_validate)
 
     args = parser.parse_args()
 
