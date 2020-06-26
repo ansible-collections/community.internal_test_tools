@@ -81,8 +81,9 @@ def record_redirect(plugin_type, record, source, destination):
     record[source] = destination
 
 
-def path_to_name(path, base_dir):
-    path = path[:-len('.py')]
+def path_to_name(path, base_dir, remove_extension=True):
+    if remove_extension:
+        path = path[:-len('.py')]
     redirect_name = os.path.normpath(os.path.relpath(path, base_dir)).replace(os.path.sep, '.')
     return redirect_name
 
@@ -139,6 +140,12 @@ def scan_plugins(plugins, redirects, runtime, all_plugins=False):
             plugins_set.add(destination)
         base_dir = os.path.join('plugins', plugin_type)
         for root, dirnames, filenames in os.walk(base_dir):
+            if plugin_type == 'module_utils':
+                for dirname in dirnames:
+                    path = os.path.join(root, dirname)
+                    init_path = os.path.join(path, '__init__.py')
+                    if os.path.isfile(init_path):
+                        plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
             for filename in filenames:
                 if not filename.endswith('.py'):
                     continue
