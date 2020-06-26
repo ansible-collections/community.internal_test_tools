@@ -313,7 +313,7 @@ def func_check_ansible_base_redirects(args):
     collection_prefix = '{collection_name}.'.format(collection_name=collection_name)
     for plugin_type in PLUGIN_TYPES:
         our_plugins = plugins[plugin_type]
-        ansible_builtin_redirects = ansible_builtin_runtime.get(plugin_type)
+        ansible_builtin_redirects = ansible_builtin_runtime['plugin_routing'].get(plugin_type)
         if ansible_builtin_redirects:
             for plugin_name, plugin_data in ansible_builtin_redirects.items():
                 if 'redirect' in plugin_data:
