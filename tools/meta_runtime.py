@@ -319,7 +319,7 @@ def func_check_ansible_base_redirects(args):
     scan_file_redirects(redirects)
     extract_meta_redirects(redirects, runtime, collection_name)
 
-    scan_plugins(plugins, redirects, runtime, all_plugins=True)
+    scan_plugins(plugins, redirects, runtime)
 
     # Check ansible.builtin's runtime against what we have
     collection_prefix = '{collection_name}.'.format(collection_name=collection_name)
