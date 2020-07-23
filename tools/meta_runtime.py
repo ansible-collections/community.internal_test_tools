@@ -25,6 +25,8 @@ except ImportError:
 GALAXY_PATH = 'galaxy.yml'
 RUNTIME_PATH = 'meta/runtime.yml'
 
+REQUIRE_INIT_PY = False
+
 
 def load_yaml(path):
     """
@@ -143,8 +145,11 @@ def scan_plugins(plugins, redirects, runtime, all_plugins=False):
             if plugin_type == 'module_utils':
                 for dirname in dirnames:
                     path = os.path.join(root, dirname)
-                    init_path = os.path.join(path, '__init__.py')
-                    if os.path.isfile(init_path):
+                    if REQUIRE_INIT_PY:
+                        init_path = os.path.join(path, '__init__.py')
+                        if os.path.isfile(init_path):
+                            plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
+                    else:
                         plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
             for filename in filenames:
                 if not filename.endswith('.py'):
