@@ -25,6 +25,8 @@ except ImportError:
 GALAXY_PATH = 'galaxy.yml'
 RUNTIME_PATH = 'meta/runtime.yml'
 
+REQUIRE_INIT_PY = False
+
 
 def load_yaml(path):
     """
@@ -143,8 +145,11 @@ def scan_plugins(plugins, redirects, runtime, all_plugins=False):
             if plugin_type == 'module_utils':
                 for dirname in dirnames:
                     path = os.path.join(root, dirname)
-                    init_path = os.path.join(path, '__init__.py')
-                    if os.path.isfile(init_path):
+                    if REQUIRE_INIT_PY:
+                        init_path = os.path.join(path, '__init__.py')
+                        if os.path.isfile(init_path):
+                            plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
+                    else:
                         plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
             for filename in filenames:
                 if not filename.endswith('.py'):
@@ -286,6 +291,16 @@ def func_redirect(args):
         scan_file_redirects(redirects, remove=True)
 
 
+def load_ansible_base_runtime():
+    # Load ansible-base's ansible.builtin runtime
+    from ansible import release as ansible_release
+
+    ansible_builtin_runtime_path = os.path.join(
+        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
+
+    return load_yaml(ansible_builtin_runtime_path)
+
+
 def func_check_ansible_base_redirects(args):
     # Load basic information on collection
     galaxy = load_yaml(GALAXY_PATH)
@@ -301,13 +316,7 @@ def func_check_ansible_base_redirects(args):
     if not runtime:
         runtime = dict()
 
-    # Load ansible-base's ansible.builtin runtime
-    from ansible import release as ansible_release
-
-    ansible_builtin_runtime_path = os.path.join(
-        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
-
-    ansible_builtin_runtime = load_yaml(ansible_builtin_runtime_path)
+    ansible_builtin_runtime = load_ansible_base_runtime()
 
     # Collect all redirects and plugins
     redirects = dict()
@@ -350,6 +359,23 @@ def func_check_ansible_base_redirects(args):
                             ))
 
 
+def func_ansible_base_redirects_inventory(args):
+    ansible_builtin_runtime = load_ansible_base_runtime()
+
+    collections = set()
+    for plugin_type, entries in ansible_builtin_runtime['plugin_routing'].items():
+        for plugin_name, entry in entries.items():
+            if 'redirect' in entry:
+                namespace, collection, name = entry['redirect'].split('.', 2)
+                collections.add('{namespace}.{collection}'.format(
+                    namespace=namespace,
+                    collection=collection,
+                ))
+
+    for collection in sorted(collections):
+        print(collection)
+
+
 def func_validate(args):
     # Load basic information on collection
     galaxy = load_yaml(GALAXY_PATH)
@@ -365,13 +391,7 @@ def func_validate(args):
     if not runtime:
         runtime = dict()
 
-    # Load ansible-base's ansible.builtin runtime
-    from ansible import release as ansible_release
-
-    ansible_builtin_runtime_path = os.path.join(
-        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
-
-    ansible_builtin_runtime = load_yaml(ansible_builtin_runtime_path)
+    ansible_builtin_runtime = load_ansible_base_runtime()
 
     # Collect all redirects and plugins
     redirects = dict()
@@ -443,6 +463,13 @@ def main():
                                                                 help='Compare collection to redirects in '
                                                                      'ansible-base (needs to be installed)')
     check_ansible_base_redirects_parser.set_defaults(func=func_check_ansible_base_redirects)
+
+    ansible_base_redirects_inventory_parser = subparsers.add_parser('ansible-base-redirects-inventory',
+                                                                    help='List all collections that '
+                                                                         'ansible-base (needs to be '
+                                                                         'installed) redirects to in its '
+                                                                         'ansible_builtin_runtime.yml')
+    ansible_base_redirects_inventory_parser.set_defaults(func=func_ansible_base_redirects_inventory)
 
     validate_parser = subparsers.add_parser('validate',
                                             help='Makes sure plugins referenced for this collection '

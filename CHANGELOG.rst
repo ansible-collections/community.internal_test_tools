@@ -5,6 +5,16 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+
+v0.3.0
+======
+
+Major Changes
+-------------
+
+- There is now a `meta/runtime.yml helper <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_.
+
+
 v0.2.1
 ======
 
