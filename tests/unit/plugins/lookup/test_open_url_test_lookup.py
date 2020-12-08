@@ -43,4 +43,4 @@ class TestLookupModule(TestCase):
 
         assert len(result) == 1
         assert result[0]['status'] == 200
-        assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8'))
+        assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8')).decode('utf-8')

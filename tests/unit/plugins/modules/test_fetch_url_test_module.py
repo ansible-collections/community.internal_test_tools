@@ -36,4 +36,4 @@ class TestFetchURLTestModule(BaseTestModule):
         ])
         assert len(result['call_results']) == 1
         assert result['call_results'][0]['status'] == 200
-        assert result['call_results'][0]['content'] == base64.b64encode(b'1234')
+        assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
