@@ -231,7 +231,7 @@ class _FetchUrlProxy:
         if headers is not None:
             for k, v in headers.items():
                 given_headers[k.lower()] = v
-        for k, v in call.expected_headers:
+        for k, v in call.expected_headers.items():
             if v is None:
                 assert k.lower() not in given_headers, \
                     'Header "{0}" specified for fetch_url call, but should not be'.format(k)
