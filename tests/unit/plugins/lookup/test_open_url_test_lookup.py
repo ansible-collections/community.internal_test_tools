@@ -18,7 +18,7 @@ from ansible_collections.community.internal_test_tools.plugins.lookup import ope
 from ansible.plugins.loader import lookup_loader
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
-from ansible_collections.community.general.tests.unit.compat.mock import (
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
     patch,
     MagicMock,
 )
