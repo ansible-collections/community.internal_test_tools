@@ -98,7 +98,7 @@ class LookupModule(LookupBase):
 
             result.append(dict(
                 status=code,
-                content=base64.b64encode(content) if content is not None else '',
+                content=base64.b64encode(content).decode('utf-8') if content is not None else '',
                 headers=headers,
             ))
 
