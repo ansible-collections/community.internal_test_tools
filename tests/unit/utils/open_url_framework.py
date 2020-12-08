@@ -281,6 +281,7 @@ class OpenUrlProxy:
             res = MagicMock()
             res.read = MagicMock(return_value=call.body)
             res.info = MagicMock(return_value=info)
+            res.headers = info
             res.code = call.status
             return res
         if call.error_data:
