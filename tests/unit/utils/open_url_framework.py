@@ -246,7 +246,8 @@ class OpenUrlProxy:
                     'Header "{0}" specified for open_url call, but should not be'.format(k)
             else:
                 assert given_headers.get(k.lower()) == v, \
-                    'Header "{0}" specified for open_url call, but with wrong value'.format(k)
+                    'Header "{0}" specified for fetch_url call, but with wrong value ({1!r} instead of {2!r})'.format(
+                        k, given_headers.get(k.lower()), v)
 
     def __call__(self, url, data=None, headers=None, method=None, use_proxy=True,
                  force=False, last_mod_time=None, timeout=10, validate_certs=True,
