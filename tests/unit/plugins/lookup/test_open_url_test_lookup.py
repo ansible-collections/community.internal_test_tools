@@ -38,10 +38,9 @@ class TestLookupModule(TestCase):
             result = self.lookup.run(
                 ['http://example.com'],
                 [],
-                **{},
             )
         open_url.assert_is_done()
-        
+
         assert len(result) == 1
         assert result[0]['status'] == 200
         assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8'))

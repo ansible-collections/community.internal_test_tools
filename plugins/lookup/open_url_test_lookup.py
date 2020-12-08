@@ -87,7 +87,7 @@ class LookupModule(LookupBase):
             try:
                 response = open_url(url, method=method, headers=headers, data=data)
                 content = response.read()
-                headers = {k: v for k, v in response.headers.items()}
+                headers = dict([(k, v) for k, v in response.headers.items()])
                 code = response.code
             except Exception as exc:
                 raise AnsibleLookupError('Error while {method}ing {url}: {error}'.format(
