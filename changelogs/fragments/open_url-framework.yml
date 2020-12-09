@@ -2,4 +2,5 @@ minor_changes:
 - Added a framework for testing plugins using ``open_url`` from ``ansible.module_utils.urls`` (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
 
 bugfixes:
-- Fix header tests for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+- Fix header test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+- Fix form value present test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).

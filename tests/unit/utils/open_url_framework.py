@@ -180,7 +180,7 @@ class OpenUrlCall:
         Builder method to set an expected form field for a ``open_url()`` call.
         '''
         self.form_parse = True
-        self.form_present.append(key)
+        self.form_present.add(key)
         return self
 
     def expect_form_value(self, key, value):
