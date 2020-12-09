@@ -76,6 +76,7 @@ from mock import MagicMock
 import ansible.module_utils.basic  # noqa
 import ansible.module_utils.urls  # noqa
 
+from ansible.module_utils._text import to_native
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 from ansible.module_utils.six.moves.urllib.parse import parse_qs
 
@@ -212,16 +213,16 @@ class _FetchUrlProxy:
         '''
         form = {}
         if data is not None:
-            form = parse_qs(data, keep_blank_values=True)
+            form = parse_qs(to_native(data), keep_blank_values=True)
         for k in call.form_present:
-            assert k in form
+            assert k in form, 'Form key "{0}" not present'.format(k)
         for k, v in call.form_values.items():
             if len(v) == 0:
-                assert k not in form
+                assert k not in form, 'Form key "{0}" not absent'.format(k)
             else:
-                assert form[k] == v
+                assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
         for k, v in call.form_values_one.items():
-            assert v <= set(form[k])
+            assert v <= set(form[k]), 'Form key "{0}" has values {2}, which does not include all of {1}'.format(k, v, form[k])
 
     def _validate_headers(self, call, headers):
         '''

@@ -20,9 +20,7 @@ class TestFetchURLTestModule(BaseTestModule):
     MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE = 'ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.AnsibleModule'
     MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL = 'ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.fetch_url'
 
-    # Tests for state (absent and present)
-
-    def test_absent_idempotency(self, mocker):
+    def test_basic(self, mocker):
         result = self.run_module_success(mocker, fetch_url_test_module, {
             'call_sequence': [
                 {
