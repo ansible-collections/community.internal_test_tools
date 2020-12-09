@@ -13,66 +13,45 @@ and to call its ``assert_is_done`` at the end of the test.
 
 An example test could look as follows::
 
-    import pytest
+    import base64
 
-    from mock import MagicMock
-
-    from ansible.inventory.data import InventoryData
+    from ansible.plugins.loader import lookup_loader
 
     from ansible_collections.community.internal_test_tools.tests.unit.utils.open_url_framework import (
         OpenUrlCall,
         OpenUrlProxy,
     )
 
-    from ansible_collections.community.hrobot.plugins.inventory.robot import InventoryModule
-    from ansible_collections.community.hrobot.plugins.module_utils.robot import BASE_URL
+    # This import is needed so patching below works
+    from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup  # noqa
+
+    from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
+    from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import patch
 
 
-    @pytest.fixture(scope="module")
-    def inventory():
-        r = InventoryModule()
-        r.inventory = InventoryData()
-        return r
+    class TestLookupModule(TestCase):
+        def setUp(self):
+            self.lookup = lookup_loader.get("community.internal_test_tools.open_url_test_lookup")
 
-
-    def get_option(option):
-        if option == 'filters':
-            return {}
-        return False
-
-
-    def test_populate(inventory, mocker):
-        open_url = OpenUrlProxy([
-            OpenUrlCall('GET', 200)
-            .result_json([
-                {
-                    'server': {
-                        'server_ip': '1.2.3.4',
-                    },
-                },
-                {
-                    'server': {
-                        'server_ip': '1.2.3.5',
-                        'server_name': 'test-server',
-                    },
-                },
+        def test_basic(self):
+            open_url = OpenUrlProxy([
+                OpenUrlCall('GET', 200)
+                .result_str('hello')
+                .expect_url('http://example.com'),
             ])
-            .expect_url('{0}/server'.format(BASE_URL)),
-        ])
-        mocker.patch('ansible_collections.community.hrobot.plugins.module_utils.robot.open_url', open_url)
+            with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+                result = self.lookup.run(
+                    ['http://example.com'],
+                    [],
+                )
+            open_url.assert_is_done()
 
-        inventory.get_option = mocker.MagicMock(side_effect=get_option)
-        inventory.populate(inventory.get_servers())
+            assert len(result) == 1
+            assert result[0]['status'] == 200
+            assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8')).decode('utf-8')
 
-        open_url.assert_is_done()
-
-        host_1 = inventory.inventory.get_host('1.2.3.4')
-        host_2 = inventory.inventory.get_host('test-server')
-
-This test makes sure that if the ``community.hrobot.robot`` inventory plugin's
-get_servers() and populate() methods are called, one ``open_url()`` call is made
-to ``GET`` the URL, and if this call is returned with a ``200 OK`` and the
-given JSON object, that two hosts are added to the inventory.
+This test makes sure that if the ``community.internal_test_tools.open_url_test_lookup`` lookup
+makes the requested ``open_url()`` call.
 """
 
 from __future__ import (absolute_import, division, print_function)
