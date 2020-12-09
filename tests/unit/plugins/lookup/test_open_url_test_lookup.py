@@ -8,14 +8,15 @@ import base64
 
 import pytest
 
+from ansible.errors import AnsibleLookupError
+from ansible.plugins.loader import lookup_loader
+
 from ansible_collections.community.internal_test_tools.tests.unit.utils.open_url_framework import (
     OpenUrlCall,
     OpenUrlProxy,
 )
 
 from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup
-
-from ansible.plugins.loader import lookup_loader
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
@@ -44,3 +45,23 @@ class TestLookupModule(TestCase):
         assert len(result) == 1
         assert result[0]['status'] == 200
         assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8')).decode('utf-8')
+
+    def test_error(self):
+        open_url = OpenUrlProxy([
+            OpenUrlCall('PUT', 404)
+            .exception(lambda: Exception('foo bar!'))
+            .expect_header('foo', 'bar')
+            .expect_header_unset('baz')
+            .expect_url('http://example.com'),
+        ])
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+            with pytest.raises(AnsibleLookupError) as e:
+                self.lookup.run(
+                    ['http://example.com', 'http://example.org'],
+                    [],
+                    method='PUT',
+                    headers=dict(foo='bar'),
+                )
+        open_url.assert_is_done()
+
+        assert e.value.message == 'Error while PUTing http://example.com: foo bar!'

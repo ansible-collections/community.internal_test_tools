@@ -106,6 +106,7 @@ class OpenUrlCall:
             'HTTP method names are case-sensitive and should be upper-case (RFCs 7230 and 7231)'
         self.method = method
         self.status = status
+        self.exception_generator = None
         self.body = None
         self.headers = {}
         self.error_data = {}
@@ -116,12 +117,23 @@ class OpenUrlCall:
         self.form_values = {}
         self.form_values_one = {}
 
+    def exception(self, exception_generator):
+        '''
+        Builder method to raise an exception in the ``open_url()`` call.
+        Must be a function that returns an exception.
+        '''
+        self.exception_generator = exception_generator
+        assert self.error_data.get('body') is None, 'Error body must not be given'
+        assert self.body is None, 'Result must not be given if exception generator is provided'
+        return self
+
     def result(self, body):
         '''
         Builder method to set return body of the ``open_url()`` call. Must be a bytes string.
         '''
         self.body = body
-        assert self.error_data.get('body') is None, 'Error body must not be given'
+        assert self.error_data.get('body') is None, 'Error body must not be given if body is provided'
+        assert self.exception_generator is None, 'Exception generator must not be given if body is provided'
         return self
 
     def result_str(self, str_body):
@@ -144,6 +156,7 @@ class OpenUrlCall:
         if body is not None:
             self.error_data['body'] = body
             assert self.body is None, 'Result must not be given if error body is provided'
+        assert self.exception_generator is None, 'Exception generator must not be given if error is provided'
         return self
 
     def expect_url(self, url):
@@ -274,6 +287,8 @@ class OpenUrlProxy:
             self._validate_form(call, data)
 
         # Compose result
+        if call.exception_generator:
+            raise call.exception_generator()
         info = dict()
         for k, v in call.headers.items():
             info[k.lower()] = v

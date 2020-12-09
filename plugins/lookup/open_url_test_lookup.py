@@ -66,6 +66,7 @@ import base64
 from ansible.errors import AnsibleLookupError
 from ansible.plugins.lookup import LookupBase
 from ansible.module_utils.urls import open_url
+from ansible.module_utils.six.moves.urllib.error import HTTPError
 
 from ansible.utils.display import Display
 
@@ -80,6 +81,8 @@ class LookupModule(LookupBase):
         method = self.get_option('method')
         headers = self.get_option('headers')
         data = self.get_option('data')
+        if data is not None:
+            data = base64.b64decode(data)
 
         result = []
 
@@ -89,11 +92,15 @@ class LookupModule(LookupBase):
                 content = response.read()
                 headers = dict([(k, v) for k, v in response.headers.items()])
                 code = response.code
+            except HTTPError as exc:
+                content = exc.read()
+                headers = dict(exc.info())
+                code = exc.code
             except Exception as exc:
                 raise AnsibleLookupError('Error while {method}ing {url}: {error}'.format(
                     method=method,
                     url=url,
-                    error=exc,
+                    error=str(exc),
                 ))
 
             result.append(dict(
