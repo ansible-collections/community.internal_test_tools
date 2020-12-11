@@ -128,11 +128,10 @@ class OpenUrlCall:
         '''
         return self.result(json.dumps(json_body).encode('utf-8'))
 
-    def result_error(self, msg, body=None):
+    def result_error(self, body=None):
         '''
         Builder method to set return body of the ``open_url()`` call in case of an error.
         '''
-        self.error_data['msg'] = msg
         if body is not None:
             self.error_data['body'] = body
             assert self.body is None, 'Result must not be given if error body is provided'
@@ -281,7 +280,11 @@ class OpenUrlProxy:
             return res
         if call.error_data:
             res = MagicMock()
-            res.read = MagicMock(return_value=call.body)
+            body = call.error_data.get('body')
+            if body is not None:
+                res.read = MagicMock(return_value=body)
+            else:
+                res.read = MagicMock(side_effect=AttributeError('read'))
             raise HTTPError(url, call.status, 'Error', info, res)
         assert False, 'OpenUrlCall data has neither body nor error data'
 
