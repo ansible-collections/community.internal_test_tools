@@ -76,6 +76,7 @@ from mock import MagicMock
 import ansible.module_utils.basic  # noqa
 import ansible.module_utils.urls  # noqa
 
+from ansible.module_utils._text import to_native
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 from ansible.module_utils.six.moves.urllib.parse import parse_qs
 
@@ -171,7 +172,7 @@ class FetchUrlCall:
         Builder method to set an expected form field for a ``fetch_url()`` call.
         '''
         self.form_parse = True
-        self.form_present.append(key)
+        self.form_present.add(key)
         return self
 
     def expect_form_value(self, key, value):
@@ -212,16 +213,16 @@ class _FetchUrlProxy:
         '''
         form = {}
         if data is not None:
-            form = parse_qs(data, keep_blank_values=True)
+            form = parse_qs(to_native(data), keep_blank_values=True)
         for k in call.form_present:
-            assert k in form
+            assert k in form, 'Form key "{0}" not present'.format(k)
         for k, v in call.form_values.items():
             if len(v) == 0:
-                assert k not in form
+                assert k not in form, 'Form key "{0}" not absent'.format(k)
             else:
-                assert form[k] == v
+                assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
         for k, v in call.form_values_one.items():
-            assert v <= set(form[k])
+            assert v <= set(form[k]), 'Form key "{0}" has values {2}, which does not include all of {1}'.format(k, v, form[k])
 
     def _validate_headers(self, call, headers):
         '''
@@ -231,13 +232,14 @@ class _FetchUrlProxy:
         if headers is not None:
             for k, v in headers.items():
                 given_headers[k.lower()] = v
-        for k, v in call.expected_headers:
+        for k, v in call.expected_headers.items():
             if v is None:
                 assert k.lower() not in given_headers, \
                     'Header "{0}" specified for fetch_url call, but should not be'.format(k)
             else:
                 assert given_headers.get(k.lower()) == v, \
-                    'Header "{0}" specified for fetch_url call, but with wrong value'.format(k)
+                    'Header "{0}" specified for fetch_url call, but with wrong value ({1!r} instead of {2!r})'.format(
+                        k, given_headers.get(k.lower()), v)
 
     def __call__(self, module, url, data=None, headers=None, method=None,
                  use_proxy=True, force=False, last_mod_time=None, timeout=10,

@@ -42,7 +42,7 @@ options:
 '''
 
 EXAMPLES = r'''
-- community.internal_test_tools:
+- community.internal_test_tools.fetch_url_test_module:
     call_sequence: []
 '''
 
@@ -98,7 +98,7 @@ def main():
             content = info.pop('body', None)
 
         if content is not None:
-            content = base64.b64encode(content)
+            content = base64.b64encode(content).decode('utf-8')
         else:
             content = ''
 

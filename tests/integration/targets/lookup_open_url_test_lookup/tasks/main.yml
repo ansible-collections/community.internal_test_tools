@@ -1,0 +1,8 @@
+---
+- set_fact:
+    result: "{{ query('community.internal_test_tools.open_url_test_lookup', 'https://' ~ httpbin_host ~ '/') }}"
+
+- assert:
+    that:
+      - result | length == 1
+      - result[0].status == 200
