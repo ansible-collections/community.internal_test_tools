@@ -39,6 +39,11 @@ options:
       data:
         description: Data to send (Base64 encoded).
         type: str
+  fail_me:
+    description: If set to C(true), fails the module.
+    type: bool
+    default: false
+    version_added: 0.3.0
 '''
 
 EXAMPLES = r'''
@@ -80,7 +85,8 @@ def main():
             method=dict(type='str', default='GET'),
             headers=dict(type='dict'),
             data=dict(type='str'),
-        ))
+        )),
+        fail_me=dict(type='bool', default=False),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -108,6 +114,8 @@ def main():
             headers=info,
         ))
 
+    if module.params['fail_me']:
+        module.fail_json(msg='expected failure', call_results=results)
     module.exit_json(call_results=results)
 
 
