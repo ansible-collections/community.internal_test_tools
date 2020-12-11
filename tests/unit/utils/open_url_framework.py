@@ -132,8 +132,8 @@ class OpenUrlCall:
         '''
         Builder method to set return body of the ``open_url()`` call in case of an error.
         '''
+        self.error_data['body'] = body
         if body is not None:
-            self.error_data['body'] = body
             assert self.body is None, 'Result must not be given if error body is provided'
         assert self.exception_generator is None, 'Exception generator must not be given if error is provided'
         return self

@@ -93,7 +93,10 @@ class LookupModule(LookupBase):
                 headers = dict([(k, v) for k, v in response.headers.items()])
                 code = response.code
             except HTTPError as exc:
-                content = exc.read()
+                try:
+                    content = exc.read()
+                except AttributeError:
+                    content = b''
                 headers = dict(exc.info())
                 code = exc.code
             except Exception as exc:
