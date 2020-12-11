@@ -34,6 +34,7 @@ class TestLookupModule(TestCase):
         open_url = OpenUrlProxy([
             OpenUrlCall('GET', 200)
             .result_str('hello')
+            .expect_form_value_absent('foo')
             .expect_url('http://example.com'),
         ])
         with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
@@ -53,8 +54,7 @@ class TestLookupModule(TestCase):
             .result_json({'1': 2})
             .return_header('content-type', 'application/json')
             .expect_header('foo', 'bar')
-            .expect_header_unset('baz')
-            .expect_url('http://example.com'),
+            .expect_header_unset('baz'),
             OpenUrlCall('POST', 500)
             .result_error('Error!'.encode('utf-8'))
             .expect_form_present('name')
