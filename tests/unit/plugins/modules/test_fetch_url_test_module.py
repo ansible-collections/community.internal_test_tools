@@ -15,7 +15,12 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_ur
 
 from ansible_collections.community.internal_test_tools.plugins.modules import fetch_url_test_module
 
-from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args, ModuleTestCase, AnsibleExitJson
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+    set_module_args,
+    ModuleTestCase,
+    AnsibleExitJson,
+    AnsibleFailJson,
+)
 
 
 class TestFetchURLTestModule(BaseTestModule):
@@ -159,6 +164,28 @@ class TestFetchURLTestModule2(ModuleTestCase):
                 'call_sequence': [],
                 '_ansible_remote_tmp': '/tmp/tmp',
                 '_ansible_keep_remote_files': True,
+            })
+            fetch_url_test_module.main()
+
+        assert not e.value.args[0]['changed']
+        assert e.value.args[0]['call_results'] == []
+
+    def test_basic_changed(self):
+        with pytest.raises(AnsibleExitJson) as e:
+            set_module_args({
+                'call_sequence': [],
+                'set_changed': True,
+            })
+            fetch_url_test_module.main()
+
+        assert e.value.args[0]['changed']
+        assert e.value.args[0]['call_results'] == []
+
+    def test_fail(self):
+        with pytest.raises(AnsibleFailJson) as e:
+            set_module_args({
+                'call_sequence': [],
+                'fail_me': True,
             })
             fetch_url_test_module.main()
 

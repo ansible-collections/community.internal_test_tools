@@ -44,6 +44,11 @@ options:
     type: bool
     default: false
     version_added: 0.3.0
+  set_changed:
+    description: If set to C(true), claims the module changed something.
+    type: bool
+    default: false
+    version_added: 0.3.0
 '''
 
 EXAMPLES = r'''
@@ -87,6 +92,7 @@ def main():
             data=dict(type='str'),
         )),
         fail_me=dict(type='bool', default=False),
+        set_changed=dict(type='bool', default=False),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -114,9 +120,15 @@ def main():
             headers=info,
         ))
 
+    all_results = dict(
+        call_results=results,
+    )
+    if module.params['set_changed']:
+        other_results['changed'] = True
+
     if module.params['fail_me']:
-        module.fail_json(msg='expected failure', call_results=results)
-    module.exit_json(call_results=results)
+        module.fail_json(msg='expected failure', **all_results)
+    module.exit_json(**all_results)
 
 
 if __name__ == '__main__':
