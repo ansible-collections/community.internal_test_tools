@@ -49,6 +49,7 @@ class TestFetchURLTestModule(BaseTestModule):
         }, [
             FetchUrlCall('GET', 200)
             .result(b'1234')
+            .expect_header_unset('foo')
             .expect_url('http://example.com/'),
         ])
         assert len(result['call_results']) == 1
