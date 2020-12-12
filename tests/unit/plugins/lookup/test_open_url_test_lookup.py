@@ -54,6 +54,7 @@ class TestLookupModule(TestCase):
             OpenUrlCall('POST', 200)
             .result_json({'1': 2})
             .return_header('content-type', 'application/json')
+            .expect_content('name=foo&email=name@example.com'.encode('utf-8'))
             .expect_header('foo', 'bar')
             .expect_header_unset('baz'),
             OpenUrlCall('POST', 500)
