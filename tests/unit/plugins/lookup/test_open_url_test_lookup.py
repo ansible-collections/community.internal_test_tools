@@ -35,6 +35,7 @@ class TestLookupModule(TestCase):
             OpenUrlCall('GET', 200)
             .result_str('hello')
             .expect_form_value_absent('foo')
+            .expect_header_unset('foo')
             .expect_url('http://example.com'),
         ])
         with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
@@ -100,3 +101,18 @@ class TestLookupModule(TestCase):
         open_url.assert_is_done()
 
         assert e.value.message == 'Error while PUTing http://example.com: foo bar!'
+
+    def test_error_in_test(self):
+        open_url = OpenUrlProxy([
+            OpenUrlCall('GET', 204),
+        ])
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+            with pytest.raises(AnsibleLookupError) as e:
+                self.lookup.run(
+                    ['http://example.com', 'http://example.org'],
+                    [],
+                )
+        open_url.assert_is_done()
+
+        print(e.value.message)
+        assert e.value.message == 'Error while GETing http://example.com: OpenUrlCall data has neither body nor error data'

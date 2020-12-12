@@ -15,6 +15,8 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_ur
 
 from ansible_collections.community.internal_test_tools.plugins.modules import fetch_url_test_module
 
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args, ModuleTestCase, AnsibleExitJson
+
 
 class TestFetchURLTestModule(BaseTestModule):
     MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE = 'ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.AnsibleModule'
@@ -47,6 +49,7 @@ class TestFetchURLTestModule(BaseTestModule):
         }, [
             FetchUrlCall('GET', 200)
             .result(b'1234')
+            .expect_header_unset('foo')
             .expect_url('http://example.com/'),
         ])
         assert len(result['call_results']) == 1
@@ -145,3 +148,18 @@ class TestFetchURLTestModule(BaseTestModule):
         ])
         assert len(result['call_results']) == 1
         assert result['call_results'][0]['status'] == 200
+
+
+class TestFetchURLTestModule2(ModuleTestCase):
+    # Test for ModuleTestCase
+
+    def test_basic(self):
+        with pytest.raises(AnsibleExitJson) as e:
+            set_module_args({
+                'call_sequence': [],
+                '_ansible_remote_tmp': '/tmp/tmp',
+                '_ansible_keep_remote_files': True,
+            })
+            fetch_url_test_module.main()
+
+        assert e.value.args[0]['call_results'] == []

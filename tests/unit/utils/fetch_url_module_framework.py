@@ -221,8 +221,6 @@ class _FetchUrlProxy:
                 assert k not in form, 'Form key "{0}" not absent'.format(k)
             else:
                 assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
-        for k, v in call.form_values_one.items():
-            assert v <= set(form[k]), 'Form key "{0}" has values {2}, which does not include all of {1}'.format(k, v, form[k])
 
     def _validate_headers(self, call, headers):
         '''
