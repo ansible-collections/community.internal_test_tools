@@ -92,6 +92,7 @@ class OpenUrlCall:
         self.error_data = {}
         self.expected_url = None
         self.expected_headers = {}
+        self.expected_content = None
         self.form_parse = False
         self.form_present = set()
         self.form_values = {}
@@ -165,6 +166,13 @@ class OpenUrlCall:
         Builder method to set an expected non-set header for a ``open_url()`` call.
         '''
         self.expected_headers[name] = None
+        return self
+
+    def expect_content(self, content):
+        '''
+        Builder method to set an expected content for a ``open_url()`` call.
+        '''
+        self.expected_content = content
         return self
 
     def expect_form_present(self, key):
@@ -260,6 +268,8 @@ class OpenUrlProxy:
                 'Exepected URL does not match for open_url call'
         if call.expected_headers:
             self._validate_headers(call, headers)
+        if call.expected_content is not None:
+            assert data == call.expected_content, 'Expected content does not match for open_url call'
         if call.form_parse:
             self._validate_form(call, data)
 

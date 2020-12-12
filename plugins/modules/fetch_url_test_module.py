@@ -37,10 +37,23 @@ options:
         description: HTTP headers.
         type: dict
       data:
-        description: Data to send (Base64 encoded).
+        description:
+          - Data to send (Base64 encoded).
+          - Mutually exclusive with I(data_path).
         type: str
+      data_path:
+        description:
+          - File to read data from.
+          - Mutually exclusive with I(data).
+        type: path
+        version_added: 0.3.0
   fail_me:
     description: If set to C(true), fails the module.
+    type: bool
+    default: false
+    version_added: 0.3.0
+  set_changed:
+    description: If set to C(true), claims the module changed something.
     type: bool
     default: false
     version_added: 0.3.0
@@ -85,8 +98,10 @@ def main():
             method=dict(type='str', default='GET'),
             headers=dict(type='dict'),
             data=dict(type='str'),
-        )),
+            data_path=dict(type='path'),
+        ), mutually_exclusive=[('data', 'data_path')]),
         fail_me=dict(type='bool', default=False),
+        set_changed=dict(type='bool', default=False),
     )
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -97,6 +112,9 @@ def main():
         data = call['data']
         if data is not None:
             data = base64.b64decode(data)
+        elif call['data_path'] is not None:
+            with open(call['data_path'], 'rb') as f:
+                data = f.read()
         resp, info = fetch_url(module, call['url'], method=call['method'], data=data, headers=call['headers'])
         try:
             content = resp.read()
@@ -114,9 +132,15 @@ def main():
             headers=info,
         ))
 
+    all_results = dict(
+        call_results=results,
+    )
+    if module.params['set_changed']:
+        all_results['changed'] = True
+
     if module.params['fail_me']:
-        module.fail_json(msg='expected failure', call_results=results)
-    module.exit_json(call_results=results)
+        module.fail_json(msg='expected failure', **all_results)
+    module.exit_json(**all_results)
 
 
 if __name__ == '__main__':

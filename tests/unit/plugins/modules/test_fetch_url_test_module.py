@@ -15,7 +15,14 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_ur
 
 from ansible_collections.community.internal_test_tools.plugins.modules import fetch_url_test_module
 
-from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args, ModuleTestCase, AnsibleExitJson
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import mock_open
+
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+    set_module_args,
+    ModuleTestCase,
+    AnsibleExitJson,
+    AnsibleFailJson,
+)
 
 
 class TestFetchURLTestModule(BaseTestModule):
@@ -74,11 +81,12 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['headers']['foo'] == 'bar'
 
     def test_with_data(self, mocker):
+        mocker.patch('ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.open', mock_open(read_data=b'\x00\x01\x02'))
         result = self.run_module_success(mocker, fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
-                    'data': base64.b64encode('hello'.encode('utf-8')).decode('utf-8'),
+                    'data_path': '/data',
                     'headers': {
                         'foo': 'bar',
                     },
@@ -87,6 +95,7 @@ class TestFetchURLTestModule(BaseTestModule):
         }, [
             FetchUrlCall('GET', 400)
             .result_error('meh', b'1234')
+            .expect_content(b'\x00\x01\x02')
             .expect_header('foo', 'bar')
             .expect_header_unset('baz')
             .expect_url('http://example.com/'),
@@ -159,6 +168,28 @@ class TestFetchURLTestModule2(ModuleTestCase):
                 'call_sequence': [],
                 '_ansible_remote_tmp': '/tmp/tmp',
                 '_ansible_keep_remote_files': True,
+            })
+            fetch_url_test_module.main()
+
+        assert not e.value.args[0]['changed']
+        assert e.value.args[0]['call_results'] == []
+
+    def test_basic_changed(self):
+        with pytest.raises(AnsibleExitJson) as e:
+            set_module_args({
+                'call_sequence': [],
+                'set_changed': True,
+            })
+            fetch_url_test_module.main()
+
+        assert e.value.args[0]['changed']
+        assert e.value.args[0]['call_results'] == []
+
+    def test_fail(self):
+        with pytest.raises(AnsibleFailJson) as e:
+            set_module_args({
+                'call_sequence': [],
+                'fail_me': True,
             })
             fetch_url_test_module.main()
 
