@@ -9,7 +9,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-lookup: open_url_test_lookup
+name: open_url_test_lookup
 short_description: Test plugin for the open_url test framework
 version_added: 0.3.0
 author:
