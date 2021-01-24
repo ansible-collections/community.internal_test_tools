@@ -36,6 +36,9 @@ def path_to_name(path, base_dir, remove_extension=True):
 
 def scan_file_redirects(redirects, remove=False):
     for plugin_type in PLUGIN_TYPES:
+        if plugin_type in ('test', 'filter'):
+            # Test and filter plugins are not coupled to filenames
+            continue
         plugin_redirects = redirects[plugin_type]
         base_dir = os.path.join('plugins', plugin_type)
         for root, dirnames, filenames in os.walk(base_dir):
@@ -114,6 +117,9 @@ def name_to_path(name, base_dir):
 
 def add_file_redirects(redirects):
     for plugin_type in PLUGIN_TYPES:
+        if plugin_type in ('test', 'filter'):
+            # Test and filter plugins are not coupled to filenames
+            continue
         base_dir = os.path.join('plugins', plugin_type)
         for source, destination in redirects[plugin_type].items():
             src = name_to_path(source, base_dir)
@@ -138,7 +144,7 @@ def extract_meta_redirects(redirects, runtime, collection_name, remove=False):
                     record_redirect(
                         plugin_type, plugin_redirects, plugin_name,
                         redirect[len(collection_prefix):])
-                    if remove:
+                    if remove and plugin_type not in ('test', 'filter'):
                         del plugin_data['redirect']
 
 
