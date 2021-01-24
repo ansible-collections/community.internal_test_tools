@@ -83,11 +83,11 @@ def check_file(module, path, file, global_differences, changed_files, added_file
         differences_neg.append('-  exists: {0}'.format(ex_exist))
         differences_pos.append('+  exists: {0}'.format(exists))
         if ex_exist:
-            removed_files.append(path)
+            removed_files.add(path)
         else:
-            added_files.append(path)
+            added_files.add(path)
 
-    if exists:
+    if exists and 'stat' in file:
         ex_stat = file['stat']
         stat = extract_stat(os.lstat(path))
         for k in stat:
@@ -98,12 +98,12 @@ def check_file(module, path, file, global_differences, changed_files, added_file
         ex_symlink = file.get('symlink')
         symlink = os.readlink(path) if os.path.islink(path) else None
         if ex_symlink != symlink:
-            differences_neg.append('-  link: {0}'.format(ex_symlink))
-            differences_pos.append('+  link: {0}'.format(symlink))
+            differences_neg.append('-  link: {0}'.format('(not a link)' if ex_symlink is None else ex_symlink))
+            differences_pos.append('+  link: {0}'.format('(not a link)' if symlink is None else symlink))
 
         if symlink is None:
             if not os.path.isfile(path):
-                differences_neg.append('-  type: file')
+                differences_neg.append('-  type: {type}'.format(type='link' if ex_symlink is not None else 'file'))
                 differences_pos.append('+  type: {type}'.format(type='directory' if os.path.isdir(path) else '???'))
             else:
                 content = read_file(module, path)
@@ -129,10 +129,10 @@ def check_file(module, path, file, global_differences, changed_files, added_file
 
     if differences or differences_pos or differences_neg:
         if ex_exist and exists:
-            changed_files.append(path)
+            changed_files.add(path)
         global_differences.append('--- {path}\n+++ {path}\n{diffs}'.format(
             path=path,
-            diffs='\n'.join(differences_neg) + '\n'.join(differences_pos) + '\n'.join(differences),
+            diffs='\n'.join(differences_neg + differences_pos + differences),
         ))
 
 
@@ -159,19 +159,20 @@ def main():
             module.fail_json(msg='The value of the state parameter must be the result of community.internal_test_tools.collect_state')
 
     differences = []
-    added_files = []
-    removed_files = []
-    changed_files = []
-    added_dirs = []
-    removed_dirs = []
-    changed_dirs = []
+    added_files = set()
+    removed_files = set()
+    changed_files = set()
+    added_dirs = set()
+    removed_dirs = set()
+    changed_dirs = set()
 
     for path, file in sorted(state['files'].items()):
         check_file(module, path, file, differences, changed_files, added_files, removed_files)
 
     for path, directory in sorted(state['directories'].items()):
         if not os.path.isdir(path):
-            module.fail_json(msg='Path "{path}" is no longer a directory'.format(path=path))
+            removed_dirs.add(path)
+            continue
         changed = False
         for dummy, dirnames, filenames in os.walk(path):
             if 'files' in directory:
@@ -181,7 +182,7 @@ def main():
                     changed = True
                     for file in files:
                         if file not in ex_files:
-                            added_files.append(os.path.join(path, file))
+                            added_files.add(os.path.join(path, file))
                     modified = '{path} (files)'.format(path=path)
                     differences.append(
                         '\n'.join([
@@ -193,16 +194,18 @@ def main():
                     changed = True
                     for dir in ex_dirs:
                         if dir not in dirs:
-                            removed_dirs.append(os.path.join(path, dir))
+                            removed_dirs.add(os.path.join(path, dir))
                     for dir in dirs:
                         if dir not in ex_dirs:
-                            added_dirs.append(os.path.join(path, dir))
+                            added_dirs.add(os.path.join(path, dir))
                     modified = '{path} (dirs)'.format(path=path)
                     differences.append(
                         '\n'.join([
                             line.rstrip('\n') for line in difflib.unified_diff(ex_dirs, dirs, modified, modified, n=3)]))
+            # No recursion
+            break
         if changed:
-            changed_dirs.append(path)
+            changed_dirs.add(path)
 
     result = dict(
         changed=any([
@@ -210,12 +213,12 @@ def main():
             len(added_dirs) > 0, len(removed_dirs) > 0, len(changed_dirs) > 0,
             len(differences) > 0,
         ]),
-        added_files=added_files,
-        removed_files=removed_files,
-        changed_files=changed_files,
-        added_dirs=added_dirs,
-        removed_dirs=removed_dirs,
-        changed_dirs=changed_dirs,
+        added_files=sorted(added_files),
+        removed_files=sorted(removed_files),
+        changed_files=sorted(changed_files),
+        added_dirs=sorted(added_dirs),
+        removed_dirs=sorted(removed_dirs),
+        changed_dirs=sorted(changed_dirs),
         diff=dict(
             prepared='\n\n'.join(differences),
         ),
