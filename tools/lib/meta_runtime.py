@@ -60,20 +60,20 @@ def scan_file_redirects(redirects, remove=False):
 
 
 def scan_flatmap_redirects(redirects):
-    plugin_type = 'modules'
-    plugin_redirects = redirects[plugin_type]
-    base_dir = os.path.join('plugins', plugin_type)
-    for root, dirnames, filenames in os.walk(base_dir):
-        if root == base_dir:
-            continue
-        for filename in filenames:
-            if not filename.endswith('.py'):
+    for plugin_type in ('action', 'modules'):
+        plugin_redirects = redirects[plugin_type]
+        base_dir = os.path.join('plugins', plugin_type)
+        for root, dirnames, filenames in os.walk(base_dir):
+            if root == base_dir:
                 continue
-            if filename in ('__init__', ):
-                continue
-            source = path_to_name(os.path.join(base_dir, filename), base_dir)
-            destination = path_to_name(os.path.join(root, filename), base_dir)
-            record_redirect(plugin_type, plugin_redirects, source, destination)
+            for filename in filenames:
+                if not filename.endswith('.py'):
+                    continue
+                if filename in ('__init__', ):
+                    continue
+                source = path_to_name(os.path.join(base_dir, filename), base_dir)
+                destination = path_to_name(os.path.join(root, filename), base_dir)
+                record_redirect(plugin_type, plugin_redirects, source, destination)
 
 
 def scan_plugins(plugins, redirects, runtime, all_plugins=False):
