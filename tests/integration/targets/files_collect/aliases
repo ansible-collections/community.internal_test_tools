@@ -1,2 +1,2 @@
 shippable/posix/group1
-check_state
+files_diff

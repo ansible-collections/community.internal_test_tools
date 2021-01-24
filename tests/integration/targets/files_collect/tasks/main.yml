@@ -1,6 +1,6 @@
 ---
 - name: Collect state
-  collect_state:
+  files_collect:
     directories:
       - path: '{{ output_dir }}'
     files:
@@ -9,7 +9,7 @@
   register: result
 
 - name: Collect state (fail because of non-existing file)
-  collect_state:
+  files_collect:
     files:
       - path: '{{ output_dir }}/non-existing'
         allow_not_existing: false
@@ -23,19 +23,19 @@
       - result_f.msg == 'The file "' ~ output_dir ~ '/non-existing" does not exist'
 
 - name: Check state
-  check_state:
+  files_diff:
     state: '{{ result.state }}'
     fail_on_diffs: true
   register: result_1
 
 - name: Check state (provide result instead of result.state)
-  check_state:
+  files_diff:
     state: '{{ result }}'
     fail_on_diffs: true
   register: result_2
 
 - name: Check state (invalid data)
-  check_state:
+  files_diff:
     state:
       foo: bar
   register: result_3
@@ -61,7 +61,7 @@
       - result_2.changed_dirs == []
       - result_2.diff.prepared == ''
       - result_3 is failed
-      - result_3.msg == 'The value of the state parameter must be the result of community.internal_test_tools.collect_state'
+      - result_3.msg == 'The value of the state parameter must be the result of community.internal_test_tools.files_collect'
 
 - name: Create file
   copy:
@@ -103,14 +103,14 @@
     - dir_3
 
 - name: Collect state
-  collect_state:
+  files_collect:
     directories:
       - path: '{{ output_dir }}'
         check_content: false
   register: result
 
 - name: Collect state (with content)
-  collect_state:
+  files_collect:
     directories:
       - path: '{{ output_dir }}'
         check_content: true
@@ -120,7 +120,7 @@
   register: result_content
 
 - name: Collect state (not recursive)
-  collect_state:
+  files_collect:
     directories:
       - path: '{{ output_dir }}'
         check_content: false
@@ -182,7 +182,7 @@
     state: absent
 
 - name: Check state
-  check_state:
+  files_diff:
     state: '{{ result.state }}'
   register: result_1
   diff: true
@@ -199,7 +199,7 @@
       - result_1.changed_dirs == [output_dir, output_dir ~ '/dir']
 
 - name: Check state (with content)
-  check_state:
+  files_diff:
     state: '{{ result_content.state }}'
   register: result_2
   diff: true
@@ -216,7 +216,7 @@
       - result_2.changed_dirs == [output_dir, output_dir ~ '/dir']
 
 - name: Check state (with content, without diff)
-  check_state:
+  files_diff:
     state: '{{ result_content.state }}'
   register: result_3
   diff: false
@@ -233,7 +233,7 @@
       - result_3.changed_dirs == [output_dir, output_dir ~ '/dir']
 
 - name: Check state (non-recursive)
-  check_state:
+  files_diff:
     state: '{{ result_nonrecursive.state }}'
     fail_on_diffs: true
   register: result_4

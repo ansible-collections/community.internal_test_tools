@@ -10,21 +10,21 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: check_state
-short_description: Check whether there were changes since collect_state was called
+module: files_diff
+short_description: Check whether there were changes since files_collect was called
 version_added: 0.3.0
 author:
   - Felix Fontein (@felixfontein)
 description:
   - This module checks whether any changes (timestamps, attributes, content) were made to files
-    and directories that M(community.internal_test_tools.collect_state) collected information on
+    and directories that M(community.internal_test_tools.files_collect) collected information on
     earlier.
 
 options:
   state:
     required: true
     description:
-      - The state returned by M(community.internal_test_tools.collect_state).
+      - The state returned by M(community.internal_test_tools.files_collect).
     type: dict
   fail_on_diffs:
     description:
@@ -35,7 +35,7 @@ options:
 
 EXAMPLES = r'''
 - name: Recursively collect information on all files in output_dir
-  community.internal_test_tools.collect_state:
+  community.internal_test_tools.files_collect:
     directories:
       - path: "{{ output_dir }}"
   register: state
@@ -43,7 +43,7 @@ EXAMPLES = r'''
 # ... some tasks inbetween ...
 
 - name: Verify whether any file changed in output_dir
-  community.internal_test_tools.check_state:
+  community.internal_test_tools.files_diff:
     state: "{{ state.state }}"
 '''
 
@@ -51,7 +51,7 @@ RETURN = r'''
 state:
   description:
     - The state of all files and directories.
-    - Use the M(community.internal_test_tools.check_state) module to validate against the original files.
+    - Use the M(community.internal_test_tools.files_diff) module to validate against the original files.
     - The structure of every field in this dictionary not explicitly documented here might change at any
       point, or might vanish alltogether without further notice. Do not rely on undocumented data!
   type: dict
@@ -156,7 +156,7 @@ def main():
             # The whole result of the previous task was passed in
             state = state['state']
         else:
-            module.fail_json(msg='The value of the state parameter must be the result of community.internal_test_tools.collect_state')
+            module.fail_json(msg='The value of the state parameter must be the result of community.internal_test_tools.files_collect')
 
     differences = []
     added_files = set()

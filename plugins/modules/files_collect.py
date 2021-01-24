@@ -10,14 +10,14 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: collect_state
+module: files_collect
 short_description: Collect state of files and directories on disk
 version_added: 0.3.0
 author:
   - Felix Fontein (@felixfontein)
 description:
   - This module collects the state (timestamps, attributes, content) of files and directories on disk
-    and returns them. Use together with M(community.internal_test_tools.check_state) to verify later
+    and returns them. Use together with M(community.internal_test_tools.files_diff) to verify later
     on whether something changed, and if yes, what exactly changed.
 
 options:
@@ -66,7 +66,7 @@ options:
 
 EXAMPLES = r'''
 - name: Recursively collect information on all files in output_dir
-  community.internal_test_tools.collect_state:
+  community.internal_test_tools.files_collect:
     directories:
       - path: "{{ output_dir }}"
   register: state
@@ -74,7 +74,7 @@ EXAMPLES = r'''
 # ... some tasks inbetween ...
 
 - name: Verify whether any file changed in output_dir
-  community.internal_test_tools.check_state:
+  community.internal_test_tools.files_diff:
     state: "{{ state }}"
 '''
 
@@ -82,7 +82,7 @@ RETURN = r'''
 state:
   description:
     - The state of all files and directories.
-    - Use the M(community.internal_test_tools.check_state) module to validate against the original files.
+    - Use the M(community.internal_test_tools.files_diff) module to validate against the original files.
     - The structure of every field in this dictionary not explicitly documented here might change at any
       point, or might vanish alltogether without further notice. Do not rely on undocumented data!
   type: dict
