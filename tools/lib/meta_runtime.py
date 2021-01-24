@@ -7,6 +7,7 @@ __metaclass__ = type
 import os
 
 from .ansible import PLUGIN_TYPES
+from .yaml import load_yaml
 
 
 REQUIRE_INIT_PY = False
@@ -170,3 +171,13 @@ def sort_plugin_routing(runtime):
         plugin_routing[plugin_type] = dict([
             (key, value) for key, value in sorted(plugins.items())
         ])
+
+
+def load_ansible_base_runtime():
+    # Load ansible-base's ansible.builtin runtime
+    from ansible import release as ansible_release
+
+    ansible_builtin_runtime_path = os.path.join(
+        os.path.dirname(ansible_release.__file__), 'config', 'ansible_builtin_runtime.yml')
+
+    return load_yaml(ansible_builtin_runtime_path)
