@@ -10,9 +10,6 @@ from .ansible import PLUGIN_TYPES
 from .yaml import load_yaml
 
 
-REQUIRE_INIT_PY = False
-
-
 def record_redirect(plugin_type, record, source, destination):
     if source in record:
         if record[source] != destination:
@@ -92,12 +89,7 @@ def scan_plugins(plugins, redirects, runtime, all_plugins=False):
             if plugin_type == 'module_utils':
                 for dirname in dirnames:
                     path = os.path.join(root, dirname)
-                    if REQUIRE_INIT_PY:
-                        init_path = os.path.join(path, '__init__.py')
-                        if os.path.isfile(init_path):
-                            plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
-                    else:
-                        plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
+                    plugins_set.add(path_to_name(path, base_dir, remove_extension=False))
             for filename in filenames:
                 if not filename.endswith('.py'):
                     continue
