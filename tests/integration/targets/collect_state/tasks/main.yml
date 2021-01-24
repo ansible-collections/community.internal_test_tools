@@ -8,6 +8,20 @@
         allow_not_existing: true
   register: result
 
+- name: Collect state (fail because of non-existing file)
+  collect_state:
+    files:
+      - path: '{{ output_dir }}/non-existing'
+        allow_not_existing: false
+  register: result_f
+  ignore_errors: true
+
+- name: Check that collection failed
+  assert:
+    that:
+      - result_f is failed
+      - result_f.msg == 'The file "' ~ output_dir ~ '/non-existing" does not exist'
+
 - name: Check state
   check_state:
     state: '{{ result.state }}'
@@ -19,6 +33,13 @@
     state: '{{ result }}'
     fail_on_diffs: true
   register: result_2
+
+- name: Check state (invalid data)
+  check_state:
+    state:
+      foo: bar
+  register: result_3
+  ignore_errors: true
 
 - name: Check that no changes were found
   assert:
@@ -39,6 +60,8 @@
       - result_2.removed_dirs == []
       - result_2.changed_dirs == []
       - result_2.diff.prepared == ''
+      - result_3 is failed
+      - result_3.msg == 'The value of the state parameter must be the result of community.internal_test_tools.collect_state'
 
 - name: Create file
   copy:
@@ -212,13 +235,17 @@
 - name: Check state (non-recursive)
   check_state:
     state: '{{ result_nonrecursive.state }}'
+    fail_on_diffs: true
   register: result_4
   diff: true
+  ignore_errors: true
 
 - name: Check that the correct changes were found (4/4)
   assert:
     that:
+      - result_4 is failed
       - result_4 is changed
+      - result_4.msg == 'Found differences!'
       - result_4.added_files == [output_dir ~ '/new_file']
       - result_4.removed_files == [output_dir ~ '/removed_file']
       - result_4.changed_files == [output_dir ~ '/attributes', output_dir ~ '/symlink', output_dir ~ '/symlink_2', output_dir ~ '/test']
