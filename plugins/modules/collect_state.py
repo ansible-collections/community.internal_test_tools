@@ -36,7 +36,7 @@ options:
           - Whether to store the content of the file, or only a checksum.
           - Storing the content allows to show a diff.
         type: bool
-        default: fales
+        default: false
       allow_not_existing:
         description:
           - Whether to accept if the file does not exist (and mark it as a non-existing file in the output).

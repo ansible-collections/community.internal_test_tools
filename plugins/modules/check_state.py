@@ -205,7 +205,11 @@ def main():
             changed_dirs.append(path)
 
     result = dict(
-        changed=len(added_files) > 0 or len(removed_files) > 0 or len(changed_files) > 0 or len(added_dirs) > 0 or len(removed_dirs) > 0 or len(changed_dirs) > 0 or len(added_files) > 0,
+        changed=any([
+            len(added_files) > 0, len(removed_files) > 0, len(changed_files) > 0,
+            len(added_dirs) > 0, len(removed_dirs) > 0, len(changed_dirs) > 0,
+            len(differences) > 0,
+        ]),
         added_files=added_files,
         removed_files=removed_files,
         changed_files=changed_files,
