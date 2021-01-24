@@ -1,0 +1,129 @@
+---
+- name: Collect state
+  collect_state:
+    directories:
+      - path: '{{ output_dir }}' 
+    files:
+      - path: '{{ output_dir }}/non-existing' 
+        allow_not_existing: true
+  register: result
+
+- name: Check state
+  check_state:
+    state: '{{ result.state }}'
+    fail_on_diffs: true
+  register: result_1
+
+- name: Check state (provide result instead of result.state)
+  check_state:
+    state: '{{ result }}'
+    fail_on_diffs: true
+  register: result_2
+
+- name: Check that no changes were found
+  assert:
+    that:
+      - result_1 is not changed
+      - result_1.added_files == []
+      - result_1.removed_files == []
+      - result_1.changed_files == []
+      - result_1.added_dirs == []
+      - result_1.removed_dirs == []
+      - result_1.changed_dirs == []
+      - result_1.diff.prepared == ''
+      - result_2 is not changed
+      - result_2.added_files == []
+      - result_2.removed_files == []
+      - result_2.changed_files == []
+      - result_2.added_dirs == []
+      - result_2.removed_dirs == []
+      - result_2.changed_dirs == []
+      - result_2.diff.prepared == ''
+
+- name: Create file
+  copy:
+    dest: '{{ output_dir }}/test'
+    content: |
+      This is
+      a
+      test file
+      with five lines
+      .
+
+- name: Create file 2
+  copy:
+    dest: '{{ output_dir }}/attributes'
+    content: Test file
+    mode: '0644'
+
+- name: Add file 3
+  copy:
+    dest: '{{ output_dir }}/removed_file'
+    content: This will be removed.
+
+- name: Collect state
+  collect_state:
+    directories:
+      - path: '{{ output_dir }}' 
+        check_content: false
+  register: result
+
+- name: Collect state (with content)
+  collect_state:
+    directories:
+      - path: '{{ output_dir }}' 
+        check_content: true
+  register: result_content
+
+- name: Change file
+  copy:
+    dest: '{{ output_dir }}/test'
+    content: |-
+      This is a
+      test file
+      with three lines.
+
+- name: Change file 2
+  file:
+    path: '{{ output_dir }}/attributes'
+    mode: '0700'
+
+- name: Remove file 3
+  file:
+    path: '{{ output_dir }}/removed_file'
+    state: absent
+
+- name: Add file 4
+  copy:
+    dest: '{{ output_dir }}/new_file'
+    content: New file
+
+- name: Check state
+  check_state:
+    state: '{{ result.state }}'
+  register: result_1
+  diff: true
+
+- name: Check state (with content)
+  check_state:
+    state: '{{ result_content.state }}'
+  register: result_2
+  diff: true
+
+- name: Check that the correct changes were found
+  assert:
+    that:
+      - result_1 is changed
+      - result_1.added_files == [output_dir ~ '/new_file']
+      - result_1.removed_files == [output_dir ~ '/removed_file']
+      - result_1.changed_files == [output_dir ~ '/attributes', output_dir ~ '/test']
+      - result_1.added_dirs == []
+      - result_1.removed_dirs == []
+      - result_1.changed_dirs == [output_dir]
+      - result_2 is changed
+      - result_2.added_files == [output_dir ~ '/new_file']
+      - result_2.removed_files == [output_dir ~ '/removed_file']
+      - result_2.changed_files == [output_dir ~ '/attributes', output_dir ~ '/test']
+      - result_2.added_dirs == []
+      - result_2.removed_dirs == []
+      - result_2.changed_dirs == [output_dir]

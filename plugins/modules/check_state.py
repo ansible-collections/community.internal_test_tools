@@ -1,0 +1,225 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2021 Felix Fontein <felix@fontein.de>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+
+DOCUMENTATION = r'''
+---
+module: check_state
+short_description: Check whether there were changes since collect_state was called
+version_added: 0.3.0
+author:
+  - Felix Fontein (@felixfontein)
+description:
+  - This module checks whether any changes (timestamps, attributes, content) were made to files
+    and directories that M(community.internal_test_tools.collect_state) collected information on
+    earlier.
+
+options:
+  state:
+    required: true
+    description:
+      - The state returned by M(community.internal_test_tools.collect_state).
+    type: dict
+  fail_on_diffs:
+    description:
+      - Whether to fail when differences are found, instead of simply returning C(changed=true).
+    type: bool
+    default: false
+'''
+
+EXAMPLES = r'''
+- name: Recursively collect information on all files in output_dir
+  community.internal_test_tools.collect_state:
+    directories:
+      - path: "{{ output_dir }}"
+  register: state
+
+# ... some tasks inbetween ...
+
+- name: Verify whether any file changed in output_dir
+  community.internal_test_tools.check_state:
+    state: "{{ state.state }}"
+'''
+
+RETURN = r'''
+state:
+  description:
+    - The state of all files and directories.
+    - Use the M(community.internal_test_tools.check_state) module to validate against the original files.
+    - The structure of every field in this dictionary not explicitly documented here might change at any
+      point, or might vanish alltogether without further notice. Do not rely on undocumented data!
+  type: dict
+  returned: success
+'''
+
+import os
+import base64
+import difflib
+import hashlib
+
+from ansible.module_utils.basic import AnsibleModule
+
+from ansible_collections.community.internal_test_tools.plugins.module_utils.state import (
+    STATE_VERSION,
+    read_file,
+    extract_stat,
+)
+
+
+def check_file(module, path, file, global_differences, changed_files, added_files, removed_files):
+    differences_neg = []
+    differences_pos = []
+    differences = []
+
+    ex_exist = file.get('exists', True)
+    exists = os.path.exists(path)
+    if ex_exist != exists:
+        differences_neg.append('-  exists: {0}'.format(ex_exist))
+        differences_pos.append('+  exists: {0}'.format(exists))
+        if ex_exist:
+            removed_files.append(path)
+        else:
+            added_files.append(path)
+
+    if exists:
+        ex_stat = file['stat']
+        stat = extract_stat(os.lstat(path))
+        for k in stat:
+            if stat[k] != ex_stat[k]:
+                differences_neg.append('-  {key}: {value}'.format(key=k, value=ex_stat[k]))
+                differences_pos.append('+  {key}: {value}'.format(key=k, value=stat[k]))
+
+        ex_symlink = file.get('symlink')
+        symlink = os.readlink(path) if os.path.islink(path) else None
+        if ex_symlink != symlink:
+            differences_neg.append('-  link: {0}'.format(ex_symlink))
+            differences_pos.append('+  link: {0}'.format(symlink))
+
+        if symlink is None:
+            if not os.path.isfile(path):
+                differences_neg.append('-  type: file')
+                differences_pos.append('+  type: {type}'.format(type='directory' if os.path.isdir(path) else '???'))
+            else:
+                content = read_file(module, path)
+
+                if 'sha256' in file:
+                    ex_sha256 = file['sha256']
+                    sha256 = hashlib.sha256(content).hexdigest()
+                    if sha256 != ex_sha256:
+                        differences_neg.append('-  SHA-256: {0}'.format(ex_sha256))
+                        differences_pos.append('+  SHA-256: {0}'.format(sha256))
+
+                if 'content' in file:
+                    ex_content = base64.b64decode(file['content'])
+                    if content != ex_content:
+                        differences.append('   Content:')
+                        if module._diff:
+                            ex_lines = ex_content.decode('utf-8').splitlines(False)
+                            lines = content.decode('utf-8').splitlines(False)
+                            differences.extend([line.rstrip('\n') for line in difflib.unified_diff(ex_lines, lines, n=3)])
+                        else:
+                            differences.append('-     (...)')
+                            differences.append('+     (...)')
+
+    if differences or differences_pos or differences_neg:
+        if ex_exist and exists:
+            changed_files.append(path)
+        global_differences.append('--- {path}\n+++ {path}\n{diffs}'.format(
+            path=path,
+            diffs='\n'.join(differences_neg) + '\n'.join(differences_pos) + '\n'.join(differences),
+        ))
+
+
+def is_state(state):
+    return 'files' in state and 'directories' in state and state.get('version') == STATE_VERSION
+
+
+def main():
+    argument_spec = dict(
+        state=dict(required=True, type='dict'),
+        fail_on_diffs=dict(type='bool', default=False),
+    )
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+    )
+
+    state = module.params['state']
+    if not is_state(state):
+        if 'state' in state and is_state(state['state']):
+            # The whole result of the previous task was passed in
+            state = state['state']
+        else:
+            module.fail_json(msg='The value of the state parameter must be the result of community.internal_test_tools.collect_state')
+
+    differences = []
+    added_files = []
+    removed_files = []
+    changed_files = []
+    added_dirs = []
+    removed_dirs = []
+    changed_dirs = []
+
+    for path, file in sorted(state['files'].items()):
+        check_file(module, path, file, differences, changed_files, added_files, removed_files)
+
+    for path, directory in sorted(state['directories'].items()):
+        if not os.path.isdir(path):
+            module.fail_json(msg='Path "{path}" is no longer a directory'.format(path=path))
+        changed = False
+        for dummy, dirnames, filenames in os.walk(path):
+            if 'files' in directory:
+                ex_files = sorted(directory['files'])
+                files = sorted(filenames)
+                if ex_files != files:
+                    changed = True
+                    for file in files:
+                        if file not in ex_files:
+                            added_files.append(os.path.join(path, file))
+                    modified = '{path} (files)'.format(path=path)
+                    differences.append(
+                        '\n'.join([
+                            line.rstrip('\n') for line in difflib.unified_diff(ex_files, files, modified, modified, n=3)]))
+            if 'directories' in directory:
+                ex_dirs = sorted(directory['directories'])
+                dirs = sorted(dirnames)
+                if ex_dirs != dirs:
+                    changed = True
+                    for dir in ex_dirs:
+                        if dir not in dirs:
+                            removed_dirs.append(os.path.join(path, dir))
+                    for dir in dirs:
+                        if dir not in ex_dirs:
+                            added_dirs.append(os.path.join(path, dir))
+                    modified = '{path} (dirs)'.format(path=path)
+                    differences.append(
+                        '\n'.join([
+                            line.rstrip('\n') for line in difflib.unified_diff(ex_dirs, dirs, modified, modified, n=3)]))
+        if changed:
+            changed_dirs.append(path)
+
+    result = dict(
+        changed=len(added_files) > 0 or len(removed_files) > 0 or len(changed_files) > 0 or len(added_dirs) > 0 or len(removed_dirs) > 0 or len(changed_dirs) > 0 or len(added_files) > 0,
+        added_files=added_files,
+        removed_files=removed_files,
+        changed_files=changed_files,
+        added_dirs=added_dirs,
+        removed_dirs=removed_dirs,
+        changed_dirs=changed_dirs,
+        diff=dict(
+            prepared='\n\n'.join(differences),
+        ),
+    )
+    if result['changed'] and module.params['fail_on_diffs']:
+        module.fail_json(msg='Found differences!', **result)
+    module.exit_json(**result)
+
+
+if __name__ == '__main__':
+    main()
