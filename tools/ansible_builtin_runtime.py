@@ -25,6 +25,9 @@ RUNTIME_PATH = 'meta/runtime.yml'
 
 
 def func_check_ansible_base_redirects(args):
+    if not os.path.exists(GALAXY_PATH):
+        raise Exception("This subcommand must be run in a collection's root directory, that contains galaxy.yml.")
+
     # Load basic information on collection
     galaxy = load_yaml(GALAXY_PATH)
     collection_name = '{namespace}.{name}'.format(**galaxy)

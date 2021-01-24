@@ -152,6 +152,9 @@ def func_validate(args):
 
 
 def main():
+    if not os.path.exists(GALAXY_PATH):
+        raise Exception("This tool must be run in a collection's root directory, that contains galaxy.yml.")
+
     parser = argparse.ArgumentParser(description='meta/runtime.yml helper')
 
     subparsers = parser.add_subparsers(metavar='COMMAND')
