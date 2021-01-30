@@ -72,7 +72,7 @@ from ansible_collections.community.internal_test_tools.plugins.module_utils.stat
 )
 
 
-def check_file(module, path, file, global_differences, changed_files, added_files, removed_files):
+def check_file(module, path, file, global_differences, changed_files, changed_files_content, added_files, removed_files):
     differences_neg = []
     differences_pos = []
     differences = []
@@ -112,12 +112,14 @@ def check_file(module, path, file, global_differences, changed_files, added_file
                     ex_sha256 = file['sha256']
                     sha256 = hashlib.sha256(content).hexdigest()
                     if sha256 != ex_sha256:
+                        changed_files_content.add(path)
                         differences_neg.append('-  SHA-256: {0}'.format(ex_sha256))
                         differences_pos.append('+  SHA-256: {0}'.format(sha256))
 
                 if 'content' in file:
                     ex_content = base64.b64decode(file['content'])
                     if content != ex_content:
+                        changed_files_content.add(path)
                         differences.append('   Content:')
                         if module._diff:
                             ex_lines = ex_content.decode('utf-8').splitlines(False)
@@ -162,12 +164,13 @@ def main():
     added_files = set()
     removed_files = set()
     changed_files = set()
+    changed_files_content = set()
     added_dirs = set()
     removed_dirs = set()
     changed_dirs = set()
 
     for path, file in sorted(state['files'].items()):
-        check_file(module, path, file, differences, changed_files, added_files, removed_files)
+        check_file(module, path, file, differences, changed_files, changed_files_content, added_files, removed_files)
 
     for path, directory in sorted(state['directories'].items()):
         if not os.path.isdir(path):
@@ -213,9 +216,11 @@ def main():
             len(added_dirs) > 0, len(removed_dirs) > 0, len(changed_dirs) > 0,
             len(differences) > 0,
         ]),
+        changed_content=len(changed_files_content) > 0,
         added_files=sorted(added_files),
         removed_files=sorted(removed_files),
         changed_files=sorted(changed_files),
+        changed_files_content=sorted(changed_files_content),
         added_dirs=sorted(added_dirs),
         removed_dirs=sorted(removed_dirs),
         changed_dirs=sorted(changed_dirs),
