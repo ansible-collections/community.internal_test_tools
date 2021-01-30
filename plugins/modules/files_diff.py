@@ -72,6 +72,14 @@ from ansible_collections.community.internal_test_tools.plugins.module_utils.stat
 )
 
 
+def compare_stat(ex_stat, path, differences_neg, differences_pos):
+    stat = extract_stat(os.lstat(path))
+    for k in stat:
+        if stat[k] != ex_stat[k]:
+            differences_neg.append('-  {key}: {value}'.format(key=k, value=ex_stat[k]))
+            differences_pos.append('+  {key}: {value}'.format(key=k, value=stat[k]))
+
+
 def check_file(module, path, file, global_differences, changed_files, changed_files_content, added_files, removed_files):
     differences_neg = []
     differences_pos = []
@@ -88,12 +96,7 @@ def check_file(module, path, file, global_differences, changed_files, changed_fi
             added_files.add(path)
 
     if exists and 'stat' in file:
-        ex_stat = file['stat']
-        stat = extract_stat(os.lstat(path))
-        for k in stat:
-            if stat[k] != ex_stat[k]:
-                differences_neg.append('-  {key}: {value}'.format(key=k, value=ex_stat[k]))
-                differences_pos.append('+  {key}: {value}'.format(key=k, value=stat[k]))
+        compare_stat(file['stat'], path, differences_neg, differences_pos)
 
         ex_symlink = file.get('symlink')
         symlink = os.readlink(path) if os.path.islink(path) else None
@@ -177,6 +180,16 @@ def main():
             removed_dirs.add(path)
             continue
         changed = False
+        if 'stat' in directory:
+            differences_neg = []
+            differences_pos = []
+            compare_stat(directory['stat'], path, differences_neg, differences_pos)
+            if differences_neg or differences_pos:
+                changed = True
+                differences.append('--- {path}\n+++ {path}\n{diffs}'.format(
+                    path=path,
+                    diffs='\n'.join(differences_neg + differences_pos),
+                ))
         for dummy, dirnames, filenames in os.walk(path):
             if 'files' in directory:
                 ex_files = sorted(directory['files'])

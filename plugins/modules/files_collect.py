@@ -173,6 +173,9 @@ def main():
             directory_entry = {}
             directories[os.path.join(directory['path'], dirpath)] = directory_entry
 
+            stat = os.lstat(os.path.join(directory['path'], dirpath))
+            directory_entry['stat'] = extract_stat(stat)
+
             directory_entry['files'] = filenames
             if not directory['recursive']:
                 break

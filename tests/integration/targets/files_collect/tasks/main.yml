@@ -45,6 +45,7 @@
   assert:
     that:
       - result_1 is not changed
+      - not result_1.changed_content
       - result_1.added_files == []
       - result_1.removed_files == []
       - result_1.changed_files == []
@@ -54,6 +55,7 @@
       - result_1.changed_dirs == []
       - result_1.diff.prepared == ''
       - result_2 is not changed
+      - not result_2.changed_content
       - result_2.added_files == []
       - result_2.removed_files == []
       - result_2.changed_files == []
@@ -99,10 +101,12 @@
   file:
     path: '{{ output_dir }}/{{ item }}'
     state: directory
+    mode: '0755'
   loop:
     - dir
     - dir_2
     - dir_3
+    - dir_attr
 
 - name: Collect state
   files_collect:
@@ -173,6 +177,11 @@
     path: '{{ output_dir }}/symlink_2'
     state: directory
 
+- name: Update subdir attributes
+  file:
+    path: '{{ output_dir }}/dir_attr'
+    mode: '0700'
+
 - name: Create subdirectory
   file:
     path: '{{ output_dir }}/dir/subdir'
@@ -193,13 +202,14 @@
   assert:
     that:
       - result_1 is changed
+      - result_1.changed_content
       - result_1.added_files == [output_dir ~ '/dir/new_subdir_file', output_dir ~ '/new_file']
       - result_1.removed_files == [output_dir ~ '/removed_file']
       - result_1.changed_files == [output_dir ~ '/attributes', output_dir ~ '/symlink', output_dir ~ '/symlink_2', output_dir ~ '/test']
       - result_1.changed_files_content == [output_dir ~ '/test']
       - result_1.added_dirs == [output_dir ~ '/dir/subdir', output_dir ~ '/symlink_2']
       - result_1.removed_dirs == [output_dir ~ '/dir_2']
-      - result_1.changed_dirs == [output_dir, output_dir ~ '/dir']
+      - result_1.changed_dirs == [output_dir, output_dir ~ '/dir', output_dir ~ '/dir_attr']
 
 - name: Check state (with content)
   files_diff:
@@ -211,13 +221,14 @@
   assert:
     that:
       - result_2 is changed
+      - result_2.changed_content
       - result_2.added_files == [output_dir ~ '/dir/new_subdir_file', output_dir ~ '/new_file']
       - result_2.removed_files == [output_dir ~ '/removed_file']
       - result_2.changed_files == [output_dir ~ '/attributes', output_dir ~ '/symlink', output_dir ~ '/symlink_2', output_dir ~ '/test']
       - result_2.changed_files_content == [output_dir ~ '/test']
       - result_2.added_dirs == [output_dir ~ '/dir/subdir', output_dir ~ '/symlink_2']
       - result_2.removed_dirs == [output_dir ~ '/dir_2']
-      - result_2.changed_dirs == [output_dir, output_dir ~ '/dir']
+      - result_2.changed_dirs == [output_dir, output_dir ~ '/dir', output_dir ~ '/dir_attr']
 
 - name: Check state (with content, without diff)
   files_diff:
@@ -229,13 +240,14 @@
   assert:
     that:
       - result_3 is changed
+      - result_3.changed_content
       - result_3.added_files == [output_dir ~ '/dir/new_subdir_file', output_dir ~ '/new_file']
       - result_3.removed_files == [output_dir ~ '/removed_file']
       - result_3.changed_files == [output_dir ~ '/attributes', output_dir ~ '/symlink', output_dir ~ '/symlink_2', output_dir ~ '/test']
       - result_3.changed_files_content == [output_dir ~ '/test']
       - result_3.added_dirs == [output_dir ~ '/dir/subdir', output_dir ~ '/symlink_2']
       - result_3.removed_dirs == [output_dir ~ '/dir_2']
-      - result_3.changed_dirs == [output_dir, output_dir ~ '/dir']
+      - result_3.changed_dirs == [output_dir, output_dir ~ '/dir', output_dir ~ '/dir_attr']
 
 - name: Check state (non-recursive)
   files_diff:
@@ -250,6 +262,7 @@
     that:
       - result_4 is failed
       - result_4 is changed
+      - result_4.changed_content
       - result_4.msg == 'Found differences!'
       - result_4.added_files == [output_dir ~ '/new_file']
       - result_4.removed_files == [output_dir ~ '/removed_file']
