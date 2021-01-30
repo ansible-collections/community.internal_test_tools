@@ -48,14 +48,71 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-state:
+changed:
   description:
-    - The state of all files and directories.
-    - Use the M(community.internal_test_tools.files_diff) module to validate against the original files.
-    - The structure of every field in this dictionary not explicitly documented here might change at any
-      point, or might vanish alltogether without further notice. Do not rely on undocumented data!
-  type: dict
+    - Whether any file or directory changed.
+    - These can be attribute changes, time changes, or content changes.
+  type: bool
   returned: success
+  sample: true
+changed_content:
+  description:
+    - Whether any file content changed. This does not consider added or removed files,
+      or files which were converted to links or vice versa.
+  type: bool
+  returned: success
+  sample: true
+added_files:
+  description:
+    - A list of files that were added.
+  type: list
+  elements: path
+  returned: success
+  sample: [file_a.txt, dir/file_b]
+removed_files:
+  description:
+    - A list of files that were removed.
+  type: list
+  elements: path
+  returned: success
+  sample: [file_a.txt, dir/file_b]
+changed_files:
+  description:
+    - A list of files that were changed.
+    - Attribute changes, times changes, inode changes, symlink changes, and content changes are considered.
+  type: list
+  elements: path
+  returned: success
+  sample: [file_a.txt, dir/file_b]
+changed_files_content:
+  description:
+    - A list of files whose content was changed.
+    - B(Only) content changes are considered.
+  type: list
+  elements: path
+  returned: success
+  sample: [file_a.txt, dir/file_b]
+added_dirs:
+  description:
+    - A list of directories that have been added.
+  type: list
+  elements: path
+  returned: success
+  sample: [dir_a, dir/dir_b]
+removed_dirs:
+  description:
+    - A list of directories that have been removed.
+  type: list
+  elements: path
+  returned: success
+  sample: [dir_a, dir/dir_b]
+changed_dirs:
+  description:
+    - A list of directories that have been changed.
+  type: list
+  elements: path
+  returned: success
+  sample: [dir_a, dir/dir_b]
 '''
 
 import os
