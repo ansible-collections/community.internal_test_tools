@@ -68,6 +68,7 @@ __metaclass__ = type
 
 
 import json
+import traceback
 
 import pytest
 
@@ -278,7 +279,9 @@ class _FetchUrlProxy:
             try:
                 assert call.expected_content_predicate(data), 'Predicate has falsy result'
             except Exception as e:
-                raise AssertionError('Content does not match predicate for fetch_url call') from e
+                raise AssertionError(
+                    'Content does not match predicate for fetch_url call: {0}\n\n{1}'.format(
+                        e, traceback.format_exc()))
         if call.form_parse:
             self._validate_form(call, data)
 
