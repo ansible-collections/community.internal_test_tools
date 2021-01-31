@@ -27,3 +27,34 @@ releases:
     fragments:
     - 0.2.1.yml
     release_date: '2020-06-23'
+  0.3.0:
+    changes:
+      bugfixes:
+      - Fix form value present test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+      - Fix header test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+      minor_changes:
+      - Added a framework for testing plugins using ``open_url`` from ``ansible.module_utils.urls``
+        (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+      - The ``fetch_url`` testing framework now allows to match the provided content
+        (https://github.com/ansible-collections/community.internal_test_tools/pull/31).
+      - There are now a `meta/runtime.yml and ansible_builtin_runtime.yml helper tools
+        <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
+        which allows to convert between symlinks and redirects in ``meta/runtime.yml``,
+        allows to compare ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml``
+        with this collection, and verify that plugins mentioned actually exist.
+    fragments:
+    - meta_runtime.yml
+    - open_url-framework.yml
+    modules:
+    - description: Collect state of files and directories on disk
+      name: files_collect
+      namespace: ''
+    - description: Check whether there were changes since files_collect was called
+      name: files_diff
+      namespace: ''
+    plugins:
+      lookup:
+      - description: Test plugin for the open_url test framework (DO NOT USE THIS!)
+        name: open_url_test_lookup
+        namespace: null
+    release_date: '2021-01-31'
