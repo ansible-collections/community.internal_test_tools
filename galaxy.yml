@@ -4,7 +4,7 @@ version: 0.3.0
 readme: README.md
 authors:
   - Ansible (https://github.com/ansible)
-description: null
+description: Internal testing tools for collections. This collection is not for end-users, but for collection maintainers!
 license_file: COPYING
 tags:
   - collection

@@ -6,7 +6,7 @@ This collection provides useful test tools for other collections. It is **NOT** 
 
 ## Tested with Ansible
 
-Ansible 2.9 and Ansible `devel` branch.
+This collection is tested with Ansible 2.9, ansible-base 2.10 and ansible-core's `devel` branch.
 
 ## Included content
 
@@ -25,6 +25,10 @@ Please follow the general Ansible contributor guidelines; see the [Ansible Commu
 ## Release notes
 
 A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/main/CHANGELOG.rst).
+
+## Releasing, Deprecation and Versioning
+
+We release new versions once there are new features or bugfixes. Deprecations can happen, and we try to announce them a long time in advance. We currently do not plan breaking changes, so there will be no new major release anytime soon, except maybe a version 1.0.0.
 
 ## More information
 
