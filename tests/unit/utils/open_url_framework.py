@@ -59,6 +59,7 @@ __metaclass__ = type
 
 
 import json
+import traceback
 
 import pytest
 
@@ -93,6 +94,7 @@ class OpenUrlCall:
         self.expected_url = None
         self.expected_headers = {}
         self.expected_content = None
+        self.expected_content_predicate = None
         self.form_parse = False
         self.form_present = set()
         self.form_values = {}
@@ -173,6 +175,13 @@ class OpenUrlCall:
         Builder method to set an expected content for a ``open_url()`` call.
         '''
         self.expected_content = content
+        return self
+
+    def expect_content_predicate(self, content_predicate):
+        '''
+        Builder method to set an expected content predicate for a ``open_url()`` call.
+        '''
+        self.expected_content_predicate = content_predicate
         return self
 
     def expect_form_present(self, key):
@@ -270,6 +279,13 @@ class OpenUrlProxy:
             self._validate_headers(call, headers)
         if call.expected_content is not None:
             assert data == call.expected_content, 'Expected content does not match for open_url call'
+        if call.expected_content_predicate:
+            try:
+                assert call.expected_content_predicate(data), 'Predicate has falsy result'
+            except Exception as e:
+                raise AssertionError(
+                    'Content does not match predicate for open_url call: {0}\n\n{1}'.format(
+                        e, traceback.format_exc()))
         if call.form_parse:
             self._validate_form(call, data)
 
