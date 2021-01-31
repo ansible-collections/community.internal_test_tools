@@ -10,12 +10,12 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 name: open_url_test_lookup
-short_description: Test plugin for the open_url test framework
+short_description: Test plugin for the open_url test framework (DO NOT USE THIS!)
 version_added: 0.3.0
 author:
   - Felix Fontein (@felixfontein)
 description:
-  - Don't use this.
+  - B(DO NOT USE THIS)!
 
 options:
     _terms:
@@ -36,7 +36,8 @@ options:
 """
 
 EXAMPLES = """
-- ansible.builtin.debug:
+- name: Do a lookup
+  ansible.builtin.debug:
     msg: "{{ lookup('community.internal_test_tools.open_url_test_lookup', 'https://example.com', method='GET', headers={'foo': 'bar'}) }}"
 """
 
@@ -59,6 +60,10 @@ _raw:
             description: Headers.
             type: dict
             sample: {}
+    sample:
+        - status: 200
+          content: 1.2.3.4
+          headers: {}
 """
 
 import base64

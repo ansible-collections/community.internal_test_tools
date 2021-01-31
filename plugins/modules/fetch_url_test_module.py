@@ -11,12 +11,14 @@ __metaclass__ = type
 DOCUMENTATION = r'''
 ---
 module: fetch_url_test_module
-short_description: Test module for fetch_url test framework
+short_description: Test module for fetch_url test framework (DO NOT USE THIS!)
 version_added: 0.1.1
 author:
   - Felix Fontein (@felixfontein)
 description:
-  - Don't use this.
+  - B(DO NOT USE THIS)!
+notes:
+  - Does not support C(check_mode).
 
 options:
   call_sequence:
@@ -60,7 +62,8 @@ options:
 '''
 
 EXAMPLES = r'''
-- community.internal_test_tools.fetch_url_test_module:
+- name: Does nothing
+  community.internal_test_tools.fetch_url_test_module:
     call_sequence: []
 '''
 
@@ -83,6 +86,10 @@ call_results:
       description: Headers.
       type: dict
       sample: {}
+  sample:
+    - status: 200
+      content: 1.2.3.4
+      headers: {}
 '''
 
 import base64
