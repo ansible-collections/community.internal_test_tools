@@ -96,6 +96,7 @@ class TestFetchURLTestModule(BaseTestModule):
             FetchUrlCall('GET', 400)
             .result_error('meh', b'1234')
             .expect_content(b'\x00\x01\x02')
+            .expect_content_predicate(lambda content: True)
             .expect_header('foo', 'bar')
             .expect_header_unset('baz')
             .expect_url('http://example.com/'),
