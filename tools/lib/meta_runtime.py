@@ -167,7 +167,7 @@ def sort_plugin_routing(runtime):
         if not plugins:
             continue
         plugin_routing[plugin_type] = dict([
-            (key, value) for key, value in sorted(plugins.items())
+            (key, value) for key, value in sorted(plugins.items())  # pylint: disable=unnecessary-comprehension
         ])
 
 
