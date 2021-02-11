@@ -166,9 +166,7 @@ def sort_plugin_routing(runtime):
         plugins = plugin_routing.get(plugin_type)
         if not plugins:
             continue
-        plugin_routing[plugin_type] = dict([
-            (key, value) for key, value in sorted(plugins.items())  # pylint: disable=unnecessary-comprehension
-        ])
+        plugin_routing[plugin_type] = dict(sorted(plugins.items()))
 
 
 def load_ansible_base_runtime():

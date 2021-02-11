@@ -95,7 +95,7 @@ class LookupModule(LookupBase):
             try:
                 response = open_url(url, method=method, headers=headers, data=data)
                 content = response.read()
-                headers = dict([(k, v) for k, v in response.headers.items()])  # pylint: disable=unnecessary-comprehension
+                headers = dict(sorted(response.headers.items()))
                 code = response.code
             except HTTPError as exc:
                 try:
