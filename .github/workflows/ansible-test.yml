@@ -13,6 +13,7 @@ jobs:
         ansible:
           - stable-2.9
           - stable-2.10
+          - stable-2.11
           - devel
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +50,7 @@ jobs:
         ansible:
           - stable-2.9
           - stable-2.10
+          - stable-2.11
           - devel
 
     steps:
@@ -87,6 +89,7 @@ jobs:
         ansible:
           - stable-2.9
           - stable-2.10
+          - stable-2.11
           - devel
         python:
           - 2.6
