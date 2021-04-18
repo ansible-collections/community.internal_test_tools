@@ -109,13 +109,14 @@ class TestFetchURLTestModule(BaseTestModule):
         result = self.run_module_success(mocker, fetch_url_test_module, {
             'call_sequence': [
                 {
-                    'url': 'http://example.com/',
+                    'url': 'http://example.com/?foo',
                 }
             ],
         }, [
             FetchUrlCall('GET', 400)
             .result_error('meh')
-            .expect_url('http://example.com/'),
+            .expect_url('http://example.com/', without_query=True, without_fragment=True)
+            .expect_query_values('foo', ''),
         ])
         assert len(result['call_results']) == 1
         assert result['call_results'][0]['status'] == 400
@@ -143,7 +144,7 @@ class TestFetchURLTestModule(BaseTestModule):
         result = self.run_module_success(mocker, fetch_url_test_module, {
             'call_sequence': [
                 {
-                    'url': 'http://example.com/',
+                    'url': 'http://example.com?bar=foo&foo=bar&foo=baz#heyhey',
                     'data': base64.b64encode('foo=bar&baz=baz%20baz'.encode('utf-8')).decode('utf-8'),
                     'headers': {
                         'Content-type': 'application/x-www-form-urlencoded',
@@ -154,7 +155,10 @@ class TestFetchURLTestModule(BaseTestModule):
             FetchUrlCall('GET', 200)
             .expect_form_present('foo')
             .expect_form_value('baz', 'baz baz')
-            .expect_form_value_absent('bar'),
+            .expect_form_value_absent('bar')
+            .expect_url('http://example.com', without_query=True, without_fragment=True)
+            .expect_query_values('bar', 'foo')
+            .expect_query_values('foo', 'bar', 'baz'),
         ])
         assert len(result['call_results']) == 1
         assert result['call_results'][0]['status'] == 200
