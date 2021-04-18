@@ -115,6 +115,10 @@ class FetchUrlCall:
         self.form_present = set()
         self.form_values = {}
         self.form_values_one = {}
+        self.json_parse = False
+        self.json_present = set()
+        self.json_absent = set()
+        self.json_values = {}
 
     def result(self, body):
         '''
@@ -202,6 +206,7 @@ class FetchUrlCall:
         '''
         Builder method to set an expected form field for a ``fetch_url()`` call.
         '''
+        assert not self.json_parse
         self.form_parse = True
         self.form_present.add(key)
         return self
@@ -210,6 +215,7 @@ class FetchUrlCall:
         '''
         Builder method to set an expected form value for a ``fetch_url()`` call.
         '''
+        assert not self.json_parse
         self.form_parse = True
         self.form_values[key] = [value]
         return self
@@ -218,8 +224,39 @@ class FetchUrlCall:
         '''
         Builder method to set an expectedly absent form field for a ``fetch_url()`` call.
         '''
+        assert not self.json_parse
         self.form_parse = True
         self.form_values[key] = []
+        return self
+
+    def expect_json_present(self, key):
+        '''
+        Builder method to set an expected JSON field for a ``fetch_url()`` call.
+        The key must be a sequence: strings denote fields in objects, integers denote array indices.
+        '''
+        assert not self.form_parse
+        self.json_parse = True
+        self.json_present.add(tuple(key))
+        return self
+
+    def expect_json_value(self, key, value):
+        '''
+        Builder method to set an expected JSON value for a ``fetch_url()`` call.
+        The key must be a sequence: strings denote fields in objects, integers denote array indices.
+        '''
+        assert not self.form_parse
+        self.json_parse = True
+        self.json_values[tuple(key)] = value
+        return self
+
+    def expect_json_value_absent(self, key):
+        '''
+        Builder method to set an expectedly absent JSON field for a ``fetch_url()`` call.
+        The key must be a sequence: strings denote fields in objects, integers denote array indices.
+        '''
+        assert not self.form_parse
+        self.json_parse = True
+        self.json_absent.add(tuple(key))
         return self
 
 
@@ -252,6 +289,65 @@ class _FetchUrlProxy:
                 assert k not in form, 'Form key "{0}" not absent'.format(k)
             else:
                 assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
+
+    def _descend_json(self, data, key):
+        if not key:
+            return data, True
+        for index, k in enumerate(key[:-1]):
+            if isinstance(k, int):
+                if not isinstance(data, (list, tuple)):
+                    raise Exception('Cannot resolve JSON key {0} in data: not a list on last level'.format(self._format_json_key(key[:index + 1])))
+                if key[-1] < 0 or key[-1] >= len(data):
+                    raise Exception('Cannot find JSON key {0} in data: index out of bounds'.format(self._format_json_key(key[:index + 1])))
+            else:
+                if not isinstance(data, dict):
+                    raise Exception('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(self._format_json_key(key[:index + 1])))
+                if key[-1] not in data:
+                    raise Exception('Cannot find JSON key {0} in data: key not present'.format(self._format_json_key(key[:index + 1])))
+            data = data[k]
+        if isinstance(key[-1], int):
+            if not isinstance(data, (list, tuple)):
+                raise Exception('Cannot resolve JSON key {0} in data: not a list on last level'.format(self._format_json_key(key)))
+            if key[-1] < 0 or key[-1] >= len(data):
+                return None, False
+        else:
+            if not isinstance(data, dict):
+                raise Exception('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(self._format_json_key(key)))
+            if key[-1] not in data:
+                return None, False
+        return data[key[-1]], True
+
+    @staticmethod
+    def _format_json_key(key):
+        result = []
+        last_index = True
+        for k in key:
+            if isinstance(k, int):
+                result.append('[{0}]'.format(k))
+                last_index = True
+            else:
+                if not last_index:
+                    result.append('.')
+                else:
+                    last_index = False
+                result.append(k)
+        return ''.join(result)
+
+    def _validate_json(self, call, data):
+        '''
+        Validate JSON contents.
+        '''
+        data = json.loads(to_native(data))
+        for k in call.json_present:
+            dummy, present = self._descend_json(data, k)
+            assert present, 'JSON key {0} not present'.format(self._format_json_key(k))
+        for k in call.json_absent:
+            dummy, present = self._descend_json(data, k)
+            assert not present, 'JSON key {0} present'.format(self._format_json_key(k))
+        for k, v in call.json_values.items():
+            value, present = self._descend_json(data, k)
+            assert present, 'JSON key "{0}" not present'.format(self._format_json_key(k))
+            assert value == v, 'JSON key "{0}" has not value {1!r}, but {2!r}'.format(self._format_json_key(k), v, value)
 
     def _validate_query(self, call, url):
         '''
@@ -320,6 +416,8 @@ class _FetchUrlProxy:
                         e, traceback.format_exc()))
         if call.form_parse:
             self._validate_form(call, data)
+        if call.json_parse:
+            self._validate_json(call, data)
 
         # Compose result
         info = dict(status=call.status, url=url)
