@@ -81,7 +81,7 @@ def _extract_query(url):
         query = url[query_index + 1:fragment_index]
     else:
         query = url[query_index + 1:]
-    return parse_qs(query)
+    return parse_qs(query, keep_blank_values=True)
 
 
 def _reduce_url(url, remove_query=False, remove_fragment=False):

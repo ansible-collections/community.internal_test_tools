@@ -90,31 +90,35 @@ class TestLookupModule(TestCase):
             .exception(lambda: Exception('foo bar!'))
             .expect_header('foo', 'bar')
             .expect_header_unset('baz')
-            .expect_url('http://example.com'),
+            .expect_url('http://example.com', without_query=True, without_fragment=True)
+            .expect_query_values('foo', ''),
         ])
         with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
             with pytest.raises(AnsibleLookupError) as e:
                 self.lookup.run(
-                    ['http://example.com', 'http://example.org'],
+                    ['http://example.com?foo', 'http://example.org'],
                     [],
                     method='PUT',
                     headers=dict(foo='bar'),
                 )
         open_url.assert_is_done()
 
-        assert e.value.message == 'Error while PUTing http://example.com: foo bar!'
+        print(e.value.message)
+        assert e.value.message == 'Error while PUTing http://example.com?foo: foo bar!'
 
     def test_error_in_test(self):
         open_url = OpenUrlProxy([
-            OpenUrlCall('GET', 204),
+            OpenUrlCall('GET', 204)
+            .expect_url('http://example.com#asdf', without_query=True)
+            .expect_query_values('foo', 'bar', 'baz'),
         ])
         with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
             with pytest.raises(AnsibleLookupError) as e:
                 self.lookup.run(
-                    ['http://example.com', 'http://example.org'],
+                    ['http://example.com?foo=bar&foo=baz#asdf', 'http://example.org'],
                     [],
                 )
         open_url.assert_is_done()
 
         print(e.value.message)
-        assert e.value.message == 'Error while GETing http://example.com: OpenUrlCall data has neither body nor error data'
+        assert e.value.message == 'Error while GETing http://example.com?foo=bar&foo=baz#asdf: OpenUrlCall data has neither body nor error data'
