@@ -81,6 +81,8 @@ from ansible.module_utils._text import to_native
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 from ansible.module_utils.six.moves.urllib.parse import parse_qs
 
+from .open_url_framework import _extract_query, _reduce_url
+
 
 class FetchUrlCall:
     '''
@@ -103,7 +105,10 @@ class FetchUrlCall:
         self.headers = {}
         self.error_data = {}
         self.expected_url = None
+        self.expected_url_without_query = False
+        self.expected_url_without_fragment = False
         self.expected_headers = {}
+        self.expected_query = {}
         self.expected_content = None
         self.expected_content_predicate = None
         self.form_parse = False
@@ -141,11 +146,20 @@ class FetchUrlCall:
             assert self.body is None, 'Result must not be given if error body is provided'
         return self
 
-    def expect_url(self, url):
+    def expect_url(self, url, without_query=False, without_fragment=False):
         '''
         Builder method to set the expected URL for the ``fetch_url()`` call.
         '''
         self.expected_url = url
+        self.expected_url_without_query = without_query
+        self.expected_url_without_fragment = without_fragment
+        return self
+
+    def expect_query_values(self, parameter, *values):
+        '''
+        Builder method to set an expected query parameter for the ``fetch_url()`` call.
+        '''
+        self.expected_query[parameter] = list(values)
         return self
 
     def return_header(self, name, value):
@@ -239,6 +253,20 @@ class _FetchUrlProxy:
             else:
                 assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
 
+    def _validate_query(self, call, url):
+        '''
+        Validate query parameters of a call.
+        '''
+        query = _extract_query(url)
+        for k, v in call.expected_query.items():
+            if k not in query:
+                assert query.get(k) == v, \
+                    'Query parameter "{0}" not specified for fetch_url call'.format(k)
+            else:
+                assert query.get(k) == v, \
+                    'Query parameter "{0}" specified for fetch_url call, but with wrong value ({1!r} instead of {2!r})'.format(
+                        k, query.get(k), v)
+
     def _validate_headers(self, call, headers):
         '''
         Validate headers of a call.
@@ -267,10 +295,16 @@ class _FetchUrlProxy:
         self.index += 1
 
         # Validate call
-        assert method == call.method
+        assert method == call.method, 'Expected method does not match for fetch_url call'
         if call.expected_url is not None:
-            assert url == call.expected_url, \
+            reduced_url = _reduce_url(
+                url,
+                remove_query=call.expected_url_without_query,
+                remove_fragment=call.expected_url_without_fragment)
+            assert reduced_url == call.expected_url, \
                 'Exepected URL does not match for fetch_url call'
+        if call.expected_query:
+            self._validate_query(call, url)
         if call.expected_headers:
             self._validate_headers(call, headers)
         if call.expected_content is not None:
@@ -286,7 +320,7 @@ class _FetchUrlProxy:
             self._validate_form(call, data)
 
         # Compose result
-        info = dict(status=call.status)
+        info = dict(status=call.status, url=url)
         for k, v in call.headers.items():
             info[k.lower()] = v
         info.update(call.error_data)

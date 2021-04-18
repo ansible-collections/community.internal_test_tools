@@ -70,6 +70,37 @@ from ansible.module_utils.six.moves.urllib.error import HTTPError
 from ansible.module_utils.six.moves.urllib.parse import parse_qs
 
 
+def _extract_query(url):
+    query_index = url.find('?')
+    fragment_index = url.find('#')
+    if query_index > fragment_index and fragment_index > 0:
+        query_index = -1
+    if query_index < 0:
+        return {}
+    if fragment_index > 0:
+        query = url[query_index + 1:fragment_index]
+    else:
+        query = url[query_index + 1:]
+    return parse_qs(query)
+
+
+def _reduce_url(url, remove_query=False, remove_fragment=False):
+    fragment_index = url.find('#')
+    if remove_fragment and fragment_index > 0:
+        url = url[:fragment_index]
+        fragment_index = -1
+    if remove_query:
+        query_index = url.find('?')
+        if query_index > fragment_index and fragment_index > 0:
+            query_index = -1
+        if query_index > 0:
+            if fragment_index > 0:
+                url = url[:query_index] + url[fragment_index:]
+            else:
+                url = url[:query_index]
+    return url
+
+
 class OpenUrlCall:
     '''
     Describes one call to ``open_url()``.
@@ -92,7 +123,10 @@ class OpenUrlCall:
         self.headers = {}
         self.error_data = {}
         self.expected_url = None
+        self.expected_url_without_query = False
+        self.expected_url_without_fragment = False
         self.expected_headers = {}
+        self.expected_query = {}
         self.expected_content = None
         self.expected_content_predicate = None
         self.form_parse = False
@@ -141,11 +175,20 @@ class OpenUrlCall:
         assert self.exception_generator is None, 'Exception generator must not be given if error is provided'
         return self
 
-    def expect_url(self, url):
+    def expect_url(self, url, without_query=False, without_fragment=False):
         '''
         Builder method to set the expected URL for the ``open_url()`` call.
         '''
         self.expected_url = url
+        self.expected_url_without_query = without_query
+        self.expected_url_without_fragment = without_fragment
+        return self
+
+    def expect_query_values(self, parameter, *values):
+        '''
+        Builder method to set an expected query parameter for the ``open_url()`` call.
+        '''
+        self.expected_query[parameter] = list(values)
         return self
 
     def return_header(self, name, value):
@@ -239,6 +282,20 @@ class OpenUrlProxy:
             else:
                 assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
 
+    def _validate_query(self, call, url):
+        '''
+        Validate query parameters of a call.
+        '''
+        query = _extract_query(url)
+        for k, v in call.expected_query.items():
+            if k not in query:
+                assert query.get(k) == v, \
+                    'Query parameter "{0}" not specified for open_url call'.format(k)
+            else:
+                assert query.get(k) == v, \
+                    'Query parameter "{0}" specified for open_url call, but with wrong value ({1!r} instead of {2!r})'.format(
+                        k, query.get(k), v)
+
     def _validate_headers(self, call, headers):
         '''
         Validate headers of a call.
@@ -273,8 +330,14 @@ class OpenUrlProxy:
         # Validate call
         assert method == call.method
         if call.expected_url is not None:
-            assert url == call.expected_url, \
+            reduced_url = _reduce_url(
+                url,
+                remove_query=call.expected_url_without_query,
+                remove_fragment=call.expected_url_without_fragment)
+            assert reduced_url == call.expected_url, \
                 'Exepected URL does not match for open_url call'
+        if call.expected_query:
+            self._validate_query(call, url)
         if call.expected_headers:
             self._validate_headers(call, headers)
         if call.expected_content is not None:

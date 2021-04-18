@@ -1,0 +1,5 @@
+minor_changes:
+- "fetch_url and open_url testing frameworks - allow to compare URLs without query and/or fragment (https://github.com/ansible-collections/community.internal_test_tools/pull/33)."
+- "fetch_url and open_url testing frameworks - allow to check query parameters of URLs (https://github.com/ansible-collections/community.internal_test_tools/pull/33)."
+bugfixes:
+- "fetch_url testing framework - return ``url`` as part of ``info`` (https://github.com/ansible-collections/community.internal_test_tools/pull/33)."
