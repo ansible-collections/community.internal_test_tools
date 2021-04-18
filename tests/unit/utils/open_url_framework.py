@@ -328,20 +328,22 @@ class OpenUrlProxy:
         self.index += 1
 
         # Validate call
-        assert method == call.method
+        assert method == call.method, 'Expected method does not match for fetch_url call: {0!r} instead of {1!r}'.format(
+            method, call.method)
         if call.expected_url is not None:
             reduced_url = _reduce_url(
                 url,
                 remove_query=call.expected_url_without_query,
                 remove_fragment=call.expected_url_without_fragment)
             assert reduced_url == call.expected_url, \
-                'Exepected URL does not match for open_url call'
+                'Exepected URL does not match for open_url call: {0!r} instead of {1!r}'.format(reduced_url, call.expected_url)
         if call.expected_query:
             self._validate_query(call, url)
         if call.expected_headers:
             self._validate_headers(call, headers)
         if call.expected_content is not None:
-            assert data == call.expected_content, 'Expected content does not match for open_url call'
+            assert data == call.expected_content, 'Expected content does not match for open_url call: {0!r} instead of {1!r}'.format(
+                data, call.expected_content)
         if call.expected_content_predicate:
             try:
                 assert call.expected_content_predicate(data), 'Predicate has falsy result'
