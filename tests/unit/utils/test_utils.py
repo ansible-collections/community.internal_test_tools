@@ -46,9 +46,9 @@ def test_reduce_url():
 def test_validate_form():
     _validate_form(
         CallBase('GET', 200)
-            .expect_form_present('a')
-            .expect_form_value('c', 'd')
-            .expect_form_value_absent('b'),
+        .expect_form_present('a')
+        .expect_form_value('c', 'd')
+        .expect_form_value_absent('b'),
         'a=b&c=d')
     with pytest.raises(AssertionError):
         assert _validate_form(CallBase('GET', 200).expect_form_value('c', 'd'), 'c=d&c=e')
@@ -91,15 +91,15 @@ def test_descend_json():
 def test_validate_json():
     _validate_json(
         CallBase('GET', 200)
-            .expect_json_present(['a'])
-            .expect_json_value(['c'], 'd')
-            .expect_json_value_absent(['b']),
+        .expect_json_present(['a'])
+        .expect_json_value(['c'], 'd')
+        .expect_json_value_absent(['b']),
         '{"a": "b", "c": "d"}')
     _validate_json(
         CallBase('GET', 200)
-            .expect_json_present([0])
-            .expect_json_value([1], 'd')
-            .expect_json_value_absent([2]),
+        .expect_json_present([0])
+        .expect_json_value([1], 'd')
+        .expect_json_value_absent([2]),
         '["a", "d"]')
     with pytest.raises(AssertionError):
         assert _validate_json(CallBase('GET', 200).expect_json_present(['a']), '{"c":"d"}')
@@ -112,8 +112,8 @@ def test_validate_json():
 def test_validate_query():
     _validate_query(
         CallBase('GET', 200)
-            .expect_query_values('b', 'c', 'd')
-            .expect_query_values('e', 'f'),
+        .expect_query_values('b', 'c', 'd')
+        .expect_query_values('e', 'f'),
         'a?b=c&b=d&e=f')
     with pytest.raises(AssertionError):
         assert _validate_query(CallBase('GET', 200).expect_query_values('a'), 'a?b=c&b=d&e=f')
@@ -124,11 +124,11 @@ def test_validate_query():
 def test_validate_headers():
     _validate_headers(
         CallBase('GET', 200)
-            .expect_header('content-type', 'foo')
-            .expect_header('Content-type', 'foo')
-            .expect_header('bar', 'baz')
-            .expect_header_unset('baz')
-            .expect_header_unset('test'),
+        .expect_header('content-type', 'foo')
+        .expect_header('Content-type', 'foo')
+        .expect_header('bar', 'baz')
+        .expect_header_unset('baz')
+        .expect_header_unset('test'),
         {
             'Content-Type': 'foo',
             'bar': 'baz',

@@ -97,6 +97,16 @@ class FetchUrlCall(_CallBase):
         '''
         super(FetchUrlCall, self).__init__(method, status)
 
+    def result_error(self, msg, body=None):
+        '''
+        Builder method to set return body of the call in case of an error.
+        '''
+        self.error_data['msg'] = msg
+        if body is not None:
+            self.error_data['body'] = body
+            assert self.body is None, 'Result must not be given if error body is provided'
+        return self
+
 
 class _FetchUrlProxy(object):
     '''

@@ -105,8 +105,11 @@ class OpenUrlCall(_CallBase):
         '''
         Builder method to set return body of the ``open_url()`` call in case of an error.
         '''
+        self.error_data['body'] = body
+        if body is not None:
+            assert self.body is None, 'Result must not be given if error body is provided'
         assert self.exception_generator is None, 'Exception generator must not be given if error is provided'
-        return super(OpenUrlCall, self).result_error(body=body)
+        return self
 
 
 class OpenUrlProxy(object):

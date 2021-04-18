@@ -99,16 +99,6 @@ class CallBase(object):
         '''
         return self.result(json.dumps(json_body).encode('utf-8'))
 
-    def result_error(self, msg, body=None):
-        '''
-        Builder method to set return body of the call in case of an error.
-        '''
-        self.error_data['msg'] = msg
-        if body is not None:
-            self.error_data['body'] = body
-            assert self.body is None, 'Result must not be given if error body is provided'
-        return self
-
     def expect_url(self, url, without_query=False, without_fragment=False):
         '''
         Builder method to set the expected URL for the call.
