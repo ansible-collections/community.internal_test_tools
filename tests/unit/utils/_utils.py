@@ -255,23 +255,23 @@ def _descend_json(data, key):
     for index, k in enumerate(key[:-1]):
         if isinstance(k, int):
             if not isinstance(data, (list, tuple)):
-                raise Exception('Cannot resolve JSON key {0} in data: not a list on last level'.format(_format_json_key(key[:index + 1])))
-            if key[-1] < 0 or key[-1] >= len(data):
-                raise Exception('Cannot find JSON key {0} in data: index out of bounds'.format(_format_json_key(key[:index + 1])))
+                raise AssertionError('Cannot resolve JSON key {0} in data: not a list on last level'.format(_format_json_key(key[:index + 1])))
+            if k < 0 or k >= len(data):
+                raise AssertionError('Cannot find JSON key {0} in data: index out of bounds'.format(_format_json_key(key[:index + 1])))
         else:
             if not isinstance(data, dict):
-                raise Exception('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(_format_json_key(key[:index + 1])))
-            if key[-1] not in data:
-                raise Exception('Cannot find JSON key {0} in data: key not present'.format(_format_json_key(key[:index + 1])))
+                raise AssertionError('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(_format_json_key(key[:index + 1])))
+            if k not in data:
+                raise AssertionError('Cannot find JSON key {0} in data: key not present'.format(_format_json_key(key[:index + 1])))
         data = data[k]
     if isinstance(key[-1], int):
         if not isinstance(data, (list, tuple)):
-            raise Exception('Cannot resolve JSON key {0} in data: not a list on last level'.format(_format_json_key(key)))
+            raise AssertionError('Cannot resolve JSON key {0} in data: not a list on last level'.format(_format_json_key(key)))
         if key[-1] < 0 or key[-1] >= len(data):
             return None, False
     else:
         if not isinstance(data, dict):
-            raise Exception('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(_format_json_key(key)))
+            raise AssertionError('Cannot resolve JSON key {0} in data: not a dictionary on last level'.format(_format_json_key(key)))
         if key[-1] not in data:
             return None, False
     return data[key[-1]], True
