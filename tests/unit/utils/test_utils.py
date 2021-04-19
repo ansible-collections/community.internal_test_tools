@@ -83,9 +83,13 @@ def test_descend_json():
     with pytest.raises(AssertionError):
         _descend_json([], ['a', 0])
     with pytest.raises(AssertionError):
+        _descend_json([], [0, 0])
+    with pytest.raises(AssertionError):
         _descend_json('foo', ['a', 0])
     with pytest.raises(AssertionError):
         _descend_json({}, [0, 0])
+    with pytest.raises(AssertionError):
+        _descend_json({}, ['a', 0])
     with pytest.raises(AssertionError):
         _descend_json('foo', [0, 0])
     # End
