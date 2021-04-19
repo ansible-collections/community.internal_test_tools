@@ -168,7 +168,7 @@ class TestFetchURLTestModule(BaseTestModule):
             'call_sequence': [
                 {
                     'url': 'http://example.com?#heyhey',
-                    'data': '{"a": "b", "c": ["d"]}',
+                    'data': base64.b64encode('{"a": "b", "c": ["d"]}'.encode('utf-8')).decode('utf-8'),
                     'headers': {
                         'Content-type': 'application/x-www-form-urlencoded',
                     },
