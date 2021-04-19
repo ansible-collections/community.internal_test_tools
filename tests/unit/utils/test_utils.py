@@ -78,6 +78,17 @@ def test_descend_json():
     assert _descend_json({'a': ['b']}, ['a', 0]) == ('b', True)
     assert _descend_json({'a': ['b']}, ['a', -1]) == (None, False)
     assert _descend_json({'a': ['b']}, ['a', 1]) == (None, False)
+    assert _descend_json({'a': [{'b': 'c'}]}, ['a', 0, 'b']) == ('c', True)
+    # Middle
+    with pytest.raises(AssertionError):
+        _descend_json([], ['a', 0])
+    with pytest.raises(AssertionError):
+        _descend_json('foo', ['a', 0])
+    with pytest.raises(AssertionError):
+        _descend_json({}, [0, 0])
+    with pytest.raises(AssertionError):
+        _descend_json('foo', [0, 0])
+    # End
     with pytest.raises(AssertionError):
         _descend_json([], ['a'])
     with pytest.raises(AssertionError):
