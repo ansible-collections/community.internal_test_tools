@@ -163,6 +163,27 @@ class TestFetchURLTestModule(BaseTestModule):
         assert len(result['call_results']) == 1
         assert result['call_results'][0]['status'] == 200
 
+    def test_json(self, mocker):
+        result = self.run_module_success(mocker, fetch_url_test_module, {
+            'call_sequence': [
+                {
+                    'url': 'http://example.com?#heyhey',
+                    'data': base64.b64encode('{"a": "b", "c": ["d"]}'.encode('utf-8')).decode('utf-8'),
+                    'headers': {
+                        'Content-type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            ],
+        }, [
+            FetchUrlCall('GET', 200)
+            .expect_json_present(['a'])
+            .expect_json_value(['c', 0], 'd')
+            .expect_json_value_absent(['b'])
+            .expect_url('http://example.com', without_query=True, without_fragment=True),
+        ])
+        assert len(result['call_results']) == 1
+        assert result['call_results'][0]['status'] == 200
+
 
 class TestFetchURLTestModule2(ModuleTestCase):
     # Test for ModuleTestCase
