@@ -1,2 +1,0 @@
-minor_changes:
-- "fetch_url and open_url testing frameworks - allow to parse and check JSON data (https://github.com/ansible-collections/community.internal_test_tools/pull/34)."

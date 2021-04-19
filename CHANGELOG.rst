@@ -5,6 +5,26 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.4.0
+======
+
+Release Summary
+---------------
+
+Add bugfixes for and new features to the ``open_url``/``fetch_url`` test framework.
+
+Minor Changes
+-------------
+
+- fetch_url and open_url testing frameworks - allow to check query parameters of URLs (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+- fetch_url and open_url testing frameworks - allow to compare URLs without query and/or fragment (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+- fetch_url and open_url testing frameworks - allow to parse and check JSON data (https://github.com/ansible-collections/community.internal_test_tools/pull/34).
+
+Bugfixes
+--------
+
+- fetch_url testing framework - return ``url`` as part of ``info`` (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+
 v0.3.0
 ======
 

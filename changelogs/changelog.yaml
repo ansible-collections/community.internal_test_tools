@@ -58,3 +58,21 @@ releases:
         name: open_url_test_lookup
         namespace: null
     release_date: '2021-01-31'
+  0.4.0:
+    changes:
+      bugfixes:
+      - fetch_url testing framework - return ``url`` as part of ``info`` (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+      minor_changes:
+      - fetch_url and open_url testing frameworks - allow to check query parameters
+        of URLs (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+      - fetch_url and open_url testing frameworks - allow to compare URLs without
+        query and/or fragment (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+      - fetch_url and open_url testing frameworks - allow to parse and check JSON
+        data (https://github.com/ansible-collections/community.internal_test_tools/pull/34).
+      release_summary: Add bugfixes for and new features to the ``open_url``/``fetch_url``
+        test framework.
+    fragments:
+    - 0.4.0.yml
+    - 33-query-fragment.yml
+    - 34-json.yml
+    release_date: '2021-04-19'
