@@ -4,6 +4,8 @@
 
 This collection provides useful test tools for other collections. It is **NOT** aimed at Ansible users, but at collection developers!
 
+Please note that this collection does **not** support Windows targets.
+
 ## Tested with Ansible
 
 Tested with the current Ansible 2.9, ansible-base 2.10 and ansible-core 2.11 releases and the current development version of ansible-core. Ansible versions before 2.9.10 are not supported.
