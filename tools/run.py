@@ -84,8 +84,8 @@ def pull_docker_image(image_name, use_color=True):
     sys.exit(-1)
 
 
-def write_test_results(name, extension, content):
-    output_dir = os.path.join('tests', 'output')
+def write_test_results(subdir, name, extension, content):
+    output_dir = os.path.join('tests', 'output', subdir)
     try:
         os.makedirs(output_dir.encode('utf-8'))
     except OSError as ex:
@@ -125,7 +125,7 @@ def write_bot_data(test, data):
         indent=4,
         separators=(', ', ': '),
     ) + '\n'
-    write_test_results(test, 'json', content)
+    write_test_results('bot', test, 'json', content)
 
 
 def write_junit_data(test, data, junit):
@@ -150,7 +150,7 @@ def write_junit_data(test, data, junit):
 
     report = to_xml_string(test_suites=test_suites, prettyprint=True, encoding='utf-8')
 
-    write_test_results(test, 'xml', report)
+    write_test_results('junit', test, 'xml', report)
 
 
 def main():
