@@ -91,7 +91,7 @@ def write_test_results(subdir, name, extension, content):
     except OSError as ex:
         if ex.errno != errno.EEXIST:
             raise
-    with open(os.path.join(output_dir, '%s.%s' % (name, extension)), 'wb') as file_obj:
+    with open(os.path.join(output_dir, 'ansible-test-extra-%s.%s' % (name, extension)), 'wb') as file_obj:
         file_obj.write(content.encode('utf-8'))
 
 
@@ -134,7 +134,7 @@ def write_junit_data(test, data, junit):
     test_case.add_failure_info(message=message, output='\n%s' % '\n'.join(lines))
     test_suites = [
         junit.TestSuite(
-            name='runner',
+            name='extra-sanity',
             test_cases=[test_case],
             timestamp=datetime.datetime.utcnow().replace(microsecond=0).isoformat(),
         ),
