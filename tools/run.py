@@ -8,6 +8,8 @@ __metaclass__ = type
 
 
 import argparse
+import datetime
+import errno
 import json
 import os
 import random
@@ -82,24 +84,18 @@ def pull_docker_image(image_name, use_color=True):
     sys.exit(-1)
 
 
-def write_json_test_results(name, content):
-    category_path = os.path.join('tests', 'output')
+def write_test_results(name, extension, content):
+    output_dir = os.path.join('tests', 'output')
     try:
-        os.makedirs(to_bytes(category_path))
+        os.makedirs(output_dir.encode('utf-8'))
     except OSError as ex:
         if ex.errno != errno.EEXIST:
             raise
-    text_content = json.dumps(
-        content,
-        sort_keys=True,
-        indent=4,
-        separators=(', ', ': '),
-    ) + '\n'
-    with open(os.path.join(category_path, name), 'wb') as file_obj:
-        file_obj.write(to_bytes(text_content))
+    with open(os.path.join(output_dir, '%s.%s' % (name, extension)), 'wb') as file_obj:
+        file_obj.write(content.encode('utf-8'))
 
 
-def write_bot_data(test, data):
+def format_data(test, data):
     reason = 'an unknown error. Please check out the CI logs.'
     lines = []
     if 'errors' in data:
@@ -108,17 +104,53 @@ def write_bot_data(test, data):
         else:
             reason = '%d errors:' % len(data['errors'])
         lines = ['%s:%d:%d: %s' % error for error in data['errors']]
+    return 'The test `%s` failed with %s' % (test, reason), lines
+
+
+def write_bot_data(test, data):
+    message, lines = format_data(test, data)
     bot_data = dict(
         verified=True,
         docs='',  # URL describing tests
         results=[
             dict(
-                message='The test `%s` failed with %s%s' % (test, reason),
+                message=message,
                 output='\n'.join(lines),
             ),
         ],
     )
-    write_json_test_results(test + '.json', bot_data)
+    content = json.dumps(
+        bot_data,
+        sort_keys=True,
+        indent=4,
+        separators=(', ', ': '),
+    ) + '\n'
+    write_test_results(test, 'json', content)
+
+
+def write_junit_data(test, data, junit):
+    test_case = junit.TestCase(classname=test.title().replace('-', ''), name=test)
+    message, lines = format_data(test, data)
+    test_case.add_failure_info(message=message, output='\n%s' % '\n'.join(lines))
+    test_suites = [
+        junit.TestSuite(
+            name='runner',
+            test_cases=[test_case],
+            timestamp=datetime.datetime.utcnow().replace(microsecond=0).isoformat(),
+        ),
+    ]
+    # the junit_xml API is changing in version 2.0.0
+    # TestSuite.to_xml_string is being replaced with to_xml_report_string
+    # see: https://github.com/kyrus/python-junit-xml/blob/63db26da353790500642fd02cae1543eb41aab8b/junit_xml/__init__.py#L249-L261
+    try:
+        to_xml_string = junit.to_xml_report_string
+    except AttributeError:
+        # noinspection PyDeprecation
+        to_xml_string = junit.TestSuite.to_xml_string
+
+    report = to_xml_string(test_suites=test_suites, prettyprint=True, encoding='utf-8')
+
+    write_test_results(test, 'xml', report)
 
 
 def main():
@@ -131,7 +163,10 @@ def main():
                         help='do not try to pull the docker image')
     parser.add_argument('--bot',
                         action='store_true',
-                        help='store results as JSON for ansibullbot')
+                        help='store error results as JSON for ansibullbot')
+    parser.add_argument('--junit',
+                        action='store_true',
+                        help='store error results as JUnit for AZP')
     parser.add_argument('targets',
                         metavar='TARGET',
                         nargs='*',
@@ -142,6 +177,14 @@ def main():
     use_color = sys.stdout.isatty()
     if args.color:
         use_color = True
+
+    junit = None
+    if args.junit:
+        try:
+            import junit_xml as junit
+        except ImportError as exc:
+            print(colorize('FATAL ERROR during importing junit_xml: {0}'.format(exc), 'emph', use_color))
+            sys.exit(-1)
 
     cwd = os.getcwd()
     root = cwd
@@ -209,6 +252,8 @@ def main():
                 total_errors += len(data['errors'])
             if args.bot:
                 write_bot_data(test, data)
+            if junit:
+                write_junit_data(test, data, junit)
     if total_errors or failed_tests:
         print(colorize('Total of {0} errors in the following {1} tests (out of {2}):'.format(total_errors, len(failed_tests), len(result)), 'emph', use_color))
         for test in sorted(failed_tests):
