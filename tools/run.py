@@ -103,7 +103,7 @@ def format_data(test, data):
             reason = '1 error:'
         else:
             reason = '%d errors:' % len(data['errors'])
-        lines = ['%s:%d:%d: %s' % error for error in data['errors']]
+        lines = ['{0}:{1}:{2}:{3}'.format(*error) for error in data['errors']]
     return 'The test `%s` failed with %s' % (test, reason), lines
 
 
