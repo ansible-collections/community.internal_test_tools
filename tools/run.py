@@ -82,6 +82,45 @@ def pull_docker_image(image_name, use_color=True):
     sys.exit(-1)
 
 
+def write_json_test_results(name, content):
+    category_path = os.path.join('tests', 'output')
+    try:
+        os.makedirs(to_bytes(category_path))
+    except OSError as ex:
+        if ex.errno != errno.EEXIST:
+            raise
+    text_content = json.dumps(
+        content,
+        sort_keys=True,
+        indent=4,
+        separators=(', ', ': '),
+    ) + '\n'
+    with open(os.path.join(category_path, name), 'wb') as file_obj:
+        file_obj.write(to_bytes(text_content))
+
+
+def write_bot_data(test, data):
+    reason = 'an unknown error. Please check out the CI logs.'
+    lines = []
+    if 'errors' in data:
+        if len(data['errors']) == 1:
+            reason = '1 error:'
+        else:
+            reason = '%d errors:' % len(data['errors'])
+        lines = ['%s:%d:%d: %s' % error for error in data['errors']]
+    bot_data = dict(
+        verified=True,
+        docs='',  # URL describing tests
+        results=[
+            dict(
+                message='The test `%s` failed with %s%s' % (test, reason),
+                output='\n'.join(lines),
+            ),
+        ],
+    )
+    write_json_test_results(test + '.json', bot_data)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Extra sanity test runner.')
     parser.add_argument('--color',
@@ -90,6 +129,9 @@ def main():
     parser.add_argument('--docker-no-pull',
                         action='store_true',
                         help='do not try to pull the docker image')
+    parser.add_argument('--bot',
+                        action='store_true',
+                        help='store results as JSON for ansibullbot')
     parser.add_argument('targets',
                         metavar='TARGET',
                         nargs='*',
@@ -165,6 +207,8 @@ def main():
             failed_tests.append(test)
             if 'errors' in data:
                 total_errors += len(data['errors'])
+            if args.bot:
+                write_bot_data(test, data)
     if total_errors or failed_tests:
         print(colorize('Total of {0} errors in the following {1} tests (out of {2}):'.format(total_errors, len(failed_tests), len(result)), 'emph', use_color))
         for test in sorted(failed_tests):
