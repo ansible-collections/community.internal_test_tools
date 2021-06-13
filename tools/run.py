@@ -131,7 +131,7 @@ def main():
         run(['docker', 'cp', root, '{0}:{1}'.format(container_name, os.path.dirname(root))], use_color=use_color)
         # run(['docker', 'exec', container_name, '/bin/sh', '-c', 'ls -lah ; pwd'])
         command = ['docker', 'exec', container_name]
-        command.extend(['python3.7', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
+        command.extend(['python3.8', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
         command.extend(['--cleanup', '--install-requirements', '--output', output_filename])
         if use_color:
             command.extend(['--color'])
