@@ -91,7 +91,9 @@ def write_test_results(subdir, name, extension, content):
     except OSError as ex:
         if ex.errno != errno.EEXIST:
             raise
-    with open(os.path.join(output_dir, 'ansible-test-extra-%s.%s' % (name, extension)), 'wb') as file_obj:
+    filename = os.path.join(output_dir, 'ansible-test-extra-%s.%s' % (name, extension))
+    print('Writing {0}...'.format(filename))
+    with open(filename, 'wb') as file_obj:
         file_obj.write(content.encode('utf-8'))
 
 
