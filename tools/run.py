@@ -69,7 +69,7 @@ def get_default_container(use_color=True):
         print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
     except Exception as exc:
         print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
-    return 'quay.io/ansible/default-test-container:1.14'
+    return 'quay.io/ansible/default-test-container:3.5.0'
 
 
 def pull_docker_image(image_name, use_color=True):
