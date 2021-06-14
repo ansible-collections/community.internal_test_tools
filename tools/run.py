@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # Copyright: (c) 2020, Felix Fontein <felix@fontein.de>
+# Copyright: (c) the ansible-test contributors
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
@@ -8,6 +9,8 @@ __metaclass__ = type
 
 
 import argparse
+import datetime
+import errno
 import json
 import os
 import random
@@ -69,7 +72,7 @@ def get_default_container(use_color=True):
         print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
     except Exception as exc:
         print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
-    return 'quay.io/ansible/default-test-container:1.14'
+    return 'quay.io/ansible/default-test-container:3.5.0'
 
 
 def pull_docker_image(image_name, use_color=True):
@@ -82,6 +85,77 @@ def pull_docker_image(image_name, use_color=True):
     sys.exit(-1)
 
 
+def write_test_results(subdir, name, extension, content):
+    output_dir = os.path.join('tests', 'output', subdir)
+    try:
+        os.makedirs(output_dir.encode('utf-8'))
+    except OSError as ex:
+        if ex.errno != errno.EEXIST:
+            raise
+    filename = os.path.join(output_dir, 'ansible-test-extra-%s.%s' % (name, extension))
+    # print('Writing {0}...'.format(filename))
+    with open(filename, 'wb') as file_obj:
+        file_obj.write(content.encode('utf-8'))
+
+
+def format_data(test, data):
+    reason = 'an unknown error. Please check out the CI logs.'
+    lines = []
+    if 'errors' in data:
+        if len(data['errors']) == 1:
+            reason = '1 error:'
+        else:
+            reason = '%d errors:' % len(data['errors'])
+        lines = ['{0}:{1}:{2}:{3}'.format(*error) for error in data['errors']]
+    return 'The test `%s` failed with %s' % (test, reason), lines
+
+
+def write_bot_data(test, data):
+    message, lines = format_data(test, data)
+    bot_data = dict(
+        verified=True,
+        docs='',  # URL describing tests
+        results=[
+            dict(
+                message=message,
+                output='\n'.join(lines),
+            ),
+        ],
+    )
+    content = json.dumps(
+        bot_data,
+        sort_keys=True,
+        indent=4,
+        separators=(', ', ': '),
+    ) + '\n'
+    write_test_results('bot', test, 'json', content)
+
+
+def write_junit_data(test, data, junit):
+    test_case = junit.TestCase(classname=test.title().replace('-', ''), name=test)
+    message, lines = format_data(test, data)
+    test_case.add_failure_info(message=message, output='\n%s' % '\n'.join(lines))
+    test_suites = [
+        junit.TestSuite(
+            name='extra-sanity',
+            test_cases=[test_case],
+            timestamp=datetime.datetime.utcnow().replace(microsecond=0).isoformat(),
+        ),
+    ]
+    # the junit_xml API is changing in version 2.0.0
+    # TestSuite.to_xml_string is being replaced with to_xml_report_string
+    # see: https://github.com/kyrus/python-junit-xml/blob/63db26da353790500642fd02cae1543eb41aab8b/junit_xml/__init__.py#L249-L261
+    try:
+        to_xml_string = junit.to_xml_report_string
+    except AttributeError:
+        # noinspection PyDeprecation
+        to_xml_string = junit.TestSuite.to_xml_string
+
+    report = to_xml_string(test_suites=test_suites, prettyprint=True, encoding='utf-8')
+
+    write_test_results('junit', test, 'xml', report)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Extra sanity test runner.')
     parser.add_argument('--color',
@@ -90,6 +164,12 @@ def main():
     parser.add_argument('--docker-no-pull',
                         action='store_true',
                         help='do not try to pull the docker image')
+    parser.add_argument('--bot',
+                        action='store_true',
+                        help='store error results as JSON for ansibullbot')
+    parser.add_argument('--junit',
+                        action='store_true',
+                        help='store error results as JUnit for AZP')
     parser.add_argument('targets',
                         metavar='TARGET',
                         nargs='*',
@@ -100,6 +180,14 @@ def main():
     use_color = sys.stdout.isatty()
     if args.color:
         use_color = True
+
+    junit = None
+    if args.junit:
+        try:
+            import junit_xml as junit
+        except ImportError as exc:
+            print(colorize('FATAL ERROR during importing junit_xml: {0}'.format(exc), 'emph', use_color))
+            sys.exit(-1)
 
     cwd = os.getcwd()
     root = cwd
@@ -131,7 +219,7 @@ def main():
         run(['docker', 'cp', root, '{0}:{1}'.format(container_name, os.path.dirname(root))], use_color=use_color)
         # run(['docker', 'exec', container_name, '/bin/sh', '-c', 'ls -lah ; pwd'])
         command = ['docker', 'exec', container_name]
-        command.extend(['python3.7', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
+        command.extend(['python3.8', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
         command.extend(['--cleanup', '--install-requirements', '--output', output_filename])
         if use_color:
             command.extend(['--color'])
@@ -165,6 +253,10 @@ def main():
             failed_tests.append(test)
             if 'errors' in data:
                 total_errors += len(data['errors'])
+            if args.bot:
+                write_bot_data(test, data)
+            if junit:
+                write_junit_data(test, data, junit)
     if total_errors or failed_tests:
         print(colorize('Total of {0} errors in the following {1} tests (out of {2}):'.format(total_errors, len(failed_tests), len(result)), 'emph', use_color))
         for test in sorted(failed_tests):

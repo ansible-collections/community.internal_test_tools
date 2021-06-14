@@ -338,7 +338,7 @@ def main():
                     shutil.rmtree(os.path.join(dirpath, dirname), ignore_errors=True)
             for filename in filenames:
                 if filename.endswith('.pyc'):
-                    shutil.rmtree(os.path.join(dirpath, filename))
+                    os.remove(os.path.join(dirpath, filename))
 
     # Collect targets
     targets = list(args.targets)
