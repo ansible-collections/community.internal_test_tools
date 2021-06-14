@@ -42,7 +42,6 @@ An example test could look as follows::
                         'server_ip': '1.2.3.4',
                         'server_number': 1,
                         'status': 'disabled',
-                        'whitelist_hos': False,
                         'port': 'main',
                         'rules': {
                             'input': [],
