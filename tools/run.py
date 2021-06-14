@@ -95,6 +95,7 @@ def write_test_results(subdir, name, extension, content):
     print('Writing {0}...'.format(filename))
     with open(filename, 'wb') as file_obj:
         file_obj.write(content.encode('utf-8'))
+    print(content)
 
 
 def format_data(test, data):
