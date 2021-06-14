@@ -92,10 +92,9 @@ def write_test_results(subdir, name, extension, content):
         if ex.errno != errno.EEXIST:
             raise
     filename = os.path.join(output_dir, 'ansible-test-extra-%s.%s' % (name, extension))
-    print('Writing {0}...'.format(filename))
+    # print('Writing {0}...'.format(filename))
     with open(filename, 'wb') as file_obj:
         file_obj.write(content.encode('utf-8'))
-    print(content)
 
 
 def format_data(test, data):
