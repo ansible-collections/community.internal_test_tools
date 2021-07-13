@@ -171,4 +171,4 @@ class OpenUrlProxy(object):
         '''
         Assert that all expected ``open_url()`` calls have been made.
         '''
-        assert self.index == len(self.calls), 'Got less open_url calls than expected'
+        assert self.index == len(self.calls), 'Got less open_url calls than expected (%d vs. %d)' % (self.index, len(self.calls))

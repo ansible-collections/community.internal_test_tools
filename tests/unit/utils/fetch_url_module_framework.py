@@ -150,7 +150,7 @@ class _FetchUrlProxy(object):
         '''
         Assert that all expected ``fetch_url()`` calls have been made.
         '''
-        assert self.index == len(self.calls), 'Got less fetch_url calls than expected'
+        assert self.index == len(self.calls), 'Got less fetch_url calls than expected (%d vs. %d)' % (self.index, len(self.calls))
 
 
 class ModuleExitException(Exception):
