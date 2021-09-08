@@ -122,7 +122,12 @@ jobs:
           python-version: 3.8
 
       - name: Install ansible-core (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+        run: |
+          if [ "${{ matrix.ansible }}" == "devel" ]; then
+            pip install https://github.com/mattclay/ansible/archive/at-minisplit.tar.gz --disable-pip-version-check
+          else
+            pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+          fi
 
       - name: Run integration test
         run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --coverage
