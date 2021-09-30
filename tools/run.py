@@ -61,18 +61,24 @@ def get_common_parent(*directories):
 def get_default_container(use_color=True):
     try:
         try:
-            from ansible_test._internal.util_common import docker_qualify_image
+            # ansible-core 2.12
+            from ansible_test._internal.completion import DOCKER_COMPLETION
+
+            return DOCKER_COMPLETION['default'].image
         except ImportError:
-            from ansible_test._internal.util import docker_qualify_image
+            # ansible-core < 2.12
+            try:
+                from ansible_test._internal.util_common import docker_qualify_image
+            except ImportError:
+                from ansible_test._internal.util import docker_qualify_image
 
-        image = docker_qualify_image('default')
-        if image:
+            image = docker_qualify_image('default')
+            if not image:
+                print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
             return image
-
-        print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
     except Exception as exc:
         print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
-    return 'quay.io/ansible/default-test-container:3.5.0'
+    return 'quay.io/ansible/default-test-container:4.0.1'
 
 
 def pull_docker_image(image_name, use_color=True):
