@@ -1,2 +1,4 @@
 breaking_changes:
   - "ansible_builtin_runtime tool - renamed ``check-ansible-base-redirects`` subcommand to ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51)."
+bugfixes:
+  - "ansible_builtin_runtime tool - fix subcommand ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51)."

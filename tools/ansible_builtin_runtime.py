@@ -92,7 +92,7 @@ def func_show_redirects_inventory(args):
     for plugin_type, entries in ansible_builtin_runtime['plugin_routing'].items():
         for plugin_name, entry in entries.items():
             if 'redirect' in entry:
-                namespace, collection, name = entry['redirect'].split('.', 2)
+                namespace, collection = entry['redirect'].split('.', 2)[:2]
                 collections.add('{namespace}.{collection}'.format(
                     namespace=namespace,
                     collection=collection,
