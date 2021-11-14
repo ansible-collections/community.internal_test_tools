@@ -17,7 +17,7 @@ import sys
 
 
 SEPARATOR = '=' * 74
-DEFAULT_PYTHON = '3.7'
+DEFAULT_PYTHON = '3.8'
 
 COLORS = {
     'emph': 1,
