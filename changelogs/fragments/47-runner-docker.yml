@@ -1,2 +1,0 @@
-bugfixes:
-  - "extra sanity test runner - fix default Docker image detection to work with ansible-test from ansible-core 2.12 (https://github.com/ansible-collections/community.internal_test_tools/pull/47)."

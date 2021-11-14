@@ -76,3 +76,36 @@ releases:
     - 33-query-fragment.yml
     - 34-json.yml
     release_date: '2021-04-19'
+  0.5.0:
+    changes:
+      breaking_changes:
+      - ansible_builtin_runtime tool - renamed ``check-ansible-base-redirects`` subcommand
+        to ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      bugfixes:
+      - ansible_builtin_runtime tool - fix subcommand ``check-ansible-core-redirects``
+        (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      - extra sanity test runner - bump default Docker image fallback to container
+        currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/50).
+      - extra sanity test runner - fix default Docker image detection to work with
+        ansible-test from ansible-core 2.12 (https://github.com/ansible-collections/community.internal_test_tools/pull/47).
+      minor_changes:
+      - '``fetch_url`` and ``open_url`` test frameworks - output number of expected
+        and actual calls when number of actual calls is too low.'
+      - ansible_builtin_runtime tool - allow to specify collection root directory
+        for ``check-ansible-core-redirects`` subcommand (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      - ansible_builtin_runtime tool - make tool executable (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      - extra sanity test runner - add options ``--bot`` and ``--junit`` to create
+        results that ansibullbot and AZP can parse (https://github.com/ansible-collections/community.internal_test_tools/pull/41).
+      - extra sanity test runner - bump default Python version from 3.7 to 3.8 (https://github.com/ansible-collections/community.internal_test_tools/pull/49).
+      - meta_runtime tool - allow to specify collection root directory for all subcommands
+        (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      release_summary: Feature release with various tool improvements.
+    fragments:
+    - 0.5.0.yml
+    - 41-runner-output.yml
+    - 47-runner-docker.yml
+    - 49-runner-python.yml
+    - 50-runner-docker.yml
+    - 51-ansible-core.yml
+    - url-framework.yml
+    release_date: '2021-11-14'

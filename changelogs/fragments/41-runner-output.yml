@@ -1,2 +1,0 @@
-minor_changes:
-- "extra sanity test runner - add options ``--bot`` and ``--junit`` to create results that ansibullbot and AZP can parse (https://github.com/ansible-collections/community.internal_test_tools/pull/41)."

@@ -1,2 +1,0 @@
-minor_changes:
-  - "extra sanity test runner - bump default Python version from 3.7 to 3.8 (https://github.com/ansible-collections/community.internal_test_tools/pull/49)."

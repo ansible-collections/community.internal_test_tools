@@ -1,2 +1,0 @@
-minor_changes:
-- "``fetch_url`` and ``open_url`` test frameworks - output number of expected and actual calls when number of actual calls is too low."

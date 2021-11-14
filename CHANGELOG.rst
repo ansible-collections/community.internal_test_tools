@@ -5,6 +5,36 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.5.0
+======
+
+Release Summary
+---------------
+
+Feature release with various tool improvements.
+
+Minor Changes
+-------------
+
+- ``fetch_url`` and ``open_url`` test frameworks - output number of expected and actual calls when number of actual calls is too low.
+- ansible_builtin_runtime tool - allow to specify collection root directory for ``check-ansible-core-redirects`` subcommand (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+- ansible_builtin_runtime tool - make tool executable (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+- extra sanity test runner - add options ``--bot`` and ``--junit`` to create results that ansibullbot and AZP can parse (https://github.com/ansible-collections/community.internal_test_tools/pull/41).
+- extra sanity test runner - bump default Python version from 3.7 to 3.8 (https://github.com/ansible-collections/community.internal_test_tools/pull/49).
+- meta_runtime tool - allow to specify collection root directory for all subcommands (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- ansible_builtin_runtime tool - renamed ``check-ansible-base-redirects`` subcommand to ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+
+Bugfixes
+--------
+
+- ansible_builtin_runtime tool - fix subcommand ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+- extra sanity test runner - bump default Docker image fallback to container currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/50).
+- extra sanity test runner - fix default Docker image detection to work with ansible-test from ansible-core 2.12 (https://github.com/ansible-collections/community.internal_test_tools/pull/47).
+
 v0.4.0
 ======
 
