@@ -16,11 +16,11 @@ from ansible_collections.community.internal_test_tools.tools.run import (
 )
 
 
-@pytest.mark.skipif(LooseVersion(ansible_core_version) < LooseVersion('2.12'))
+@pytest.mark.skipif(LooseVersion(ansible_core_version) < LooseVersion('2.12'), reason='Only applies for ansible-core 2.12+')
 def test_get_default_container_2_12():
     assert get_default_container_2_12() is not None
 
 
-@pytest.mark.skipif(LooseVersion(ansible_core_version) >= LooseVersion('2.12'))
+@pytest.mark.skipif(LooseVersion(ansible_core_version) >= LooseVersion('2.12'), reason='Only applies for ansible-core < 2.12')
 def test_get_default_container_pre_2_12():
     assert get_default_container_pre_2_12() is not None
