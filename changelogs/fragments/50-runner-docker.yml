@@ -1,0 +1,2 @@
+bugfixes:
+  - "extra sanity test runner - bump default Docker image fallback to container currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/50)."
