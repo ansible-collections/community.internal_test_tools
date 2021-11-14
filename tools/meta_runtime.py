@@ -10,8 +10,13 @@ import argparse
 import os
 import sys
 
-from lib.ansible import PLUGIN_TYPES
-from lib.meta_runtime import (
+# Make sure that our collection root is in the Python package search path.
+# This makes it possible to import `tools.lib.xxx` no matter whether this
+# script was invoked by `python -m tools.xxx` or by `tools/xxx.py`.
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from tools.lib.ansible import PLUGIN_TYPES
+from tools.lib.meta_runtime import (
     add_file_redirects,
     add_meta_redirects,
     extract_meta_redirects,
@@ -20,7 +25,7 @@ from lib.meta_runtime import (
     scan_plugins,
     sort_plugin_routing,
 )
-from lib.yaml import load_yaml, store_yaml
+from tools.lib.yaml import load_yaml, store_yaml
 
 
 GALAXY_PATH = 'galaxy.yml'
@@ -28,6 +33,10 @@ RUNTIME_PATH = 'meta/runtime.yml'
 
 
 def func_redirect(args):
+    collection_root = args.collection_root
+    galaxy_path = os.path.join(collection_root, GALAXY_PATH)
+    runtime_path = os.path.join(collection_root, RUNTIME_PATH)
+
     if args.target == 'meta':
         symlink_redirects = False
         meta_redirects = True
@@ -42,13 +51,13 @@ def func_redirect(args):
         return 2
 
     # Load basic information on collection
-    galaxy = load_yaml(GALAXY_PATH)
+    galaxy = load_yaml(galaxy_path)
     collection_name = '{namespace}.{name}'.format(**galaxy)
     print('Working on collection {name}'.format(name=collection_name))
 
     # Load meta/runtime
-    if os.path.exists(RUNTIME_PATH):
-        runtime = load_yaml(RUNTIME_PATH)
+    if os.path.exists(runtime_path):
+        runtime = load_yaml(runtime_path)
     else:
         runtime = None
 
@@ -60,12 +69,12 @@ def func_redirect(args):
     for plugin_type in PLUGIN_TYPES:
         redirects[plugin_type] = dict()
 
-    scan_file_redirects(redirects)
+    scan_file_redirects(redirects, collection_root=collection_root)
     extract_meta_redirects(redirects, runtime, collection_name)
 
     # Scan flatmap redirects
     if args.flatmap:
-        scan_flatmap_redirects(redirects)
+        scan_flatmap_redirects(redirects, collection_root=collection_root)
 
     for plugin_type in PLUGIN_TYPES:
         if redirects[plugin_type]:
@@ -81,23 +90,27 @@ def func_redirect(args):
         extract_meta_redirects(redirects, runtime, collection_name, remove=True)
     if args.sort_plugin_routing:
         sort_plugin_routing(runtime)
-    store_yaml(RUNTIME_PATH, runtime)
+    store_yaml(runtime_path, runtime)
 
     if symlink_redirects:
-        add_file_redirects(redirects)
+        add_file_redirects(redirects, collection_root=collection_root)
     else:
-        scan_file_redirects(redirects, remove=True)
+        scan_file_redirects(redirects, remove=True, collection_root=collection_root)
 
 
 def func_validate(args):
+    collection_root = args.collection_root
+    galaxy_path = os.path.join(collection_root, GALAXY_PATH)
+    runtime_path = os.path.join(collection_root, RUNTIME_PATH)
+
     # Load basic information on collection
-    galaxy = load_yaml(GALAXY_PATH)
+    galaxy = load_yaml(galaxy_path)
     collection_name = '{namespace}.{name}'.format(**galaxy)
     print('Working on collection {name}'.format(name=collection_name))
 
     # Load meta/runtime
-    if os.path.exists(RUNTIME_PATH):
-        runtime = load_yaml(RUNTIME_PATH)
+    if os.path.exists(runtime_path):
+        runtime = load_yaml(runtime_path)
     else:
         runtime = None
 
@@ -113,10 +126,10 @@ def func_validate(args):
         empty_redirects[plugin_type] = dict()
         plugins[plugin_type] = set()
 
-    scan_file_redirects(redirects)
+    scan_file_redirects(redirects, collection_root=collection_root)
     extract_meta_redirects(redirects, runtime, collection_name)
 
-    scan_plugins(plugins, empty_redirects, runtime, all_plugins=True)
+    scan_plugins(plugins, empty_redirects, runtime, collection_root=collection_root, all_plugins=True)
 
     plugin_routing = runtime.get('plugin_routing') or dict()
 
@@ -152,14 +165,16 @@ def func_validate(args):
 
 
 def main():
-    if not os.path.exists(GALAXY_PATH):
-        raise Exception("This tool must be run in a collection's root directory, that contains galaxy.yml.")
-
     parser = argparse.ArgumentParser(description='meta/runtime.yml helper')
+
+    base_parser = argparse.ArgumentParser(add_help=False)
+    base_parser.add_argument('--collection-root', default='.',
+                             help='The root directory of the collection to work on')
 
     subparsers = parser.add_subparsers(metavar='COMMAND')
 
     redirect_parser = subparsers.add_parser('redirect',
+                                            parents=[base_parser],
                                             help='Update redirections (meta/runtime.yml or symlinks)')
     redirect_parser.set_defaults(func=func_redirect)
     redirect_parser.add_argument('--target',
@@ -174,6 +189,7 @@ def main():
                                  help='Make sure that all redirections are there needed for flatmapping')
 
     validate_parser = subparsers.add_parser('validate',
+                                            parents=[base_parser],
                                             help='Makes sure plugins referenced for this collection '
                                                  'actually exist')
     validate_parser.set_defaults(func=func_validate)
@@ -183,6 +199,10 @@ def main():
     if getattr(args, 'func', None) is None:
         parser.print_help()
         return 2
+
+    collection_root = args.collection_root
+    if not os.path.exists(os.path.join(collection_root, GALAXY_PATH)):
+        raise Exception("This tool must be run in a collection's root directory, that contains galaxy.yml.")
 
     return args.func(args)
 

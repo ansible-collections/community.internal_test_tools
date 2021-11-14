@@ -31,13 +31,13 @@ def path_to_name(path, base_dir, remove_extension=True):
     return redirect_name
 
 
-def scan_file_redirects(redirects, remove=False):
+def scan_file_redirects(redirects, collection_root='.', remove=False):
     for plugin_type in PLUGIN_TYPES:
         if plugin_type in ('test', 'filter'):
             # Test and filter plugins are not coupled to filenames
             continue
         plugin_redirects = redirects[plugin_type]
-        base_dir = os.path.join('plugins', plugin_type)
+        base_dir = os.path.join(collection_root, 'plugins', plugin_type)
         for root, dirnames, filenames in os.walk(base_dir):
             for filename in filenames:
                 if not filename.endswith('.py'):
@@ -59,10 +59,10 @@ def scan_file_redirects(redirects, remove=False):
                         os.unlink(path)
 
 
-def scan_flatmap_redirects(redirects):
+def scan_flatmap_redirects(redirects, collection_root='.'):
     for plugin_type in ('action', 'modules'):
         plugin_redirects = redirects[plugin_type]
-        base_dir = os.path.join('plugins', plugin_type)
+        base_dir = os.path.join(collection_root, 'plugins', plugin_type)
         for root, dirnames, filenames in os.walk(base_dir):
             if root == base_dir:
                 continue
@@ -76,7 +76,7 @@ def scan_flatmap_redirects(redirects):
                 record_redirect(plugin_type, plugin_redirects, source, destination)
 
 
-def scan_plugins(plugins, redirects, runtime, all_plugins=False):
+def scan_plugins(plugins, redirects, runtime, collection_root='.', all_plugins=False):
     plugin_routing = runtime.get('plugin_routing') or {}
     for plugin_type in PLUGIN_TYPES:
         plugins_set = plugins[plugin_type]
@@ -84,7 +84,7 @@ def scan_plugins(plugins, redirects, runtime, all_plugins=False):
         for source, destination in plugin_redirects.items():
             plugins_set.add(source)
             plugins_set.add(destination)
-        base_dir = os.path.join('plugins', plugin_type)
+        base_dir = os.path.join(collection_root, 'plugins', plugin_type)
         for root, dirnames, filenames in os.walk(base_dir):
             if plugin_type == 'module_utils':
                 for dirname in dirnames:
@@ -107,12 +107,12 @@ def name_to_path(name, base_dir):
     return os.path.join(base_dir, name.replace('.', os.path.sep) + '.py')
 
 
-def add_file_redirects(redirects):
+def add_file_redirects(redirects, collection_root='.'):
     for plugin_type in PLUGIN_TYPES:
         if plugin_type in ('test', 'filter'):
             # Test and filter plugins are not coupled to filenames
             continue
-        base_dir = os.path.join('plugins', plugin_type)
+        base_dir = os.path.join(collection_root, 'plugins', plugin_type)
         for source, destination in redirects[plugin_type].items():
             src = name_to_path(source, base_dir)
             dst = name_to_path(destination, base_dir)
@@ -169,8 +169,8 @@ def sort_plugin_routing(runtime):
         plugin_routing[plugin_type] = dict(sorted(plugins.items()))
 
 
-def load_ansible_base_runtime():
-    # Load ansible-base's ansible.builtin runtime
+def load_ansible_core_runtime():
+    # Load ansible-core's ansible.builtin runtime
     from ansible import release as ansible_release
 
     ansible_builtin_runtime_path = os.path.join(
