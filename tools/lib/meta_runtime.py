@@ -169,8 +169,8 @@ def sort_plugin_routing(runtime):
         plugin_routing[plugin_type] = dict(sorted(plugins.items()))
 
 
-def load_ansible_base_runtime():
-    # Load ansible-base's ansible.builtin runtime
+def load_ansible_core_runtime():
+    # Load ansible-core's ansible.builtin runtime
     from ansible import release as ansible_release
 
     ansible_builtin_runtime_path = os.path.join(

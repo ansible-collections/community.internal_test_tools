@@ -13,7 +13,7 @@ import sys
 from lib.ansible import PLUGIN_TYPES
 from lib.meta_runtime import (
     extract_meta_redirects,
-    load_ansible_base_runtime,
+    load_ansible_core_runtime,
     scan_file_redirects,
     scan_plugins,
 )
@@ -24,7 +24,7 @@ GALAXY_PATH = 'galaxy.yml'
 RUNTIME_PATH = 'meta/runtime.yml'
 
 
-def func_check_ansible_base_redirects(args):
+def func_check_ansible_core_redirects(args):
     if not os.path.exists(GALAXY_PATH):
         raise Exception("This subcommand must be run in a collection's root directory, that contains galaxy.yml.")
 
@@ -42,7 +42,7 @@ def func_check_ansible_base_redirects(args):
     if not runtime:
         runtime = dict()
 
-    ansible_builtin_runtime = load_ansible_base_runtime()
+    ansible_builtin_runtime = load_ansible_core_runtime()
 
     # Collect all redirects and plugins
     redirects = dict()
@@ -68,7 +68,7 @@ def func_check_ansible_base_redirects(args):
                         redirect_name = plugin_data['redirect'][len(collection_prefix):]
                         if redirect_name not in our_plugins:
                             print(
-                                'ERROR: ansible-base {plugin_type} {plugin_name} redirects to '
+                                'ERROR: ansible-core {plugin_type} {plugin_name} redirects to '
                                 '{collection_name}.{redirect_name}, which does not exist!'.format(
                                     plugin_type=plugin_type,
                                     plugin_name=plugin_name,
@@ -77,7 +77,7 @@ def func_check_ansible_base_redirects(args):
                                 ))
                     elif plugin_name in our_plugins:
                         print(
-                            'WARNING: ansible-base {plugin_type} {plugin_name} redirects to '
+                            'WARNING: ansible-core {plugin_type} {plugin_name} redirects to '
                             '{redirect_fqcn} and not to ours!'.format(
                                 plugin_type=plugin_type,
                                 plugin_name=plugin_name,
@@ -86,7 +86,7 @@ def func_check_ansible_base_redirects(args):
 
 
 def func_show_redirects_inventory(args):
-    ansible_builtin_runtime = load_ansible_base_runtime()
+    ansible_builtin_runtime = load_ansible_core_runtime()
 
     collections = set()
     for plugin_type, entries in ansible_builtin_runtime['plugin_routing'].items():
@@ -107,17 +107,17 @@ def main():
 
     subparsers = parser.add_subparsers(metavar='COMMAND')
 
-    check_ansible_base_redirects_parser = subparsers.add_parser('check-ansible-base-redirects',
+    check_ansible_core_redirects_parser = subparsers.add_parser('check-ansible-core-redirects',
                                                                 help='Compare current collection to redirects in '
-                                                                     'ansible-base (needs to be installed)')
-    check_ansible_base_redirects_parser.set_defaults(func=func_check_ansible_base_redirects)
+                                                                     'ansible-core (needs to be installed)')
+    check_ansible_core_redirects_parser.set_defaults(func=func_check_ansible_core_redirects)
 
-    ansible_base_redirects_inventory_parser = subparsers.add_parser('show-redirects-inventory',
+    ansible_core_redirects_inventory_parser = subparsers.add_parser('show-redirects-inventory',
                                                                     help='List all collections that '
-                                                                         'ansible-base (needs to be '
+                                                                         'ansible-core (needs to be '
                                                                          'installed) redirects to in its '
                                                                          'ansible_builtin_runtime.yml')
-    ansible_base_redirects_inventory_parser.set_defaults(func=func_show_redirects_inventory)
+    ansible_core_redirects_inventory_parser.set_defaults(func=func_show_redirects_inventory)
 
     args = parser.parse_args()
 

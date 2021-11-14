@@ -2,7 +2,7 @@
 
 ## Extra sanity test runner
 
-This is a small tool to run sanity tests similar to the [ansible-base-specific code-smell tests](https://github.com/ansible/ansible/tree/devel/test/sanity/code-smell) and the [code-smell tests integrated into `ansible-test sanity`](https://github.com/ansible/ansible/tree/devel/test/lib/ansible_test/_data/sanity/code-smell).
+This is a small tool to run sanity tests similar to the [ansible-core specific code-smell tests](https://github.com/ansible/ansible/tree/devel/test/sanity/code-smell) and the [code-smell tests integrated into `ansible-test sanity`](https://github.com/ansible/ansible/tree/devel/test/lib/ansible_test/_data/sanity/code-smell).
 
 It does not have useful features such as change detection, but it can be restricted to certain targets. The hope is that eventually, ansible-test will have a plugin infrastructure which allows it to run such tests itself.
 
@@ -86,6 +86,6 @@ The ``validate`` subcommand checks whether symlinks and plugins mentioned in ``m
 
 The ``ansible_builtin_runtime.py`` tool provides several operations and checks on ansible-base/-core's ``lib/ansible/config/ansible_builtin_runtime.yml``.
 
-The ``check-ansible-base-redirects`` subcommand compares ansible-base/-core's ``lib/ansible/config/ansible_builtin_runtime.yml`` with this collection. It reports when plugins are routed to non-existing plugins in this collection, and it reports when plugins are routed to other collections which have the same name as plugins in this collection. This subcommand assumes it is executed in the collection's root which contains ``galaxy.yml``.
+The ``check-ansible-core-redirects`` subcommand compares ansible-base/-core's ``lib/ansible/config/ansible_builtin_runtime.yml`` with this collection. It reports when plugins are routed to non-existing plugins in this collection, and it reports when plugins are routed to other collections which have the same name as plugins in this collection. This subcommand assumes it is executed in the collection's root which contains ``galaxy.yml``.
 
 The ``show-redirects-inventory`` subcommand shows all collections that are referenced in ansible-base/-core's ``lib/ansible/config/ansible_builtin_runtime.yml``.
