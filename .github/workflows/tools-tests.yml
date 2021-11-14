@@ -1,4 +1,4 @@
-name: meta-runtime-tests
+name: tools-tests
 on:
   # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
@@ -10,7 +10,41 @@ on:
 
 jobs:
   extra-sanity:
-    name: Extra Sanity
+    name: Extra sanity tool
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/community/internal_test_tools
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install ansible-core
+        run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz coverage --disable-pip-version-check
+
+      - name: Run sanity tests
+        run: coverage run -p --source tools -m tools.run --color
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Combine coverage
+        run: |
+          coverage combine .coverage.*
+          coverage report
+          coverage xml -i
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Upload coverage stats
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: false
+
+  meta-runtime:
+    name: Tools for runtime redirects
     runs-on: ubuntu-latest
     steps:
 

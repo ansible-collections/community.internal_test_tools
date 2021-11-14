@@ -10,14 +10,19 @@ import argparse
 import os
 import sys
 
-from lib.ansible import PLUGIN_TYPES
-from lib.meta_runtime import (
+# Make sure that our collection root is in the Python package search path
+# This makes it possible to import `tools.lib.xxx` no matter whether this
+# script was invoked by `python -m tools.xxx` or by `tools/xxx.py`.
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from tools.lib.ansible import PLUGIN_TYPES
+from tools.lib.meta_runtime import (
     extract_meta_redirects,
     load_ansible_core_runtime,
     scan_file_redirects,
     scan_plugins,
 )
-from lib.yaml import load_yaml
+from tools.lib.yaml import load_yaml
 
 
 GALAXY_PATH = 'galaxy.yml'
