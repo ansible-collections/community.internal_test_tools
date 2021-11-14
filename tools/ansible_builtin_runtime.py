@@ -25,17 +25,21 @@ RUNTIME_PATH = 'meta/runtime.yml'
 
 
 def func_check_ansible_core_redirects(args):
-    if not os.path.exists(GALAXY_PATH):
-        raise Exception("This subcommand must be run in a collection's root directory, that contains galaxy.yml.")
+    collection_root = args.collection_root
+    galaxy_path = os.path.join(collection_root, GALAXY_PATH)
+    runtime_path = os.path.join(collection_root, RUNTIME_PATH)
+
+    if not os.path.exists(galaxy_path):
+        raise Exception("The collection root must point to a collection's root directory, that contains galaxy.yml.")
 
     # Load basic information on collection
-    galaxy = load_yaml(GALAXY_PATH)
+    galaxy = load_yaml(galaxy_path)
     collection_name = '{namespace}.{name}'.format(**galaxy)
     print('Working on collection {name}'.format(name=collection_name))
 
     # Load meta/runtime
-    if os.path.exists(RUNTIME_PATH):
-        runtime = load_yaml(RUNTIME_PATH)
+    if os.path.exists(os.path.join(collection_root, runtime_path)):
+        runtime = load_yaml(runtime_path)
     else:
         runtime = None
 
@@ -51,10 +55,10 @@ def func_check_ansible_core_redirects(args):
         redirects[plugin_type] = dict()
         plugins[plugin_type] = set()
 
-    scan_file_redirects(redirects)
+    scan_file_redirects(redirects, collection_root=collection_root)
     extract_meta_redirects(redirects, runtime, collection_name)
 
-    scan_plugins(plugins, redirects, runtime)
+    scan_plugins(plugins, redirects, runtime, collection_root=collection_root)
 
     # Check ansible.builtin's runtime against what we have
     collection_prefix = '{collection_name}.'.format(collection_name=collection_name)
@@ -111,6 +115,8 @@ def main():
                                                                 help='Compare current collection to redirects in '
                                                                      'ansible-core (needs to be installed)')
     check_ansible_core_redirects_parser.set_defaults(func=func_check_ansible_core_redirects)
+    check_ansible_core_redirects_parser.add_argument('--collection-root', default='.',
+                                                     help='The root directory of the collection to analyze')
 
     ansible_core_redirects_inventory_parser = subparsers.add_parser('show-redirects-inventory',
                                                                     help='List all collections that '
