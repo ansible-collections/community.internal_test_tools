@@ -28,7 +28,7 @@ jobs:
         run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz coverage --disable-pip-version-check
 
       - name: Install community.general
-        run: git clone git@github.com:ansible-collections/community.general.git general
+        run: git clone --depth=1 --single-branch https://github.com/ansible-collections/community.general.git general
         working-directory: ./ansible_collections/community
 
       - name: Show ansible-core redirects
