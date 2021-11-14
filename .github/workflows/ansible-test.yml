@@ -67,7 +67,7 @@ jobs:
           python-version: 3.8
 
       - name: Install ansible-core (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz pytest coverage --disable-pip-version-check
 
       - name: Run unit test
         run: ansible-test units -v --color --docker --coverage
@@ -75,6 +75,10 @@ jobs:
 
       - name: Generate coverage report
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Run unit test for tools
+        run: python -m pytest --cov-branch --cov=tools --cov=tests/tool_unit/ --cov-report term-missing -vv tests/tool_unit/
         working-directory: ./ansible_collections/community/internal_test_tools
 
       # See the reports at https://codecov.io/gh/ansible_collections/community.internal_test_tools

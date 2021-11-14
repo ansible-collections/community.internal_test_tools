@@ -10,7 +10,7 @@ import pytest
 
 from ansible.release import __version__ as ansible_core_version
 
-from ansible_collections.community.internal_test_tools.tools.run import (
+from tools.run import (
     get_default_container_2_12,
     get_default_container_pre_2_12,
 )
