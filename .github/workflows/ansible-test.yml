@@ -67,7 +67,7 @@ jobs:
           python-version: 3.8
 
       - name: Install ansible-core (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz pytest coverage --disable-pip-version-check
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz pytest pytest-cov --disable-pip-version-check
 
       - name: Run unit test
         run: ansible-test units -v --color --docker --coverage
