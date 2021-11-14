@@ -39,6 +39,22 @@ jobs:
         run: coverage run -p --source tools -m tools.ansible_builtin_runtime check-ansible-core-redirects --collection-root=../general
         working-directory: ./ansible_collections/community/internal_test_tools
 
+      - name: Validate community.general's meta/runtime.yml redirects
+        run: coverage run -p --source tools -m tools.meta_runtime validate --collection-root=../general
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Change community.general's meta/runtime.yml redirects (convert to meta/runtime redirects)
+        run: coverage run -p --source tools -m tools.meta_runtime redirect --collection-root=../general --target meta --flatmap
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Change community.general's meta/runtime.yml redirects (add both symlinks and meta/runtime redirects)
+        run: coverage run -p --source tools -m tools.meta_runtime redirect --collection-root=../general --target both --flatmap --sort-plugin-routing
+        working-directory: ./ansible_collections/community/internal_test_tools
+
+      - name: Change community.general's meta/runtime.yml redirects (convert to symlinks)
+        run: coverage run -p --source tools -m tools.meta_runtime redirect --collection-root=../general --target symlinks
+        working-directory: ./ansible_collections/community/internal_test_tools
+
       - name: Combine coverage
         run: |
           coverage combine .coverage.*
