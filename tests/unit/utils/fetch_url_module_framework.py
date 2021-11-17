@@ -73,6 +73,8 @@ from mock import MagicMock
 import ansible.module_utils.basic  # noqa
 import ansible.module_utils.urls  # noqa
 
+from ansible.module_utils.six import PY2
+
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 
 from ._utils import (
@@ -105,6 +107,15 @@ class FetchUrlCall(_CallBase):
             self.error_data['body'] = body
             assert self.body is None, 'Result must not be given if error body is provided'
         return self
+
+
+class _ReadResponse(object):
+    closed = True
+
+    def read(self):
+        if PY2:
+            raise TypeError('response already read')
+        return b''
 
 
 class _FetchUrlProxy(object):
@@ -140,10 +151,20 @@ class _FetchUrlProxy(object):
         for k, v in call.headers.items():
             info[k.lower()] = v
         info.update(call.error_data)
-        res = object()
         if call.body is not None:
-            res = MagicMock()
-            res.read = MagicMock(return_value=call.body)
+            if call.status >= 400 and 'body' not in info:
+                res = _ReadResponse()
+                info['body'] = call.body
+            else:
+                res = MagicMock()
+                res.read = MagicMock(return_value=call.body)
+                res.closed = False
+        elif call.status >= 400:
+            res = _ReadResponse()
+            if 'body' not in info:
+                info['body'] = b''
+        else:
+            res = object()
         return (res, info)
 
     def assert_is_done(self):
