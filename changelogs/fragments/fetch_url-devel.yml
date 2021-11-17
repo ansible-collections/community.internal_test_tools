@@ -1,0 +1,5 @@
+bugfixes:
+  - "fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52)."
+minor_changes:
+  - "fetch_url test framework - make behavior more similar to latest ansible-core ``devel`` branch, and include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52)."
+  - "open_url test framework - include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52)."

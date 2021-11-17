@@ -156,9 +156,11 @@ class OpenUrlProxy(object):
             res.info = MagicMock(return_value=info)
             res.headers = info
             res.code = call.status
+            res.closed = False
             return res
         if call.error_data:
             res = MagicMock()
+            res.closed = False
             body = call.error_data.get('body')
             if body is not None:
                 res.read = MagicMock(return_value=body)
