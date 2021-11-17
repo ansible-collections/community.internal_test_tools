@@ -1,0 +1,2 @@
+bugfixes:
+  - "fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52)."
