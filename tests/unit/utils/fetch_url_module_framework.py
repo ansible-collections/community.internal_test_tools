@@ -152,14 +152,10 @@ class _FetchUrlProxy(object):
             info[k.lower()] = v
         info.update(call.error_data)
         if call.body is not None:
-            if call.status >= 400 and 'body' not in info:
-                res = _ReadResponse()
-                info['body'] = call.body
-            else:
-                res = MagicMock()
-                res.read = MagicMock(return_value=call.body)
-                res.closed = False
-        elif call.status >= 400:
+            res = MagicMock()
+            res.read = MagicMock(return_value=call.body)
+            res.closed = False
+        elif call.error_data:
             res = _ReadResponse()
             if 'body' not in info:
                 info['body'] = b''
