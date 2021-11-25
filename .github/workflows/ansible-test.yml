@@ -41,8 +41,8 @@ jobs:
         run: ansible-test sanity --docker -v --color --coverage
         working-directory: ./ansible_collections/community/internal_test_tools
 
-      - name: Combine coverage for tools
-        run: coverage xml -i
+      - name: Generate coverage report
+        run: ansible-test coverage xml -v --requirements --group-by command --group-by version
         working-directory: ./ansible_collections/community/internal_test_tools
 
       # See the reports at https://codecov.io/gh/ansible_collections/community.internal_test_tools
