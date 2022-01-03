@@ -24,7 +24,7 @@ def extract_stat(stat):
         'uid': stat.st_uid,
         'gid': stat.st_gid,
         'size': stat.st_size,
-        'atime': stat.st_atime,
+        # 'atime': stat.st_atime,  -- we care about modifications, not about access
         'mtime': stat.st_mtime,
         'ctime': stat.st_ctime,
         'blocks': getattr(stat, 'st_blocks', None),
