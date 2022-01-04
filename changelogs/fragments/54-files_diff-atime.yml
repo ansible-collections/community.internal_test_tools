@@ -1,2 +1,0 @@
-bugfixes:
-  - "files_collect, files_diff - ignore ``atime`` since that does not indicate that a file was modified (https://github.com/ansible-collections/community.internal_test_tools/pull/54)."

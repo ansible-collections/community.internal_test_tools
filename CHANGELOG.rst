@@ -5,6 +5,26 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.6.0
+======
+
+Release Summary
+---------------
+
+Feature and bugfix release.
+
+Minor Changes
+-------------
+
+- fetch_url test framework - make behavior more similar to latest ansible-core ``devel`` branch, and include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+- open_url test framework - include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+
+Bugfixes
+--------
+
+- fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+- files_collect, files_diff - ignore ``atime`` since that does not indicate that a file was modified (https://github.com/ansible-collections/community.internal_test_tools/pull/54).
+
 v0.5.0
 ======
 

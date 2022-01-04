@@ -109,3 +109,21 @@ releases:
     - 51-ansible-core.yml
     - url-framework.yml
     release_date: '2021-11-14'
+  0.6.0:
+    changes:
+      bugfixes:
+      - fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest
+        ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+      - files_collect, files_diff - ignore ``atime`` since that does not indicate
+        that a file was modified (https://github.com/ansible-collections/community.internal_test_tools/pull/54).
+      minor_changes:
+      - fetch_url test framework - make behavior more similar to latest ansible-core
+        ``devel`` branch, and include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+      - open_url test framework - include ``closed`` property for response objects
+        (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+      release_summary: Feature and bugfix release.
+    fragments:
+    - 0.6.0.yml
+    - 54-files_diff-atime.yml
+    - fetch_url-devel.yml
+    release_date: '2022-01-04'
