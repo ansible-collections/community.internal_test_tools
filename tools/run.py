@@ -18,7 +18,7 @@ import subprocess
 import sys
 
 
-DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:5.1.0'
+DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:5.4.0'
 
 
 COLORS = {
@@ -62,10 +62,16 @@ def get_common_parent(*directories):
 
 
 def get_default_container_2_12():
-    # ansible-core 2.12
-    from ansible_test._internal.completion import DOCKER_COMPLETION
+    try:
+        # Required for latest ansible-core 2.12 and devel branch
+        from ansible_test._internal.completion import docker_completion
 
-    return DOCKER_COMPLETION['default'].image
+        return docker_completion()['default'].image
+    except ImportError:
+        # Required for older ansible-core 2.12 versions
+        from ansible_test._internal.completion import DOCKER_COMPLETION
+
+        return DOCKER_COMPLETION['default'].image
 
 
 def get_default_container_pre_2_12():
@@ -81,13 +87,15 @@ def get_default_container_pre_2_12():
 
 def get_default_container(use_color=True, fallback=DEFAULT_DOCKER_CONTAINER_FALLBACK):
     try:
-        try:
-            return get_default_container_2_12()
-        except ImportError:
-            result = get_default_container_pre_2_12()
-            if result:
-                return result
-            print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
+        for func in (get_default_container_2_12, ):
+            try:
+                return func()
+            except ImportError:
+                pass
+        result = get_default_container_pre_2_12()
+        if result:
+            return result
+        print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
     except Exception as exc:
         print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
     return fallback
