@@ -18,7 +18,7 @@ import subprocess
 import sys
 
 
-DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:5.1.0'
+DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:5.4.0'
 
 
 COLORS = {
