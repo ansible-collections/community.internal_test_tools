@@ -61,6 +61,13 @@ def get_common_parent(*directories):
     return parent
 
 
+def get_default_container_2_13():
+    # ansible-core 2.13
+    from ansible_test._internal.completion import docker_completion
+
+    return docker_completion()['default'].image
+
+
 def get_default_container_2_12():
     # ansible-core 2.12
     from ansible_test._internal.completion import DOCKER_COMPLETION
@@ -81,13 +88,15 @@ def get_default_container_pre_2_12():
 
 def get_default_container(use_color=True, fallback=DEFAULT_DOCKER_CONTAINER_FALLBACK):
     try:
-        try:
-            return get_default_container_2_12()
-        except ImportError:
-            result = get_default_container_pre_2_12()
-            if result:
-                return result
-            print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
+        for func in (get_default_container_2_13, get_default_container_2_12):
+            try:
+                return func()
+            except ImportError:
+                pass
+        result = get_default_container_pre_2_12()
+        if result:
+            return result
+        print(colorize('WARNING: cannot load default docker container version from ansible-test: default image not known', 'red', use_color))
     except Exception as exc:
         print(colorize('WARNING: cannot load default docker container version from ansible-test: {0}'.format(exc), 'red', use_color))
     return fallback

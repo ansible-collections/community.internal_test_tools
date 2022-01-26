@@ -11,12 +11,18 @@ import pytest
 from ansible.release import __version__ as ansible_core_version
 
 from tools.run import (
+    get_default_container_2_13,
     get_default_container_2_12,
     get_default_container_pre_2_12,
 )
 
 
-@pytest.mark.skipif(LooseVersion(ansible_core_version) < LooseVersion('2.12'), reason='Only applies for ansible-core 2.12+')
+@pytest.mark.skipif(LooseVersion(ansible_core_version) < LooseVersion('2.13'), reason='Only applies for ansible-core 2.13+')
+def test_get_default_container_2_13():
+    assert get_default_container_2_13() is not None
+
+
+@pytest.mark.skipif(not (LooseVersion('2.12') <= LooseVersion(ansible_core_version) < LooseVersion('2.13')), reason='Only applies for ansible-core 2.12+')
 def test_get_default_container_2_12():
     assert get_default_container_2_12() is not None
 
