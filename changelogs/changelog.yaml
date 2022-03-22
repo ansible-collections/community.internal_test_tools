@@ -127,3 +127,15 @@ releases:
     - 54-files_diff-atime.yml
     - fetch_url-devel.yml
     release_date: '2022-01-04'
+  0.6.1:
+    changes:
+      bugfixes:
+      - extra sanity test runner - bump default Docker image fallback to container
+        currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
+      - extra sanity test runner - fix default Docker image detection to work with
+        ansible-test from ansible-core 2.12.2 on (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
+      release_summary: Regular bugfix release.
+    fragments:
+    - 0.6.1.yml
+    - 55-run-docker.yml
+    release_date: '2022-03-22'
