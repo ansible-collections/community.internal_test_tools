@@ -18,6 +18,7 @@ jobs:
           - stable-2.10
           - stable-2.11
           - stable-2.12
+          - stable-2.13
           - devel
     runs-on: ubuntu-latest
     steps:
@@ -65,6 +66,7 @@ jobs:
           - stable-2.10
           - stable-2.11
           - stable-2.12
+          - stable-2.13
           - devel
 
     steps:
@@ -112,8 +114,7 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.11
-          - stable-2.12
+          - stable-2.13
           - devel
         python:
           - 2.7
@@ -144,6 +145,8 @@ jobs:
           # 2.12
           - ansible: stable-2.12
             python: 2.6
+          - ansible: stable-2.12
+            python: 3.5
 
     steps:
       - name: Check out code
