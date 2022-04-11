@@ -18,14 +18,14 @@ jobs:
     steps:
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ansible_collections/community/internal_test_tools
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8
+          python-version: '3.10'
 
       - name: Install ansible-core
         run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz coverage --disable-pip-version-check
@@ -52,14 +52,14 @@ jobs:
     steps:
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ansible_collections/community/internal_test_tools
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8
+          python-version: '3.10'
 
       - name: Install ansible-core
         run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz coverage --disable-pip-version-check
