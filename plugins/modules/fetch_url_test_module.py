@@ -49,6 +49,26 @@ options:
           - Mutually exclusive with I(data).
         type: path
         version_added: 0.3.0
+      timeout:
+        description:
+          - Timeout in seconds
+        type: float
+        version_added: 0.7.0
+      url_username:
+        description:
+          - The username for use with HTTP Basic Authentication.
+        type: str
+        version_added: 0.7.0
+      url_password:
+        description:
+          - The password for use with HTTP Basic Authentication.
+        type: str
+        version_added: 0.7.0
+      force_basic_auth:
+        description:
+          - Force passing C(Authorization) header on the first request when I(url_username) and I(url_password) are used.
+        type: bool
+        version_added: 0.7.0
   fail_me:
     description: If set to C(true), fails the module.
     type: bool
@@ -99,6 +119,13 @@ from ansible.module_utils.six import PY3
 from ansible.module_utils.urls import fetch_url
 
 
+def copy_value_if_not_none(src, key, dest):
+    if key in src and src[key] is not None:
+        dest[key] = src[key]
+    else:
+        dest.pop(key, None)
+
+
 def main():
     argument_spec = dict(
         call_sequence=dict(type='list', elements='dict', required=True, options=dict(
@@ -107,6 +134,10 @@ def main():
             headers=dict(type='dict'),
             data=dict(type='str'),
             data_path=dict(type='path'),
+            timeout=dict(type='float'),
+            url_username=dict(type='str'),
+            url_password=dict(type='str', no_log=True),
+            force_basic_auth=dict(type='bool'),
         ), mutually_exclusive=[('data', 'data_path')]),
         fail_me=dict(type='bool', default=False),
         set_changed=dict(type='bool', default=False),
@@ -117,13 +148,21 @@ def main():
 
     results = []
     for call in module.params['call_sequence']:
+        kwargs = {}
+
         data = call['data']
         if data is not None:
-            data = base64.b64decode(data)
+            kwargs['data'] = base64.b64decode(data)
         elif call['data_path'] is not None:
             with open(call['data_path'], 'rb') as f:
-                data = f.read()
-        resp, info = fetch_url(module, call['url'], method=call['method'], data=data, headers=call['headers'])
+                kwargs['data'] = f.read()
+
+        copy_value_if_not_none(call, 'headers', kwargs)
+        copy_value_if_not_none(call, 'url_username', module.params)
+        copy_value_if_not_none(call, 'url_password', module.params)
+        copy_value_if_not_none(call, 'force_basic_auth', module.params)
+
+        resp, info = fetch_url(module, call['url'], method=call['method'], **kwargs)
         try:
             # In Python 2, reading from a closed response yields a TypeError.
             # In Python 3, read() simply returns ''

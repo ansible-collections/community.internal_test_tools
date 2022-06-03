@@ -142,7 +142,11 @@ class OpenUrlProxy(object):
         self.index += 1
 
         # Validate call
-        _validate_call(call, method=method, url=url, headers=headers, data=data)
+        _validate_call(
+            call, method=method, url=url, headers=headers, data=data, timeout=timeout,
+            url_username=url_username, url_password=url_password,
+            force_basic_auth=force_basic_auth,
+        )
 
         # Compose result
         if call.exception_generator:
