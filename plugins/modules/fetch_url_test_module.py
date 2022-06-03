@@ -136,7 +136,7 @@ def main():
             data_path=dict(type='path'),
             timeout=dict(type='float'),
             url_username=dict(type='str'),
-            url_password=dict(type='str'),
+            url_password=dict(type='str', no_log=True),
             force_basic_auth=dict(type='bool'),
         ), mutually_exclusive=[('data', 'data_path')]),
         fail_me=dict(type='bool', default=False),
