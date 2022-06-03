@@ -78,6 +78,9 @@ class CallBase(object):
         self.json_present = set()
         self.json_absent = set()
         self.json_values = {}
+        self.timeout = None
+        self.basic_auth = None
+        self.force_basic_auth = None
 
     def result(self, body):
         '''
@@ -208,6 +211,27 @@ class CallBase(object):
         self.json_absent.add(tuple(key))
         return self
 
+    def expect_timeout(self, timeout):
+        '''
+        Builder method to set an expected timeout for a call.
+        '''
+        self.timeout = timeout
+        return self
+
+    def expect_basic_auth(self, username, password):
+        '''
+        Builder method to set an expected timeout for a call.
+        '''
+        self.basic_auth = (username, password)
+        return self
+
+    def expect_force_basic_auth(self, force):
+        '''
+        Builder method to set an expected timeout for a call.
+        '''
+        self.force_basic_auth = force
+        return self
+
 
 def _validate_form(call, data):
     '''
@@ -315,7 +339,7 @@ def _validate_headers(call, headers):
                     k, given_headers.get(k.lower()), v)
 
 
-def validate_call(call, method, url, headers, data):
+def validate_call(call, method, url, headers, data, timeout=10, url_username=None, url_password=None, force_basic_auth=None):
     assert method == call.method, 'Expected method does not match for call: {0!r} instead of {1!r}'.format(
         method, call.method)
     if call.expected_url is not None:
@@ -325,6 +349,17 @@ def validate_call(call, method, url, headers, data):
             remove_fragment=call.expected_url_without_fragment)
         assert reduced_url == call.expected_url, \
             'Expected URL does not match for call: {0!r} instead of {1!r}'.format(reduced_url, call.expected_url)
+    if call.timeout is not None:
+        assert timeout == call.timeout, \
+            'Expected timeout does not match for call: {0!r} instead of {1!r}'.format(timeout, call.timeout)
+    if call.basic_auth is not None:
+        assert url_username == call.basic_auth[0], \
+            'Expected url_username does not match for call: {0!r} instead of {1!r}'.format(url_username, call.basic_auth[0])
+        assert url_password == call.basic_auth[1], \
+            'Expected url_password does not match for call: {0!r} instead of {1!r}'.format(url_password, call.basic_auth[1])
+    if call.force_basic_auth is not None:
+        assert force_basic_auth == call.force_basic_auth, \
+            'Expected force_basic_auth does not match for call: {0!r} instead of {1!r}'.format(force_basic_auth, call.force_basic_auth)
     if call.expected_query:
         _validate_query(call, url)
     if call.expected_headers:

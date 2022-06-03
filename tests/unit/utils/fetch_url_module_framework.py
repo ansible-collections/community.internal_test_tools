@@ -144,7 +144,11 @@ class _FetchUrlProxy(object):
         self.index += 1
 
         # Validate call
-        _validate_call(call, method=method, url=url, headers=headers, data=data)
+        _validate_call(
+            call, method=method, url=url, headers=headers, data=data, timeout=timeout,
+            url_username=module.params.get('url_username'), url_password=module.params.get('url_password'),
+            force_basic_auth=module.params.get('force_basic_auth'),
+        )
 
         # Compose result
         info = dict(status=call.status, url=url)
