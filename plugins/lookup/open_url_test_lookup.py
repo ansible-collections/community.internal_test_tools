@@ -112,19 +112,6 @@ class LookupModule(LookupBase):
         if data is not None:
             data = base64.b64decode(data)
 
-        timeout:
-        url_username:
-            description:
-                - The username for use with HTTP Basic Authentication.
-            type: str
-            version_added: 0.7.0
-        url_password:
-            description:
-                - The password for use with HTTP Basic Authentication.
-            type: str
-            version_added: 0.7.0
-        force_basic_auth:
-
         result = []
 
         for url in terms:

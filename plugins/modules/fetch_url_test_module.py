@@ -20,9 +20,6 @@ description:
 notes:
   - Does not support C(check_mode).
 
-extends_documentation_fragment:
-  - ansible.builtin.url
-
 options:
   call_sequence:
     description: List of HTTP calls to make.
@@ -137,6 +134,10 @@ def main():
             headers=dict(type='dict'),
             data=dict(type='str'),
             data_path=dict(type='path'),
+            timeout=dict(type='float'),
+            url_username=dict(type='str'),
+            url_password=dict(type='str'),
+            force_basic_auth=dict(type='bool'),
         ), mutually_exclusive=[('data', 'data_path')]),
         fail_me=dict(type='bool', default=False),
         set_changed=dict(type='bool', default=False),
