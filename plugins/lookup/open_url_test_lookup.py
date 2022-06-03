@@ -33,6 +33,26 @@ options:
     data:
         description: Data to send (Base64 encoded).
         type: str
+    timeout:
+        description:
+            - Timeout in seconds
+        type: float
+        version_added: 0.7.0
+    url_username:
+        description:
+            - The username for use with HTTP Basic Authentication.
+        type: str
+        version_added: 0.7.0
+    url_password:
+        description:
+            - The password for use with HTTP Basic Authentication.
+        type: str
+        version_added: 0.7.0
+    force_basic_auth:
+        description:
+            - Force passing C(Authorization) header on the first request when I(url_username) and I(url_password) are used.
+        type: bool
+        version_added: 0.7.0
 """
 
 EXAMPLES = """
@@ -79,21 +99,45 @@ display = Display()
 
 
 class LookupModule(LookupBase):
+    def set_non_none_option(self, dest, key):
+        value = self.get_option(key)
+        if value is not None:
+            dest[key] = value
 
     def run(self, terms, variables=None, **kwargs):
         self.set_options(direct=kwargs)
 
         method = self.get_option('method')
-        headers = self.get_option('headers')
         data = self.get_option('data')
         if data is not None:
             data = base64.b64decode(data)
 
+        timeout:
+        url_username:
+            description:
+                - The username for use with HTTP Basic Authentication.
+            type: str
+            version_added: 0.7.0
+        url_password:
+            description:
+                - The password for use with HTTP Basic Authentication.
+            type: str
+            version_added: 0.7.0
+        force_basic_auth:
+
         result = []
 
         for url in terms:
+            kwargs = {}
+            self.set_non_none_option(kwargs, 'headers')
+            self.set_non_none_option(kwargs, 'timeout')
+            self.set_non_none_option(kwargs, 'url_username')
+            self.set_non_none_option(kwargs, 'url_password')
+            self.set_non_none_option(kwargs, 'force_basic_auth')
+            if data is not None:
+                kwargs['data'] = data
             try:
-                response = open_url(url, method=method, headers=headers, data=data)
+                response = open_url(url, method=method, **kwargs)
                 content = response.read()
                 headers = dict(sorted(response.headers.items()))
                 code = response.code

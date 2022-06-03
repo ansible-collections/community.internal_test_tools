@@ -34,12 +34,36 @@ class TestFetchURLTestModule(BaseTestModule):
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
+                    'timeout': 10,
                 }
             ],
         }, [
             FetchUrlCall('GET', 200)
             .result_str('1234')
             .expect_form_value_absent('foo')
+            .expect_timeout(10)
+            .expect_url('http://example.com/'),
+        ])
+        assert len(result['call_results']) == 1
+        assert result['call_results'][0]['status'] == 200
+        assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
+
+    def test_basic_auth(self, mocker):
+        result = self.run_module_success(mocker, fetch_url_test_module, {
+            'call_sequence': [
+                {
+                    'url': 'http://example.com/',
+                    'url_username': 'foo',
+                    'url_password': 'bar',
+                    'force_basic_auth': True,
+                }
+            ],
+        }, [
+            FetchUrlCall('GET', 200)
+            .result_str('1234')
+            .expect_form_value_absent('foo')
+            .expect_basic_auth('foo', 'bar')
+            .expect_force_basic_auth(True)
             .expect_url('http://example.com/'),
         ])
         assert len(result['call_results']) == 1
@@ -51,12 +75,14 @@ class TestFetchURLTestModule(BaseTestModule):
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
+                    'force_basic_auth': False,
                 }
             ],
         }, [
             FetchUrlCall('GET', 200)
             .result(b'1234')
             .expect_header_unset('foo')
+            .expect_force_basic_auth(False)
             .expect_url('http://example.com/'),
         ])
         assert len(result['call_results']) == 1
