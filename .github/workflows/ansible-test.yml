@@ -124,10 +124,6 @@ jobs:
           - 3.9
           - "3.10"
           - "3.11"
-        exclude:
-          # Because ansible-test doesn't support python3.10 for ansible-core 2.11
-          - ansible: stable-2.11
-            python: "3.10"
         include:
           # 2.9
           - ansible: stable-2.9
