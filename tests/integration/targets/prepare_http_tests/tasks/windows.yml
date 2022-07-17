@@ -1,3 +1,8 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Server 2008 R2 uses a 3rd party program to foward the ports and it may
 # not be ready straight away, we give it at least 5 minutes before
 # conceding defeat
