@@ -1,3 +1,8 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 namespace: community
 name: internal_test_tools
 version: 0.7.0
@@ -5,7 +10,9 @@ readme: README.md
 authors:
   - Ansible (https://github.com/ansible)
 description: Internal testing tools for collections. This collection is not for end-users, but for collection maintainers!
-license_file: COPYING
+license:
+  - GPL-3.0-or-later
+#license_file: COPYING
 tags:
   - collection
   - testing
