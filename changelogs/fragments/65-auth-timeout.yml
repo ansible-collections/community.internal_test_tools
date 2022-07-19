@@ -1,2 +1,0 @@
-minor_changes:
-  - "open_url and fetch_url unit test frameworks - allow to check for ``timeout``, ``url_username``, ``url_password``, and ``force_basic_auth`` settings (https://github.com/ansible-collections/community.internal_test_tools/pull/65)."

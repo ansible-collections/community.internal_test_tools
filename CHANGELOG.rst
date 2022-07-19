@@ -5,6 +5,20 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.7.0
+======
+
+Release Summary
+---------------
+
+Regular feature release.
+
+Minor Changes
+-------------
+
+- All software licenses are now in the ``LICENSES/`` directory of the collection root. Moreover, ``SPDX-License-Identifier:`` is used to declare the applicable license for every file that is not automatically generated (https://github.com/ansible-collections/community.internal_test_tools/pull/69).
+- open_url and fetch_url unit test frameworks - allow to check for ``timeout``, ``url_username``, ``url_password``, and ``force_basic_auth`` settings (https://github.com/ansible-collections/community.internal_test_tools/pull/65).
+
 v0.6.1
 ======
 
