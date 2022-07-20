@@ -48,6 +48,8 @@ We release new versions once there are new features or bugfixes. Deprecations ca
 
 ## Licensing
 
-GNU General Public License v3.0 or later.
+This collection is primarily licensed and distributed as a whole under the GNU General Public License v3.0 or later.
 
-See [COPYING](https://www.gnu.org/licenses/gpl-3.0.txt) to see the full text.
+See [LICENSES/GPL-3.0-or-later.txt](https://github.com/ansible-collections/community.internal_test_tools/blob/main/COPYING) for the full text.
+
+Most files in the collection that are not automatically generated have a machine readable `SDPX-License-Identifier:` comment denoting its respective license(s).
