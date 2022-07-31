@@ -67,7 +67,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
         with:
-          path: ./collection-checkout
+          path: ./collection-checkout/ansible_collections/community/internal_test_tools
 
       - name: Install ansible-core (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
@@ -77,17 +77,17 @@ jobs:
 
       - name: Run unit test for tools
         run: python -m pytest --cov-branch --cov=tools --cov=tests/tool_unit/ --cov-report term-missing -vv tests/tool_unit/
-        working-directory: ./collection-checkout
+        working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
 
       - name: Combine coverage for tools
         run: coverage xml -i
-        working-directory: ./collection-checkout
+        working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
 
       # See the reports at https://codecov.io/gh/ansible_collections/community.internal_test_tools
       - uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: false
-          directory: ./collection-checkout
+          directory: ./collection-checkout/ansible_collections/community/internal_test_tools
 
   integration:
     runs-on: ubuntu-latest
