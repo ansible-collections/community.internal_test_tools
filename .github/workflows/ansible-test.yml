@@ -37,7 +37,6 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
-          collection-root: ''
 
   units:
     runs-on: ubuntu-latest
@@ -62,7 +61,6 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: units
-          collection-root: ''
 
       # Run unit tests for tools
 
@@ -143,4 +141,3 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
           testing-type: integration
-          collection-root: ''
