@@ -52,4 +52,4 @@ This collection is primarily licensed and distributed as a whole under the GNU G
 
 See [LICENSES/GPL-3.0-or-later.txt](https://github.com/ansible-collections/community.internal_test_tools/blob/main/COPYING) for the full text.
 
-All files except changelog fragments (that will not be part of a release) have a machine readable `SDPX-License-Identifier:` comment denoting its respective license(s), or an equivalent entry in an accompanying ``.license`` file. This conforms to the `REUSE specification <https://reuse.software/spec/>`_.
+All files have a machine readable `SDPX-License-Identifier:` comment denoting its respective license(s) or an equivalent entry in an accompanying `.license` file. Only changelog fragments (which will not be part of a release) are covered by a blanket statement in `.reuse/dep5`. This conforms to the [REUSE specification](https://reuse.software/spec/).
