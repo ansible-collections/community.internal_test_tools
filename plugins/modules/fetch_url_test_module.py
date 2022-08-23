@@ -26,12 +26,12 @@ options:
     description: List of HTTP calls to make.
     type: list
     elements: dict
-    required: yes
+    required: true
     suboptions:
       url:
         description: The URL.
         type: str
-        required: yes
+        required: true
       method:
         description: HTTP method.
         type: str
