@@ -5,6 +5,19 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.8.0
+======
+
+Release Summary
+---------------
+
+Maintenance release with updated documentation and licensing information.
+
+Minor Changes
+-------------
+
+- The collection repository conforms to the `REUSE specification <https://reuse.software/spec/>`__ except for the changelog fragments (https://github.com/ansible-collections/community.internal_test_tools/pull/75).
+
 v0.7.0
 ======
 
