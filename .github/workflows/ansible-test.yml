@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Perform sanity testing
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        uses: ansible-community/ansible-test-gh-action@unstable/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
@@ -43,24 +43,54 @@ jobs:
     name: Units (Ⓐ${{ matrix.ansible }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
-      fail-fast: true
+      fail-fast: false
       matrix:
         ansible:
-          - stable-2.9
-          - stable-2.10
-          - stable-2.11
-          - stable-2.12
-          - stable-2.13
-          - devel
+          -
+        python:
+          -
+        oldpython:
+          -
+        exclude:
+          - ansible:
+        include:
+          - ansible: stable-2.9
+            python: 2.7
+          - ansible: stable-2.10
+            python: 3.6
+          - ansible: stable-2.11
+            python: auto
+          - ansible: stable-2.12
+            oldpython: '3.10'
+            python: auto
+          - ansible: stable-2.13
+            python: '3.9'
+            oldpython: '3.10'
+          - ansible: devel
+            oldpython: auto
+            python: auto
 
     steps:
+      - name: Print Python version
+        run: |
+          python --version
+
       - name: >-
           Perform unit testing against
           Ansible version ${{ matrix.ansible }}
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        uses: ansible-community/ansible-test-gh-action@unstable/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: units
+          python-version: ${{ matrix.oldpython }}
+          origin-python-version: ${{ matrix.python }}
+        id: anstest
+
+      - name: Print Python version and path
+        run: |
+          echo ${{ steps.anstest.outputs.origin-python-version }} @ ${{ steps.anstest.outputs.origin-python-path }}
+          which python
+          python --version
 
       # Run unit tests for tools
 
@@ -70,7 +100,7 @@ jobs:
           path: ./collection-checkout/ansible_collections/community/internal_test_tools
 
       - name: Install ansible-core (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+        run: ${{ steps.anstest.outputs.origin-python-path }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
       - name: Install requirements for tools unit tests
         run: pip install pytest pytest-cov --disable-pip-version-check
@@ -136,7 +166,7 @@ jobs:
           Perform integration testing against
           Ansible version ${{ matrix.ansible }}
           under Python ${{ matrix.python }}
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        uses: ansible-community/ansible-test-gh-action@unstable/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
