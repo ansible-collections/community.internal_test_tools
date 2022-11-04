@@ -52,8 +52,13 @@ jobs:
           fail_ci_if_error: false
 
   meta-runtime:
-    name: Tools for runtime redirects
+    name: Tools for runtime redirects (c.g ${{ matrix.cg_branch }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cg_branch:
+          - stable-4
+          # - main   -- DEPENDS ON #79
     steps:
 
       - name: Check out code
@@ -70,7 +75,7 @@ jobs:
         run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz coverage --disable-pip-version-check
 
       - name: Install community.general
-        run: git clone --depth=1 --single-branch https://github.com/ansible-collections/community.general.git general
+        run: git clone --depth=1 --single-branch --branch ${{ matrix.cg_branch }} https://github.com/ansible-collections/community.general.git general
         working-directory: ./ansible_collections/community
 
       - name: Show ansible-core redirects
