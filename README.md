@@ -16,6 +16,16 @@ Please note that this collection does **not** support Windows targets.
 
 Tested with the current Ansible 2.9, ansible-base 2.10, ansible-core 2.11, ansible-core 2.12, ansible-core 2.13, and ansible-core 2.14 releases and the current development version of ansible-core. Ansible versions before 2.9.10 are not supported.
 
+## Collection Documentation
+
+Browsing the [**latest** collection documentation](https://docs.ansible.com/ansible/latest/collections/community/internal_test_tools) will show docs for the _latest version released in the Ansible package_, not the latest version of the collection released on Galaxy.
+
+Browsing the [**devel** collection documentation](https://docs.ansible.com/ansible/devel/collections/community/internal_test_tools) shows docs for the _latest version released on Galaxy_.
+
+We also separately publish [**latest commit** collection documentation](https://ansible-collections.github.io/community.internal_test_tools/branch/main/) which shows docs for the _latest commit in the `main` branch_.
+
+If you use the Ansible package and do not update collections independently, use **latest**. If you install or update this collection directly from Galaxy, use **devel**. If you are looking to contribute, use **latest commit**.
+
 ## Included content
 
 - [`tests/unit/compat/` package](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/compat/)
