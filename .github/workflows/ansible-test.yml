@@ -31,7 +31,7 @@ jobs:
           - stable-2.13
           - stable-2.14
           - devel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Perform sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -40,7 +40,7 @@ jobs:
           testing-type: sanity
 
   units:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Units (Ⓐ${{ matrix.ansible }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
@@ -92,7 +92,7 @@ jobs:
           directory: ./collection-checkout/ansible_collections/community/internal_test_tools
 
   integration:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     strategy:
       fail-fast: false
