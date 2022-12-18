@@ -25,6 +25,12 @@ jobs:
       init-lenient: false
       init-fail-on-error: true
       squash-hierarchy: true
+      init-project: Community.Internal_test_tools Collection
+      init-copyright: Community.Internal_test_tools Contributors
+      init-title: Community.Internal_test_tools Collection Documentation
+      init-html-short-title: Community.Internal_test_tools Collection Docs
+      init-extra-html-theme-options: |
+        documentation_home_url=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/branch/main/
       render-file-line: '> * `$<status>` [$<path_tail>](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr/${{ github.event.number }}/$<path_tail>)'
 
   publish-docs-gh-pages:
