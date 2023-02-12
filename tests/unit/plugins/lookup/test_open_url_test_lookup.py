@@ -21,10 +21,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.open_url
 from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup  # noqa
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
-from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
-    patch,
-    MagicMock,
-)
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import patch
 
 
 class TestLookupModule(TestCase):
