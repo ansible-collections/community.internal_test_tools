@@ -18,7 +18,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.open_url
 )
 
 # This import is needed so patching below works
-from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup  # noqa
+from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup  # noqa: F401, pylint: disable=unused-import
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import patch

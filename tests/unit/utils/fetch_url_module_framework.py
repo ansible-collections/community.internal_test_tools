@@ -71,8 +71,8 @@ import pytest
 
 from mock import MagicMock
 
-import ansible.module_utils.basic  # noqa
-import ansible.module_utils.urls  # noqa
+import ansible.module_utils.basic  # noqa: F401, pylint: disable=unused-import
+import ansible.module_utils.urls  # noqa: F401, pylint: disable=unused-import
 
 from ansible.module_utils.six import PY2
 
