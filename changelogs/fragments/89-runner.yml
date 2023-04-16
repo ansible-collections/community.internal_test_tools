@@ -1,0 +1,2 @@
+minor_changes:
+  - "Let the extra sanity test runner report bad test descriptors as errors (https://github.com/ansible-collections/community.internal_test_tools/pull/89)."

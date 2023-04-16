@@ -199,8 +199,9 @@ class Test:
         return errors
 
 
-def collect_tests(path='tests/sanity/extra', use_color=True):
+def collect_tests(result, path='tests/sanity/extra', use_color=True):
     tests = []
+    errors = []
     for filepath in glob.glob(os.path.join(path, '*.json')):
         directory, filename = os.path.split(filepath)
         basename = os.path.splitext(filename)[0]
@@ -212,8 +213,15 @@ def collect_tests(path='tests/sanity/extra', use_color=True):
                 tests.append(Test(basename, data, filepath, executable))
             else:
                 print(colorize('ERROR: {0} does not exist'.format(executable), 'red', use_color))
+                errors.append((filepath, 0, 0, '{0} does not exist'.format(executable)))
         except Exception as exc:  # pylint: disable=broad-except
             print(colorize('ERROR while processing {0}: {1}'.format(filename, exc), 'red', use_color))
+            errors.append((filepath, 0, 0, 'Error while processing: {0}'.format(exc)))
+    if errors:
+        result['collecting tests'] = dict(
+            success=False,
+            errors=errors,
+        )
     return tests
 
 
@@ -328,7 +336,8 @@ def main():
 
     args = parser.parse_args()
 
-    tests = collect_tests(use_color=args.color)
+    result = dict()
+    tests = collect_tests(result, use_color=args.color)
     tests = sorted(tests, key=lambda test: test.name)
 
     # Cleanup
@@ -365,7 +374,6 @@ def main():
         setup(tests_to_run, use_color=args.color)
 
     # Run tests
-    result = dict()
     for test in tests:
         run(result, test, targets, skip=test not in tests_to_run, use_color=args.color)
 
