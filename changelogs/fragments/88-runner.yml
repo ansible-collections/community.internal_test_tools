@@ -1,0 +1,2 @@
+minor_changes:
+  - "Use Python 3.10 instead of Python 3.8 for the extra sanity test runner (https://github.com/ansible-collections/community.internal_test_tools/pull/88)."
