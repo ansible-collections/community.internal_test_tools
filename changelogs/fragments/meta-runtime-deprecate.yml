@@ -1,0 +1,2 @@
+deprecated_features:
+  - "The meta/runtime.yml helper tool ``tools/meta_runtime.py`` is deprecated and will be removed soon. If you need it, please comment on the issue and/or stick to a version of community.internal_test_tools that is known to still includes it (https://github.com/ansible-collections/community.internal_test_tools/issues/79, https://github.com/ansible-collections/community.internal_test_tools/pull/90)."
