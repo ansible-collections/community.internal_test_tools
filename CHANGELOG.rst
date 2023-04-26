@@ -5,6 +5,25 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.9.0
+======
+
+Release Summary
+---------------
+
+Feature release with improved extra sanity test runner.
+
+Minor Changes
+-------------
+
+- Let the extra sanity test runner report bad test descriptors as errors (https://github.com/ansible-collections/community.internal_test_tools/pull/89).
+- Use Python 3.10 instead of Python 3.8 for the extra sanity test runner (https://github.com/ansible-collections/community.internal_test_tools/pull/88).
+
+Deprecated Features
+-------------------
+
+- The meta/runtime.yml helper tool ``tools/meta_runtime.py`` is deprecated and will be removed soon. If you need it, please comment on the issue and/or stick to a version of community.internal_test_tools that is known to still includes it (https://github.com/ansible-collections/community.internal_test_tools/issues/79, https://github.com/ansible-collections/community.internal_test_tools/pull/90).
+
 v0.8.0
 ======
 
