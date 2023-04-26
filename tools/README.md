@@ -82,6 +82,8 @@ if __name__ == '__main__':
 
 ## ``meta/runtime.yml`` Tool
 
+**THIS TOOL IS DEPRECATED AND WILL BE REMOVED SOON! [SEE THE ISSUE FOR DETAILS](https://github.com/ansible-collections/community.internal_test_tools/issues/79).**
+
 The ``meta_runtime.py`` tool provides several operations and checks on ``meta/runtime.yml`` for collections. The tool assumes it is executed in the collection's root which contains ``galaxy.yml``.
 
 The ``redirect`` subcommand allows to convert redirections between symlinks and ``meta/runtime.yml`` redirects, and to make sure that all redirects needed for flatmapping modules are around.
