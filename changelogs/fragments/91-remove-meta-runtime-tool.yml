@@ -1,0 +1,2 @@
+removed_features:
+  - "Removed the deprecated ``meta/runtime.yml`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/79, https://github.com/ansible-collections/community.internal_test_tools/pull/91)."

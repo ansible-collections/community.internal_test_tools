@@ -34,7 +34,6 @@ If you use the Ansible package and do not update collections independently, use 
 - [`tests/unit/utils/fetch_url_module_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/utils/fetch_url_module_framework.py)
 - [`tests/unit/utils/open_url_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/utils/open_url_framework.py)
 - [extra sanity test runner](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md)
-- [meta/runtime.yml helper (DEPRECATED)](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md)
 
 ## Contributing to this collection
 
