@@ -18,12 +18,11 @@
       - path: '{{ output_dir }}/non-existing'
         allow_not_existing: false
   register: result_f
-  ignore_errors: true
+  failed_when: result_f is not failed
 
-- name: Check that collection failed
+- name: Check error message
   assert:
     that:
-      - result_f is failed
       - result_f.msg == 'The file "' ~ output_dir ~ '/non-existing" does not exist'
 
 - name: Check state
@@ -43,7 +42,7 @@
     state:
       foo: bar
   register: result_3
-  ignore_errors: true
+  failed_when: result_3 is not failed
 
 - name: Check that no changes were found
   assert:
@@ -68,7 +67,6 @@
       - result_2.removed_dirs == []
       - result_2.changed_dirs == []
       - result_2.diff.prepared == ''
-      - result_3 is failed
       - result_3.msg == 'The value of the state parameter must be the result of community.internal_test_tools.files_collect'
 
 - name: Create file
@@ -259,12 +257,11 @@
     fail_on_diffs: true
   register: result_4
   diff: true
-  ignore_errors: true
+  failed_when: result_4 is not failed
 
 - name: Check that the correct changes were found (4/4)
   assert:
     that:
-      - result_4 is failed
       - result_4 is changed
       - result_4.changed_content
       - result_4.msg == 'Found differences!'
