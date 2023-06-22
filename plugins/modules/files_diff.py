@@ -31,7 +31,7 @@ options:
     type: dict
   fail_on_diffs:
     description:
-      - Whether to fail when differences are found, instead of simply returning C(changed=true).
+      - Whether to fail when differences are found, instead of simply returning RV(changed=true).
     type: bool
     default: false
 '''

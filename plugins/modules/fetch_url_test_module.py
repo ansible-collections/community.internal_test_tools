@@ -42,12 +42,12 @@ options:
       data:
         description:
           - Data to send (Base64 encoded).
-          - Mutually exclusive with I(data_path).
+          - Mutually exclusive with O(call_sequence[].data_path).
         type: str
       data_path:
         description:
           - File to read data from.
-          - Mutually exclusive with I(data).
+          - Mutually exclusive with O(call_sequence[].data).
         type: path
         version_added: 0.3.0
       timeout:
@@ -67,16 +67,16 @@ options:
         version_added: 0.7.0
       force_basic_auth:
         description:
-          - Force passing C(Authorization) header on the first request when I(url_username) and I(url_password) are used.
+          - Force passing C(Authorization) header on the first request when O(call_sequence[].url_username) and O(call_sequence[].url_password) are used.
         type: bool
         version_added: 0.7.0
   fail_me:
-    description: If set to C(true), fails the module.
+    description: If set to V(true), fails the module.
     type: bool
     default: false
     version_added: 0.3.0
   set_changed:
-    description: If set to C(true), claims the module changed something.
+    description: If set to V(true), claims the module changed something.
     type: bool
     default: false
     version_added: 0.3.0
