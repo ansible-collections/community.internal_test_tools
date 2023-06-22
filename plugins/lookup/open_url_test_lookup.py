@@ -51,7 +51,7 @@ options:
         version_added: 0.7.0
     force_basic_auth:
         description:
-            - Force passing C(Authorization) header on the first request when I(url_username) and I(url_password) are used.
+            - Force passing C(Authorization) header on the first request when O(url_username) and O(url_password) are used.
         type: bool
         version_added: 0.7.0
 """
