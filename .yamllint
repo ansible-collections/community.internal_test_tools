@@ -1,6 +1,7 @@
 extends: default
 ignore: |
-  .tox
+  changelogs/changelog.yaml
+  changelogs/fragments/
 
 rules:
   braces:
