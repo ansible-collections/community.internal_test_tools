@@ -6,7 +6,6 @@
 .github/workflows/import-galaxy.yml yaml[truthy]
 .github/workflows/reuse.yml yaml[truthy]
 .github/workflows/tools-tests.yml yaml[truthy]
-changelogs/changelog.yaml yaml[indentation]
 changelogs/config.yaml yaml[indentation]
 changelogs/fragments/91-remove-meta-runtime-tool.yml yaml[line-length]
 galaxy.yml galaxy[tags]
