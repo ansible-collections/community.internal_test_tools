@@ -5,6 +5,34 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.10.0
+=======
+
+Release Summary
+---------------
+
+Maintenance release with updated documentation and removal of a deprecated tool.
+
+From this version on, community.internal_test_tools is using the new `Ansible semantic markup
+<https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#semantic-markup-within-module-documentation>`__
+in its documentation. If you look at documentation with the ansible-doc CLI tool
+from ansible-core before 2.15, please note that it does not render the markup
+correctly. You should be still able to read it in most cases, but you need
+ansible-core 2.15 or later to see it as it is intended. Alternatively you can
+look at `the docsite <https://ansible-collections.github.io/community.internal_test_tools/branch/main/>`__
+for the rendered HTML version of the documentation of the latest release.
+
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- Removed the deprecated ``meta/runtime.yml`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/79, https://github.com/ansible-collections/community.internal_test_tools/pull/91).
+
+Known Issues
+------------
+
+- Ansible markup will show up in raw form on ansible-doc text output for ansible-core before 2.15. If you have trouble deciphering the documentation markup, please upgrade to ansible-core 2.15 (or newer), or read the HTML documentation on https://ansible-collections.github.io/community.internal_test_tools/branch/main/.
+
 v0.9.0
 ======
 
