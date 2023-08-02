@@ -1,4 +1,9 @@
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # This file contains ignores rule violations for ansible-lint
+
 .github/workflows/ansible-test.yml yaml[truthy]
 .github/workflows/docs-pr.yml yaml[line-length]
 .github/workflows/docs-pr.yml yaml[truthy]
@@ -7,8 +12,6 @@
 .github/workflows/reuse.yml yaml[truthy]
 .github/workflows/tools-tests.yml yaml[truthy]
 changelogs/config.yaml yaml[indentation]
-galaxy.yml galaxy[tags]
-galaxy.yml galaxy[version-incorrect]
 galaxy.yml yaml[comments]
 tests/integration/targets/fetch_url_test_module/tasks/main.yml fqcn[action-core]
 tests/integration/targets/fetch_url_test_module/tasks/main.yml name[missing]

@@ -1,14 +1,23 @@
+---
 # Copyright (c) Ansible Project
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
-# .github/workflows/ansible-lint.yml
+
 name: ansible-lint
-"on":
+'on':
+  # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
+  push:
+    branches:
+      - main
+      - stable-*
   pull_request:
-    branches: ["main", "stable", "release/v*"]
+  # Run CI once per day (at 05:00 UTC)
+  schedule:
+    - cron: '0 5 * * *'
+
 jobs:
   build:
-    name: Ansible Lint # Naming the build is important to use it as a status check
+    name: Ansible Lint
     runs-on: ubuntu-latest
     steps:
       - name: Run ansible-lint
