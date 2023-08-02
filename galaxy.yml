@@ -12,11 +12,11 @@ authors:
 description: Internal testing tools for collections. This collection is not for end-users, but for collection maintainers!
 license:
   - GPL-3.0-or-later
-#license_file: COPYING
+# license_file: COPYING
 tags:
   - collection
   - testing
 repository: https://github.com/ansible-collections/community.internal_test_tools
-#documentation: https://github.com/ansible-collection-migration/community.internal_test_tools/tree/main/docs
+documentation: https://ansible-collections.github.io/community.internal_test_tools/branch/main/
 homepage: https://github.com/ansible-collections/community.internal_test_tools
 issues: https://github.com/ansible-collections/community.internal_test_tools/issues

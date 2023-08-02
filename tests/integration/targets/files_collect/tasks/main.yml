@@ -21,7 +21,7 @@
   failed_when: result_f is not failed
 
 - name: Check error message
-  assert:
+  ansible.builtin.assert:
     that:
       - result_f.msg == 'The file "' ~ output_dir ~ '/non-existing" does not exist'
 
@@ -45,7 +45,7 @@
   failed_when: result_3 is not failed
 
 - name: Check that no changes were found
-  assert:
+  ansible.builtin.assert:
     that:
       - result_1 is not changed
       - not result_1.changed_content
@@ -70,7 +70,7 @@
       - result_3.msg == 'The value of the state parameter must be the result of community.internal_test_tools.files_collect'
 
 - name: Create file
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/test'
     content: |
       This is
@@ -78,20 +78,22 @@
       test file
       with five lines
       .
+    mode: '0644'
 
 - name: Create file 2
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/attributes'
     content: Test file
     mode: '0644'
 
 - name: Create file 3
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/removed_file'
     content: This will be removed.
+    mode: '0644'
 
 - name: Create symlinks
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/{{ item }}'
     src: '{{ output_dir }}/test'
     state: link
@@ -100,7 +102,7 @@
     - symlink_2
 
 - name: Create directories
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/{{ item }}'
     state: directory
     mode: '0755'
@@ -136,61 +138,66 @@
   register: result_nonrecursive
 
 - name: Change file
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/test'
     content: |-
       This is a
       test file
       with three lines.
+    mode: '0644'
 
 - name: Change file 2
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/attributes'
     mode: '0700'
 
 - name: Remove file 3
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/removed_file'
     state: absent
 
 - name: Add file 4
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/new_file'
     content: New file
+    mode: '0644'
 
 - name: Add file 5
-  copy:
+  ansible.builtin.copy:
     dest: '{{ output_dir }}/dir/new_subdir_file'
     content: New file
+    mode: '0644'
 
 - name: Update symlink
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/symlink'
     src: '{{ output_dir }}/attributes'
     state: link
 
 - name: Replace symlink 2 with directory (1/2)
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/symlink_2'
     state: absent
 
 - name: Replace symlink 2 with directory (2/2)
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/symlink_2'
     state: directory
+    mode: '0755'
 
 - name: Update subdir attributes
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/dir_attr'
     mode: '0700'
 
 - name: Create subdirectory
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/dir/subdir'
     state: directory
+    mode: '0644'
 
 - name: Remove directory
-  file:
+  ansible.builtin.file:
     path: '{{ output_dir }}/dir_2'
     state: absent
 
@@ -201,7 +208,7 @@
   diff: true
 
 - name: Check that the correct changes were found (1/4)
-  assert:
+  ansible.builtin.assert:
     that:
       - result_1 is changed
       - result_1.changed_content
@@ -220,7 +227,7 @@
   diff: true
 
 - name: Check that the correct changes were found (2/4)
-  assert:
+  ansible.builtin.assert:
     that:
       - result_2 is changed
       - result_2.changed_content
@@ -239,7 +246,7 @@
   diff: false
 
 - name: Check that the correct changes were found (3/4)
-  assert:
+  ansible.builtin.assert:
     that:
       - result_3 is changed
       - result_3.changed_content
@@ -260,7 +267,7 @@
   failed_when: result_4 is not failed
 
 - name: Check that the correct changes were found (4/4)
-  assert:
+  ansible.builtin.assert:
     that:
       - result_4 is changed
       - result_4.changed_content

@@ -3,10 +3,12 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- set_fact:
+- name: Call lookup
+  ansible.builtin.set_fact:
     result: "{{ query('community.internal_test_tools.open_url_test_lookup', 'https://' ~ httpbin_host ~ '/') }}"
 
-- assert:
+- name: Validate result
+  ansible.builtin.assert:
     that:
       - result | length == 1
       - result[0].status == 200
