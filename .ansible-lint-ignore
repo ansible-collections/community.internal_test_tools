@@ -3,31 +3,3 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # This file contains ignores rule violations for ansible-lint
-
-tests/integration/targets/fetch_url_test_module/tasks/main.yml fqcn[action-core]
-tests/integration/targets/fetch_url_test_module/tasks/main.yml name[missing]
-tests/integration/targets/files_collect/tasks/main.yml fqcn[action-core]
-tests/integration/targets/files_collect/tasks/main.yml risky-file-permissions
-tests/integration/targets/lookup_open_url_test_lookup/tasks/main.yml fqcn[action-core]
-tests/integration/targets/lookup_open_url_test_lookup/tasks/main.yml name[missing]
-tests/integration/targets/prepare_http_tests/tasks/default.yml fqcn[action-core]
-tests/integration/targets/prepare_http_tests/tasks/default.yml no-changed-when
-tests/integration/targets/prepare_http_tests/tasks/default.yml risky-file-permissions
-tests/integration/targets/prepare_http_tests/tasks/main.yml fqcn[action-core]
-tests/integration/targets/prepare_http_tests/tasks/main.yml jinja[spacing]
-tests/integration/targets/prepare_http_tests/tasks/main.yml key-order[task]
-tests/integration/targets/prepare_http_tests/tasks/main.yml name[casing]
-tests/integration/targets/prepare_http_tests/tasks/main.yml name[missing]
-tests/integration/targets/setup_remote_tmp_dir/handlers/main.yml fqcn[action-core]
-tests/integration/targets/setup_remote_tmp_dir/handlers/main.yml name[casing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/default-cleanup.yml fqcn[action-core]
-tests/integration/targets/setup_remote_tmp_dir/tasks/default-cleanup.yml name[casing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/default.yml fqcn[action-core]
-tests/integration/targets/setup_remote_tmp_dir/tasks/default.yml name[casing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml fqcn[action-core]
-tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml jinja[spacing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml name[casing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml name[missing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/windows-cleanup.yml name[casing]
-tests/integration/targets/setup_remote_tmp_dir/tasks/windows.yml fqcn[action-core]
-tests/integration/targets/setup_remote_tmp_dir/tasks/windows.yml name[casing]

@@ -7,3 +7,4 @@ skip_list:
   # Ignore rules that make no sense
   - galaxy[tags]
   - galaxy[version-incorrect]
+  - no-changed-when
