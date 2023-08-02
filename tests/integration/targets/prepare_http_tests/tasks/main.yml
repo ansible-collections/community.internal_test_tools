@@ -24,6 +24,6 @@
           - "{{ ansible_os_family | lower }}.yml"
           - "default.yml"
   when:
-  - has_httptester|bool
-  # skip the setup if running on Windows Server 2008 as httptester is not available
-  - ansible_os_family != 'Windows' or (ansible_os_family == 'Windows' and not ansible_distribution_version.startswith("6.0."))
+    - has_httptester|bool
+    # skip the setup if running on Windows Server 2008 as httptester is not available
+    - ansible_os_family != 'Windows' or (ansible_os_family == 'Windows' and not ansible_distribution_version.startswith("6.0."))
