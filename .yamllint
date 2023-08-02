@@ -1,0 +1,27 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+extends: default
+ignore: |
+  changelogs/changelog.yaml
+  changelogs/fragments/
+
+rules:
+  braces:
+    max-spaces-inside: 1
+    level: error
+  brackets:
+    max-spaces-inside: 1
+    level: error
+  comments:
+    # https://github.com/prettier/prettier/issues/6780
+    min-spaces-from-content: 1
+
+  # https://github.com/adrienverge/yamllint/issues/141
+  comments-indentation: false
+  document-start: disable
+  line-length: disable
+  truthy:
+    check-keys: false

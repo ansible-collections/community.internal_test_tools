@@ -1,0 +1,43 @@
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# This file contains ignores rule violations for ansible-lint
+
+.github/workflows/ansible-test.yml yaml[truthy]
+.github/workflows/docs-pr.yml yaml[line-length]
+.github/workflows/docs-pr.yml yaml[truthy]
+.github/workflows/docs-push.yml yaml[truthy]
+.github/workflows/import-galaxy.yml yaml[truthy]
+.github/workflows/reuse.yml yaml[truthy]
+.github/workflows/tools-tests.yml yaml[truthy]
+changelogs/config.yaml yaml[indentation]
+galaxy.yml yaml[comments]
+tests/integration/targets/fetch_url_test_module/tasks/main.yml fqcn[action-core]
+tests/integration/targets/fetch_url_test_module/tasks/main.yml name[missing]
+tests/integration/targets/files_collect/tasks/main.yml fqcn[action-core]
+tests/integration/targets/files_collect/tasks/main.yml risky-file-permissions
+tests/integration/targets/lookup_open_url_test_lookup/tasks/main.yml fqcn[action-core]
+tests/integration/targets/lookup_open_url_test_lookup/tasks/main.yml name[missing]
+tests/integration/targets/prepare_http_tests/tasks/default.yml fqcn[action-core]
+tests/integration/targets/prepare_http_tests/tasks/default.yml no-changed-when
+tests/integration/targets/prepare_http_tests/tasks/default.yml risky-file-permissions
+tests/integration/targets/prepare_http_tests/tasks/main.yml fqcn[action-core]
+tests/integration/targets/prepare_http_tests/tasks/main.yml jinja[spacing]
+tests/integration/targets/prepare_http_tests/tasks/main.yml key-order[task]
+tests/integration/targets/prepare_http_tests/tasks/main.yml name[casing]
+tests/integration/targets/prepare_http_tests/tasks/main.yml name[missing]
+tests/integration/targets/prepare_http_tests/tasks/main.yml yaml[indentation]
+tests/integration/targets/setup_remote_tmp_dir/handlers/main.yml fqcn[action-core]
+tests/integration/targets/setup_remote_tmp_dir/handlers/main.yml name[casing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/default-cleanup.yml fqcn[action-core]
+tests/integration/targets/setup_remote_tmp_dir/tasks/default-cleanup.yml name[casing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/default.yml fqcn[action-core]
+tests/integration/targets/setup_remote_tmp_dir/tasks/default.yml name[casing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml fqcn[action-core]
+tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml jinja[spacing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml name[casing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/main.yml name[missing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/windows-cleanup.yml name[casing]
+tests/integration/targets/setup_remote_tmp_dir/tasks/windows.yml fqcn[action-core]
+tests/integration/targets/setup_remote_tmp_dir/tasks/windows.yml name[casing]
