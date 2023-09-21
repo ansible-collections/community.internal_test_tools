@@ -7,4 +7,5 @@ skip_list:
   # Ignore rules that make no sense
   - galaxy[tags]
   - galaxy[version-incorrect]
+  - meta-runtime[unsupported-version]
   - no-changed-when
