@@ -5,6 +5,14 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.10.1
+=======
+
+Release Summary
+---------------
+
+Maintenance release to test whether publishing community collections works.
+
 v0.10.0
 =======
 

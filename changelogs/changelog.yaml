@@ -49,6 +49,13 @@ releases:
     - 91-remove-meta-runtime-tool.yml
     - semantic-markup.yml
     release_date: '2023-06-27'
+  0.10.1:
+    changes:
+      release_summary: Maintenance release to test whether publishing community collections
+        works.
+    fragments:
+    - 0.10.1.yml
+    release_date: '2023-10-04'
   0.2.0:
     changes:
       major_changes:
