@@ -43,7 +43,7 @@ EXAMPLES = r'''
       - path: "{{ output_dir }}"
   register: state
 
-# ... some tasks inbetween ...
+# ... some tasks in between ...
 
 - name: Verify whether any file changed in output_dir
   community.internal_test_tools.files_diff:

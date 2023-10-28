@@ -74,7 +74,7 @@ EXAMPLES = r'''
       - path: "{{ output_dir }}"
   register: state
 
-# ... some tasks inbetween ...
+# ... some tasks in between ...
 
 - name: Verify whether any file changed in output_dir
   community.internal_test_tools.files_diff:
@@ -87,7 +87,7 @@ state:
     - The state of all files and directories.
     - Use the M(community.internal_test_tools.files_diff) module to validate against the original files.
     - The structure of every field in this dictionary not explicitly documented here might change at any
-      point, or might vanish alltogether without further notice. Do not rely on undocumented data!
+      point, or might vanish altogether without further notice. Do not rely on undocumented data!
   type: dict
   returned: success
 '''
