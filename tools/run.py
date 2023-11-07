@@ -218,6 +218,12 @@ def main():
 
     cwd = os.getcwd()
     root = cwd
+
+    ansible_collections = 'ansible_collections'
+    i = root.rfind('{0}{1}{0}'.format(os.sep, ansible_collections))
+    if i >= 0:
+        root = root[:i + len(os.sep) + len(ansible_collections)]
+
     my_dir = '.'
     try:
         my_dir = os.path.dirname(__file__)
