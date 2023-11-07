@@ -1,0 +1,2 @@
+minor_changes:
+  - "extra sanity test runner - make sure that a ``ansible_collections`` ancestor directory is also copied into the Docker container (https://github.com/ansible-collections/community.internal_test_tools/pull/103)."
