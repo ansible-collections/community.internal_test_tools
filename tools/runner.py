@@ -299,7 +299,7 @@ def setup(tests, use_color=True):
         command = [
             'python{0}'.format(python_version),
             '-m',
-            'pip'
+            'pip',
             'install',
             '--disable-pip-version-check'
         ] + reqs
