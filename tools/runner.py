@@ -303,8 +303,11 @@ def setup(tests, use_color=True):
             'install',
             '--disable-pip-version-check'
         ] + reqs
+        env = os.environ.copy()
+        # Allow to break system packages (PEP-668). Since we have an isolated environment, this shouldn't be a problem
+        env['PIP_BREAK_SYSTEM_PACKAGES'] = '1'
         print(colorize('Running {0}'.format(join_command(command)), 'emph', use_color))
-        process_result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process_result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
         stdout, stderr = process_result.communicate()
         if stdout:
             for line in stdout.decode('utf-8').splitlines():
