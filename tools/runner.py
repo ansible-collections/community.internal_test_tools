@@ -297,7 +297,9 @@ def setup(tests, use_color=True):
         print(colorize('Installing requirements', 'emph', use_color))
     for python_version, reqs in sorted(requirements.items()):
         command = [
-            'pip{0}'.format(python_version),
+            'python{0}'.format(python_version),
+            '-m',
+            'pip'
             'install',
             '--disable-pip-version-check'
         ] + reqs
