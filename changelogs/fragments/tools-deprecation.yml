@@ -1,0 +1,2 @@
+deprecated_features:
+  - "The ``tools/ansible_builtin_runtime.py`` tool is deprecated and will be removed in a future version. If anyone is interested in keeping this tool, please comment on the `tool removal issue <https://github.com/ansible-collections/community.internal_test_tools/issues/111>`__ (https://github.com/ansible-collections/community.internal_test_tools/issues/111).
