@@ -11,7 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: fetch_url_test_module
+module: _fetch_url_test_module
 short_description: Test module for fetch_url test framework (DO NOT USE THIS!)
 version_added: 0.1.1
 author:

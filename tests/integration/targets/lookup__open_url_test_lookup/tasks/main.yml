@@ -5,7 +5,7 @@
 
 - name: Call lookup
   ansible.builtin.set_fact:
-    result: "{{ query('community.internal_test_tools.open_url_test_lookup', 'https://' ~ httpbin_host ~ '/') }}"
+    result: "{{ query('community.internal_test_tools._open_url_test_lookup', 'https://' ~ httpbin_host ~ '/') }}"
 
 - name: Validate result
   ansible.builtin.assert:

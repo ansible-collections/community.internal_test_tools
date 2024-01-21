@@ -18,7 +18,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.open_url
 )
 
 # This import is needed so patching below works
-from ansible_collections.community.internal_test_tools.plugins.lookup import open_url_test_lookup  # noqa: F401, pylint: disable=unused-import
+from ansible_collections.community.internal_test_tools.plugins.lookup import _open_url_test_lookup  # noqa: F401, pylint: disable=unused-import
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.unittest import TestCase
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import patch
@@ -26,7 +26,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.compat.mock im
 
 class TestLookupModule(TestCase):
     def setUp(self):
-        self.lookup = lookup_loader.get("community.internal_test_tools.open_url_test_lookup")
+        self.lookup = lookup_loader.get("community.internal_test_tools._open_url_test_lookup")
 
     def test_basic(self):
         open_url = OpenUrlProxy([
@@ -36,7 +36,7 @@ class TestLookupModule(TestCase):
             .expect_header_unset('foo')
             .expect_url('http://example.com'),
         ])
-        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url', open_url):
             result = self.lookup.run(
                 ['http://example.com'],
                 [],
@@ -66,7 +66,7 @@ class TestLookupModule(TestCase):
             .result_error()
             .expect_url('http://example.example'),
         ])
-        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url', open_url):
             result = self.lookup.run(
                 ['http://example.com', 'http://example.org', 'http://example.example'],
                 [],
@@ -91,7 +91,7 @@ class TestLookupModule(TestCase):
             .expect_url('http://example.com', without_query=True, without_fragment=True)
             .expect_query_values('foo', ''),
         ])
-        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url', open_url):
             with pytest.raises(AnsibleLookupError) as e:
                 self.lookup.run(
                     ['http://example.com?foo', 'http://example.org'],
@@ -110,7 +110,7 @@ class TestLookupModule(TestCase):
             .expect_url('http://example.com#asdf', without_query=True)
             .expect_query_values('foo', 'bar', 'baz'),
         ])
-        with patch('ansible_collections.community.internal_test_tools.plugins.lookup.open_url_test_lookup.open_url', open_url):
+        with patch('ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url', open_url):
             with pytest.raises(AnsibleLookupError) as e:
                 self.lookup.run(
                     ['http://example.com?foo=bar&foo=baz#asdf', 'http://example.org'],

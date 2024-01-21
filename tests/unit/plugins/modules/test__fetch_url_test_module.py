@@ -14,7 +14,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_ur
     BaseTestModule,
 )
 
-from ansible_collections.community.internal_test_tools.plugins.modules import fetch_url_test_module
+from ansible_collections.community.internal_test_tools.plugins.modules import _fetch_url_test_module
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import mock_open
 
@@ -27,11 +27,11 @@ from ansible_collections.community.internal_test_tools.tests.unit.plugins.module
 
 
 class TestFetchURLTestModule(BaseTestModule):
-    MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE = 'ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.AnsibleModule'
-    MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL = 'ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.fetch_url'
+    MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE = 'ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.AnsibleModule'
+    MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL = 'ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.fetch_url'
 
     def test_basic_str(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -50,7 +50,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_auth(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -72,7 +72,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_bytes(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -91,7 +91,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_json(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -108,8 +108,8 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['headers']['foo'] == 'bar'
 
     def test_with_data(self, mocker):
-        mocker.patch('ansible_collections.community.internal_test_tools.plugins.modules.fetch_url_test_module.open', mock_open(read_data=b'\x00\x01\x02'))
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        mocker.patch('ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.open', mock_open(read_data=b'\x00\x01\x02'))
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -133,7 +133,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_with_no_result(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/?foo',
@@ -150,7 +150,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == ''
 
     def test_failure(self, mocker):
-        result = self.run_module_failed(mocker, fetch_url_test_module, {
+        result = self.run_module_failed(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com/',
@@ -168,7 +168,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_form(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com?bar=foo&foo=bar&foo=baz#heyhey',
@@ -191,7 +191,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['status'] == 200
 
     def test_json(self, mocker):
-        result = self.run_module_success(mocker, fetch_url_test_module, {
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
                     'url': 'http://example.com?#heyhey',
@@ -222,7 +222,7 @@ class TestFetchURLTestModule2(ModuleTestCase):
                 '_ansible_remote_tmp': '/tmp/tmp',
                 '_ansible_keep_remote_files': True,
             })
-            fetch_url_test_module.main()
+            _fetch_url_test_module.main()
 
         assert not e.value.args[0]['changed']
         assert e.value.args[0]['call_results'] == []
@@ -233,7 +233,7 @@ class TestFetchURLTestModule2(ModuleTestCase):
                 'call_sequence': [],
                 'set_changed': True,
             })
-            fetch_url_test_module.main()
+            _fetch_url_test_module.main()
 
         assert e.value.args[0]['changed']
         assert e.value.args[0]['call_results'] == []
@@ -244,6 +244,6 @@ class TestFetchURLTestModule2(ModuleTestCase):
                 'call_sequence': [],
                 'fail_me': True,
             })
-            fetch_url_test_module.main()
+            _fetch_url_test_module.main()
 
         assert e.value.args[0]['call_results'] == []
