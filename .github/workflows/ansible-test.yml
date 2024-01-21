@@ -49,6 +49,8 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
+          # https://github.com/ansible/ansible/pull/82574
+          sanity-skip-tests: ansible-doc
 
   units:
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
