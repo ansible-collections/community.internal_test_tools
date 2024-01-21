@@ -1,2 +1,0 @@
-breaking_changes:
-  - "The internal test module ``fetch_url_test_module`` has been renamed to ``_fetch_url_test_module``, and the internal test lookup plugin ``open_url_test_lookup`` has been renamed to ``_open_url_test_lookup``. This emphasizes that these plugins are private and not supposed to be used by end-users  (https://github.com/ansible-collections/community.internal_test_tools/pull/112)."

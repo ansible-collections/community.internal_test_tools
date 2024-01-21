@@ -5,6 +5,34 @@ Community Internal Test Tools Collection Release Notes
 .. contents:: Topics
 
 
+v0.11.0
+=======
+
+Release Summary
+---------------
+
+Feature, bugfix, and maintenance release.
+
+Minor Changes
+-------------
+
+- extra sanity test runner - make sure that a ``ansible_collections`` ancestor directory is also copied into the Docker container (https://github.com/ansible-collections/community.internal_test_tools/pull/103).
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- The internal test module ``fetch_url_test_module`` has been renamed to ``_fetch_url_test_module``, and the internal test lookup plugin ``open_url_test_lookup`` has been renamed to ``_open_url_test_lookup``. This emphasizes that these plugins are private and not supposed to be used by end-users  (https://github.com/ansible-collections/community.internal_test_tools/pull/112).
+
+Deprecated Features
+-------------------
+
+- The ``tools/ansible_builtin_runtime.py`` tool is deprecated and will be removed in a future version. If anyone is interested in keeping this tool, please comment on the `tool removal issue <https://github.com/ansible-collections/community.internal_test_tools/issues/111>`__ (https://github.com/ansible-collections/community.internal_test_tools/issues/111).
+
+Bugfixes
+--------
+
+- extra sanity test runner - run pip via Python instead of running it directly; also set ``PIP_BREAK_SYSTEM_PACKAGES=1`` in the environment (https://github.com/ansible-collections/community.internal_test_tools/pull/104).
+
 v0.10.1
 =======
 
