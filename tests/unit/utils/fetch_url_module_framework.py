@@ -69,13 +69,12 @@ __metaclass__ = type
 
 import pytest
 
-from mock import MagicMock
-
 import ansible.module_utils.basic  # noqa: F401, pylint: disable=unused-import
 import ansible.module_utils.urls  # noqa: F401, pylint: disable=unused-import
 
 from ansible.module_utils.six import PY2
 
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import MagicMock
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 
 from ._utils import (
