@@ -4,7 +4,6 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
-
 v0.11.0
 =======
 
@@ -57,7 +56,6 @@ correctly. You should be still able to read it in most cases, but you need
 ansible-core 2.15 or later to see it as it is intended. Alternatively you can
 look at `the docsite <https://ansible-collections.github.io/community.internal_test_tools/branch/main/>`__
 for the rendered HTML version of the documentation of the latest release.
-
 
 Removed Features (previously deprecated)
 ----------------------------------------

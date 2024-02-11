@@ -37,7 +37,7 @@ Please follow the general Ansible contributor guidelines; see the [Ansible Commu
 
 ## Release notes
 
-A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/main/CHANGELOG.rst).
+A changelog can be found [in the GitHub repository](https://github.com/ansible-collections/community.internal_test_tools/tree/main/CHANGELOG.md).
 
 ## Releasing, Deprecation and Versioning
 
