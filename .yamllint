@@ -25,3 +25,7 @@ rules:
   line-length: disable
   truthy:
     check-keys: false
+
+  # ansible-lint insists on this
+  octal-values:
+    forbid-explicit-octal: true
