@@ -118,6 +118,7 @@ jobs:
           fail_ci_if_error: false
           working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: units
 
   integration:
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
