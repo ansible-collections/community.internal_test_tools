@@ -49,6 +49,7 @@ jobs:
         uses: felixfontein/ansible-test-gh-action@main
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
           testing-type: sanity
           # https://github.com/ansible/ansible/pull/82574
           sanity-skip-tests: ansible-doc
@@ -87,6 +88,7 @@ jobs:
         uses: felixfontein/ansible-test-gh-action@main
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
           testing-type: units
 
       # Run unit tests for tools
@@ -114,7 +116,9 @@ jobs:
       - uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: false
-          directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+          working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: units
 
   integration:
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
@@ -183,6 +187,7 @@ jobs:
         uses: felixfontein/ansible-test-gh-action@main
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
           integration-continue-on-error: 'false'
           integration-diff: 'false'
           integration-retry-on-error: 'true'
