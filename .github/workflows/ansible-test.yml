@@ -116,7 +116,8 @@ jobs:
       - uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: false
-          directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+          working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   integration:
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
