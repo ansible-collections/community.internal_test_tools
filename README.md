@@ -7,6 +7,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 # Internal Test Tools Collection
 [![CI](https://github.com/ansible-collections/community.internal_test_tools/workflows/CI/badge.svg?event=push)](https://github.com/ansible-collections/community.internal_test_tools/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/community.internal_test_tools)](https://codecov.io/gh/ansible-collections/community.internal_test_tools)
+[![REUSE status](https://api.reuse.software/badge/github.com/ansible-collections/community.internal_test_tools)](https://api.reuse.software/info/github.com/ansible-collections/community.internal_test_tools)
 
 This collection provides useful test tools for other collections. It is **NOT** aimed at Ansible users, but at collection developers!
 
