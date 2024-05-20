@@ -219,13 +219,13 @@ New Plugins
 Lookup
 ~~~~~~
 
-- open_url_test_lookup - Test plugin for the open_url test framework (DO NOT USE THIS!)
+- community.internal_test_tools.open_url_test_lookup - Test plugin for the open_url test framework (DO NOT USE THIS!)
 
 New Modules
 -----------
 
-- files_collect - Collect state of files and directories on disk
-- files_diff - Check whether there were changes since files_collect was called
+- community.internal_test_tools.files_collect - Collect state of files and directories on disk
+- community.internal_test_tools.files_diff - Check whether there were changes since files_collect was called
 
 v0.2.1
 ======
@@ -254,4 +254,4 @@ Initial release.
 New Modules
 -----------
 
-- community.internal_test_tools.fetch_url_test_module - Test module for fetch_url test framework
+- community.internal_test_tools.community.internal_test_tools.fetch_url_test_module - Test module for fetch_url test framework

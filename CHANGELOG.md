@@ -1,57 +1,58 @@
 # Community Internal Test Tools Collection Release Notes
 
 **Topics**
+
 - <a href="#v0-11-0">v0\.11\.0</a>
-  - <a href="#release-summary">Release Summary</a>
-  - <a href="#minor-changes">Minor Changes</a>
-  - <a href="#breaking-changes--porting-guide">Breaking Changes / Porting Guide</a>
-  - <a href="#deprecated-features">Deprecated Features</a>
-  - <a href="#bugfixes">Bugfixes</a>
+    - <a href="#release-summary">Release Summary</a>
+    - <a href="#minor-changes">Minor Changes</a>
+    - <a href="#breaking-changes--porting-guide">Breaking Changes / Porting Guide</a>
+    - <a href="#deprecated-features">Deprecated Features</a>
+    - <a href="#bugfixes">Bugfixes</a>
 - <a href="#v0-10-1">v0\.10\.1</a>
-  - <a href="#release-summary-1">Release Summary</a>
+    - <a href="#release-summary-1">Release Summary</a>
 - <a href="#v0-10-0">v0\.10\.0</a>
-  - <a href="#release-summary-2">Release Summary</a>
-  - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
-  - <a href="#known-issues">Known Issues</a>
+    - <a href="#release-summary-2">Release Summary</a>
+    - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
+    - <a href="#known-issues">Known Issues</a>
 - <a href="#v0-9-0">v0\.9\.0</a>
-  - <a href="#release-summary-3">Release Summary</a>
-  - <a href="#minor-changes-1">Minor Changes</a>
-  - <a href="#deprecated-features-1">Deprecated Features</a>
+    - <a href="#release-summary-3">Release Summary</a>
+    - <a href="#minor-changes-1">Minor Changes</a>
+    - <a href="#deprecated-features-1">Deprecated Features</a>
 - <a href="#v0-8-0">v0\.8\.0</a>
-  - <a href="#release-summary-4">Release Summary</a>
-  - <a href="#minor-changes-2">Minor Changes</a>
+    - <a href="#release-summary-4">Release Summary</a>
+    - <a href="#minor-changes-2">Minor Changes</a>
 - <a href="#v0-7-0">v0\.7\.0</a>
-  - <a href="#release-summary-5">Release Summary</a>
-  - <a href="#minor-changes-3">Minor Changes</a>
+    - <a href="#release-summary-5">Release Summary</a>
+    - <a href="#minor-changes-3">Minor Changes</a>
 - <a href="#v0-6-1">v0\.6\.1</a>
-  - <a href="#release-summary-6">Release Summary</a>
-  - <a href="#bugfixes-1">Bugfixes</a>
+    - <a href="#release-summary-6">Release Summary</a>
+    - <a href="#bugfixes-1">Bugfixes</a>
 - <a href="#v0-6-0">v0\.6\.0</a>
-  - <a href="#release-summary-7">Release Summary</a>
-  - <a href="#minor-changes-4">Minor Changes</a>
-  - <a href="#bugfixes-2">Bugfixes</a>
+    - <a href="#release-summary-7">Release Summary</a>
+    - <a href="#minor-changes-4">Minor Changes</a>
+    - <a href="#bugfixes-2">Bugfixes</a>
 - <a href="#v0-5-0">v0\.5\.0</a>
-  - <a href="#release-summary-8">Release Summary</a>
-  - <a href="#minor-changes-5">Minor Changes</a>
-  - <a href="#breaking-changes--porting-guide-1">Breaking Changes / Porting Guide</a>
-  - <a href="#bugfixes-3">Bugfixes</a>
+    - <a href="#release-summary-8">Release Summary</a>
+    - <a href="#minor-changes-5">Minor Changes</a>
+    - <a href="#breaking-changes--porting-guide-1">Breaking Changes / Porting Guide</a>
+    - <a href="#bugfixes-3">Bugfixes</a>
 - <a href="#v0-4-0">v0\.4\.0</a>
-  - <a href="#release-summary-9">Release Summary</a>
-  - <a href="#minor-changes-6">Minor Changes</a>
-  - <a href="#bugfixes-4">Bugfixes</a>
+    - <a href="#release-summary-9">Release Summary</a>
+    - <a href="#minor-changes-6">Minor Changes</a>
+    - <a href="#bugfixes-4">Bugfixes</a>
 - <a href="#v0-3-0">v0\.3\.0</a>
-  - <a href="#minor-changes-7">Minor Changes</a>
-  - <a href="#bugfixes-5">Bugfixes</a>
-  - <a href="#new-plugins">New Plugins</a>
-    - <a href="#lookup">Lookup</a>
-  - <a href="#new-modules">New Modules</a>
+    - <a href="#minor-changes-7">Minor Changes</a>
+    - <a href="#bugfixes-5">Bugfixes</a>
+    - <a href="#new-plugins">New Plugins</a>
+        - <a href="#lookup">Lookup</a>
+    - <a href="#new-modules">New Modules</a>
 - <a href="#v0-2-1">v0\.2\.1</a>
-  - <a href="#release-summary-10">Release Summary</a>
+    - <a href="#release-summary-10">Release Summary</a>
 - <a href="#v0-2-0">v0\.2\.0</a>
-  - <a href="#major-changes">Major Changes</a>
+    - <a href="#major-changes">Major Changes</a>
 - <a href="#v0-1-1">v0\.1\.1</a>
-  - <a href="#release-summary-11">Release Summary</a>
-  - <a href="#new-modules-1">New Modules</a>
+    - <a href="#release-summary-11">Release Summary</a>
+    - <a href="#new-modules-1">New Modules</a>
 
 <a id="v0-11-0"></a>
 ## v0\.11\.0
@@ -267,13 +268,13 @@ Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url
 <a id="lookup"></a>
 #### Lookup
 
-* open\_url\_test\_lookup \- Test plugin for the open\_url test framework \(DO NOT USE THIS\!\)
+* community\.internal\_test\_tools\.open\_url\_test\_lookup \- Test plugin for the open\_url test framework \(DO NOT USE THIS\!\)
 
 <a id="new-modules"></a>
 ### New Modules
 
-* files\_collect \- Collect state of files and directories on disk
-* files\_diff \- Check whether there were changes since files\_collect was called
+* community\.internal\_test\_tools\.files\_collect \- Collect state of files and directories on disk
+* community\.internal\_test\_tools\.files\_diff \- Check whether there were changes since files\_collect was called
 
 <a id="v0-2-1"></a>
 ## v0\.2\.1
@@ -302,4 +303,4 @@ Initial release\.
 <a id="new-modules-1"></a>
 ### New Modules
 
-* community\.internal\_test\_tools\.fetch\_url\_test\_module \- Test module for fetch\_url test framework
+* community\.internal\_test\_tools\.community\.internal\_test\_tools\.fetch\_url\_test\_module \- Test module for fetch\_url test framework
