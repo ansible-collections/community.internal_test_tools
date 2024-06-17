@@ -164,6 +164,16 @@ class CallBase(object):
         self.form_present.add(key)
         return self
 
+    def expect_form_values(self, key, values):
+        '''
+        Builder method to set an expected form value for a call.
+        '''
+        assert not self.json_parse
+        assert isinstance(values, list)
+        self.form_parse = True
+        self.form_values[key] = values
+        return self
+
     def expect_form_value(self, key, value):
         '''
         Builder method to set an expected form value for a call.
@@ -247,7 +257,7 @@ def _validate_form(call, data):
         if len(v) == 0:
             assert k not in form, 'Form key "{0}" not absent'.format(k)
         else:
-            assert form[k] == v, 'Form key "{0}" has not values {1}, but {2}'.format(k, v, form[k])
+            assert form[k] == v, 'Form key "{0}" has not values {1!r}, but {2!r}'.format(k, v, form[k])
 
 
 def _format_json_key(key):
