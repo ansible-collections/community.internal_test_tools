@@ -18,10 +18,7 @@ communication:
   matrix_rooms:
     - topic: Ansible Community Working Group
       room: '#community:ansible.com'
-  irc_channels:
-    - topic: Ansible Community Working Group
-      network: Libera
-      channel: '#ansible-community'
-  mailing_lists:
-    - topic: Ansible Development List
-      url: https://groups.google.com/g/ansible-devel
+  forums:
+    - topic: Ansible Forum
+      # The following URL directly points to the "Collection Development" section
+      url: https://forum.ansible.com/c/project/collection-development/27
