@@ -1,22 +1,195 @@
+---
 ancestor: null
 releases:
   0.1.1:
     changes:
       release_summary: Initial release.
     fragments:
-    - initial.yml
+      - initial.yml
     modules:
-    - description: Test module for fetch_url test framework
-      name: community.internal_test_tools.fetch_url_test_module
-      namespace: ''
+      - description: Test module for fetch_url test framework
+        name: community.internal_test_tools.fetch_url_test_module
+        namespace: ''
     release_date: '2020-05-16'
+  0.2.0:
+    changes:
+      major_changes:
+        - There is now a `extra sanity test runner <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
+          which allows to easily run extra sanity tests. This is a stop-gap solution
+          until ansible-test supports sanity test plugins.
+    fragments:
+      - runner.yml
+    release_date: '2020-06-23'
+  0.2.1:
+    changes:
+      release_summary: Re-release because Galaxy did not accept a tag with spaces
+        in ``galaxy.yml``. No other changes besides that the changelog moved to the
+        root directory.
+    fragments:
+      - 0.2.1.yml
+    release_date: '2020-06-23'
+  0.3.0:
+    changes:
+      bugfixes:
+        - Fix form value present test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+        - Fix header test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+      minor_changes:
+        - Added a framework for testing plugins using ``open_url`` from ``ansible.module_utils.urls``
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
+        - The ``fetch_url`` testing framework now allows to match the provided content
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/31).
+        - There are now a `meta/runtime.yml and ansible_builtin_runtime.yml helper
+          tools <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
+          which allows to convert between symlinks and redirects in ``meta/runtime.yml``,
+          allows to compare ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml``
+          with this collection, and verify that plugins mentioned actually exist.
+    fragments:
+      - meta_runtime.yml
+      - open_url-framework.yml
+    modules:
+      - description: Collect state of files and directories on disk
+        name: files_collect
+        namespace: ''
+      - description: Check whether there were changes since files_collect was called
+        name: files_diff
+        namespace: ''
+    plugins:
+      lookup:
+        - description: Test plugin for the open_url test framework (DO NOT USE THIS!)
+          name: open_url_test_lookup
+          namespace: null
+    release_date: '2021-01-31'
+  0.4.0:
+    changes:
+      bugfixes:
+        - fetch_url testing framework - return ``url`` as part of ``info`` (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+      minor_changes:
+        - fetch_url and open_url testing frameworks - allow to check query parameters
+          of URLs (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+        - fetch_url and open_url testing frameworks - allow to compare URLs without
+          query and/or fragment (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
+        - fetch_url and open_url testing frameworks - allow to parse and check JSON
+          data (https://github.com/ansible-collections/community.internal_test_tools/pull/34).
+      release_summary: Add bugfixes for and new features to the ``open_url``/``fetch_url``
+        test framework.
+    fragments:
+      - 0.4.0.yml
+      - 33-query-fragment.yml
+      - 34-json.yml
+    release_date: '2021-04-19'
+  0.5.0:
+    changes:
+      breaking_changes:
+        - ansible_builtin_runtime tool - renamed ``check-ansible-base-redirects``
+          subcommand to ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      bugfixes:
+        - ansible_builtin_runtime tool - fix subcommand ``check-ansible-core-redirects``
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+        - extra sanity test runner - bump default Docker image fallback to container
+          currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/50).
+        - extra sanity test runner - fix default Docker image detection to work with
+          ansible-test from ansible-core 2.12 (https://github.com/ansible-collections/community.internal_test_tools/pull/47).
+      minor_changes:
+        - '``fetch_url`` and ``open_url`` test frameworks - output number of expected
+          and actual calls when number of actual calls is too low.'
+        - ansible_builtin_runtime tool - allow to specify collection root directory
+          for ``check-ansible-core-redirects`` subcommand (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+        - ansible_builtin_runtime tool - make tool executable (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+        - extra sanity test runner - add options ``--bot`` and ``--junit`` to create
+          results that ansibullbot and AZP can parse (https://github.com/ansible-collections/community.internal_test_tools/pull/41).
+        - extra sanity test runner - bump default Python version from 3.7 to 3.8 (https://github.com/ansible-collections/community.internal_test_tools/pull/49).
+        - meta_runtime tool - allow to specify collection root directory for all subcommands
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
+      release_summary: Feature release with various tool improvements.
+    fragments:
+      - 0.5.0.yml
+      - 41-runner-output.yml
+      - 47-runner-docker.yml
+      - 49-runner-python.yml
+      - 50-runner-docker.yml
+      - 51-ansible-core.yml
+      - url-framework.yml
+    release_date: '2021-11-14'
+  0.6.0:
+    changes:
+      bugfixes:
+        - fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest
+          ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+        - files_collect, files_diff - ignore ``atime`` since that does not indicate
+          that a file was modified (https://github.com/ansible-collections/community.internal_test_tools/pull/54).
+      minor_changes:
+        - fetch_url test framework - make behavior more similar to latest ansible-core
+          ``devel`` branch, and include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+        - open_url test framework - include ``closed`` property for response objects
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
+      release_summary: Feature and bugfix release.
+    fragments:
+      - 0.6.0.yml
+      - 54-files_diff-atime.yml
+      - fetch_url-devel.yml
+    release_date: '2022-01-04'
+  0.6.1:
+    changes:
+      bugfixes:
+        - extra sanity test runner - bump default Docker image fallback to container
+          currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
+        - extra sanity test runner - fix default Docker image detection to work with
+          ansible-test from ansible-core 2.12.2 on (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
+      release_summary: Regular bugfix release.
+    fragments:
+      - 0.6.1.yml
+      - 55-run-docker.yml
+    release_date: '2022-03-22'
+  0.7.0:
+    changes:
+      minor_changes:
+        - All software licenses are now in the ``LICENSES/`` directory of the collection
+          root. Moreover, ``SPDX-License-Identifier:`` is used to declare the applicable
+          license for every file that is not automatically generated (https://github.com/ansible-collections/community.internal_test_tools/pull/69).
+        - open_url and fetch_url unit test frameworks - allow to check for ``timeout``,
+          ``url_username``, ``url_password``, and ``force_basic_auth`` settings (https://github.com/ansible-collections/community.internal_test_tools/pull/65).
+      release_summary: Regular feature release.
+    fragments:
+      - 0.7.0.yml
+      - 65-auth-timeout.yml
+      - 69-licenses.yml
+    release_date: '2022-07-19'
+  0.8.0:
+    changes:
+      minor_changes:
+        - The collection repository conforms to the `REUSE specification <https://reuse.software/spec/>`__
+          except for the changelog fragments (https://github.com/ansible-collections/community.internal_test_tools/pull/75).
+      release_summary: Maintenance release with updated documentation and licensing
+        information.
+    fragments:
+      - 0.8.0.yml
+      - licenses.yml
+    release_date: '2022-09-11'
+  0.9.0:
+    changes:
+      deprecated_features:
+        - The meta/runtime.yml helper tool ``tools/meta_runtime.py`` is deprecated
+          and will be removed soon. If you need it, please comment on the issue and/or
+          stick to a version of community.internal_test_tools that is known to still
+          includes it (https://github.com/ansible-collections/community.internal_test_tools/issues/79,
+          https://github.com/ansible-collections/community.internal_test_tools/pull/90).
+      minor_changes:
+        - Let the extra sanity test runner report bad test descriptors as errors (https://github.com/ansible-collections/community.internal_test_tools/pull/89).
+        - Use Python 3.10 instead of Python 3.8 for the extra sanity test runner (https://github.com/ansible-collections/community.internal_test_tools/pull/88).
+      release_summary: Feature release with improved extra sanity test runner.
+    fragments:
+      - 0.9.0.yml
+      - 88-runner.yml
+      - 89-runner.yml
+      - meta-runtime-deprecate.yml
+    release_date: '2023-04-26'
   0.10.0:
     changes:
       known_issues:
-      - Ansible markup will show up in raw form on ansible-doc text output for ansible-core
-        before 2.15. If you have trouble deciphering the documentation markup, please
-        upgrade to ansible-core 2.15 (or newer), or read the HTML documentation on
-        https://ansible-collections.github.io/community.internal_test_tools/branch/main/.
+        - Ansible markup will show up in raw form on ansible-doc text output for ansible-core
+          before 2.15. If you have trouble deciphering the documentation markup, please
+          upgrade to ansible-core 2.15 (or newer), or read the HTML documentation
+          on https://ansible-collections.github.io/community.internal_test_tools/branch/main/.
       release_summary: 'Maintenance release with updated documentation and removal
         of a deprecated tool.
 
@@ -42,215 +215,43 @@ releases:
 
         '
       removed_features:
-      - Removed the deprecated ``meta/runtime.yml`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/79,
-        https://github.com/ansible-collections/community.internal_test_tools/pull/91).
+        - Removed the deprecated ``meta/runtime.yml`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/79,
+          https://github.com/ansible-collections/community.internal_test_tools/pull/91).
     fragments:
-    - 0.10.0.yml
-    - 91-remove-meta-runtime-tool.yml
-    - semantic-markup.yml
+      - 0.10.0.yml
+      - 91-remove-meta-runtime-tool.yml
+      - semantic-markup.yml
     release_date: '2023-06-27'
   0.10.1:
     changes:
       release_summary: Maintenance release to test whether publishing community collections
         works.
     fragments:
-    - 0.10.1.yml
+      - 0.10.1.yml
     release_date: '2023-10-04'
   0.11.0:
     changes:
       breaking_changes:
-      - The internal test module ``fetch_url_test_module`` has been renamed to ``_fetch_url_test_module``,
-        and the internal test lookup plugin ``open_url_test_lookup`` has been renamed
-        to ``_open_url_test_lookup``. This emphasizes that these plugins are private
-        and not supposed to be used by end-users  (https://github.com/ansible-collections/community.internal_test_tools/pull/112).
+        - The internal test module ``fetch_url_test_module`` has been renamed to ``_fetch_url_test_module``,
+          and the internal test lookup plugin ``open_url_test_lookup`` has been renamed
+          to ``_open_url_test_lookup``. This emphasizes that these plugins are private
+          and not supposed to be used by end-users  (https://github.com/ansible-collections/community.internal_test_tools/pull/112).
       bugfixes:
-      - extra sanity test runner - run pip via Python instead of running it directly;
-        also set ``PIP_BREAK_SYSTEM_PACKAGES=1`` in the environment (https://github.com/ansible-collections/community.internal_test_tools/pull/104).
+        - extra sanity test runner - run pip via Python instead of running it directly;
+          also set ``PIP_BREAK_SYSTEM_PACKAGES=1`` in the environment (https://github.com/ansible-collections/community.internal_test_tools/pull/104).
       deprecated_features:
-      - The ``tools/ansible_builtin_runtime.py`` tool is deprecated and will be removed
-        in a future version. If anyone is interested in keeping this tool, please
-        comment on the `tool removal issue <https://github.com/ansible-collections/community.internal_test_tools/issues/111>`__
-        (https://github.com/ansible-collections/community.internal_test_tools/issues/111).
+        - The ``tools/ansible_builtin_runtime.py`` tool is deprecated and will be
+          removed in a future version. If anyone is interested in keeping this tool,
+          please comment on the `tool removal issue <https://github.com/ansible-collections/community.internal_test_tools/issues/111>`__
+          (https://github.com/ansible-collections/community.internal_test_tools/issues/111).
       minor_changes:
-      - extra sanity test runner - make sure that a ``ansible_collections`` ancestor
-        directory is also copied into the Docker container (https://github.com/ansible-collections/community.internal_test_tools/pull/103).
+        - extra sanity test runner - make sure that a ``ansible_collections`` ancestor
+          directory is also copied into the Docker container (https://github.com/ansible-collections/community.internal_test_tools/pull/103).
       release_summary: Feature, bugfix, and maintenance release.
     fragments:
-    - 0.11.0.yml
-    - 103-runner-root.yml
-    - 104-runner-pip.yml
-    - 112-test-plugins.yml
-    - tools-deprecation.yml
+      - 0.11.0.yml
+      - 103-runner-root.yml
+      - 104-runner-pip.yml
+      - 112-test-plugins.yml
+      - tools-deprecation.yml
     release_date: '2024-01-21'
-  0.2.0:
-    changes:
-      major_changes:
-      - There is now a `extra sanity test runner <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
-        which allows to easily run extra sanity tests. This is a stop-gap solution
-        until ansible-test supports sanity test plugins.
-    fragments:
-    - runner.yml
-    release_date: '2020-06-23'
-  0.2.1:
-    changes:
-      release_summary: Re-release because Galaxy did not accept a tag with spaces
-        in ``galaxy.yml``. No other changes besides that the changelog moved to the
-        root directory.
-    fragments:
-    - 0.2.1.yml
-    release_date: '2020-06-23'
-  0.3.0:
-    changes:
-      bugfixes:
-      - Fix form value present test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
-      - Fix header test for ``fetch_url`` testing framework (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
-      minor_changes:
-      - Added a framework for testing plugins using ``open_url`` from ``ansible.module_utils.urls``
-        (https://github.com/ansible-collections/community.internal_test_tools/pull/24).
-      - The ``fetch_url`` testing framework now allows to match the provided content
-        (https://github.com/ansible-collections/community.internal_test_tools/pull/31).
-      - There are now a `meta/runtime.yml and ansible_builtin_runtime.yml helper tools
-        <https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md>`_
-        which allows to convert between symlinks and redirects in ``meta/runtime.yml``,
-        allows to compare ansible-base's ``lib/ansible/config/ansible_builtin_runtime.yml``
-        with this collection, and verify that plugins mentioned actually exist.
-    fragments:
-    - meta_runtime.yml
-    - open_url-framework.yml
-    modules:
-    - description: Collect state of files and directories on disk
-      name: files_collect
-      namespace: ''
-    - description: Check whether there were changes since files_collect was called
-      name: files_diff
-      namespace: ''
-    plugins:
-      lookup:
-      - description: Test plugin for the open_url test framework (DO NOT USE THIS!)
-        name: open_url_test_lookup
-        namespace: null
-    release_date: '2021-01-31'
-  0.4.0:
-    changes:
-      bugfixes:
-      - fetch_url testing framework - return ``url`` as part of ``info`` (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
-      minor_changes:
-      - fetch_url and open_url testing frameworks - allow to check query parameters
-        of URLs (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
-      - fetch_url and open_url testing frameworks - allow to compare URLs without
-        query and/or fragment (https://github.com/ansible-collections/community.internal_test_tools/pull/33).
-      - fetch_url and open_url testing frameworks - allow to parse and check JSON
-        data (https://github.com/ansible-collections/community.internal_test_tools/pull/34).
-      release_summary: Add bugfixes for and new features to the ``open_url``/``fetch_url``
-        test framework.
-    fragments:
-    - 0.4.0.yml
-    - 33-query-fragment.yml
-    - 34-json.yml
-    release_date: '2021-04-19'
-  0.5.0:
-    changes:
-      breaking_changes:
-      - ansible_builtin_runtime tool - renamed ``check-ansible-base-redirects`` subcommand
-        to ``check-ansible-core-redirects`` (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
-      bugfixes:
-      - ansible_builtin_runtime tool - fix subcommand ``check-ansible-core-redirects``
-        (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
-      - extra sanity test runner - bump default Docker image fallback to container
-        currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/50).
-      - extra sanity test runner - fix default Docker image detection to work with
-        ansible-test from ansible-core 2.12 (https://github.com/ansible-collections/community.internal_test_tools/pull/47).
-      minor_changes:
-      - '``fetch_url`` and ``open_url`` test frameworks - output number of expected
-        and actual calls when number of actual calls is too low.'
-      - ansible_builtin_runtime tool - allow to specify collection root directory
-        for ``check-ansible-core-redirects`` subcommand (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
-      - ansible_builtin_runtime tool - make tool executable (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
-      - extra sanity test runner - add options ``--bot`` and ``--junit`` to create
-        results that ansibullbot and AZP can parse (https://github.com/ansible-collections/community.internal_test_tools/pull/41).
-      - extra sanity test runner - bump default Python version from 3.7 to 3.8 (https://github.com/ansible-collections/community.internal_test_tools/pull/49).
-      - meta_runtime tool - allow to specify collection root directory for all subcommands
-        (https://github.com/ansible-collections/community.internal_test_tools/pull/51).
-      release_summary: Feature release with various tool improvements.
-    fragments:
-    - 0.5.0.yml
-    - 41-runner-output.yml
-    - 47-runner-docker.yml
-    - 49-runner-python.yml
-    - 50-runner-docker.yml
-    - 51-ansible-core.yml
-    - url-framework.yml
-    release_date: '2021-11-14'
-  0.6.0:
-    changes:
-      bugfixes:
-      - fetch_url_test_module - fix usage of ``fetch_url`` with changes in latest
-        ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
-      - files_collect, files_diff - ignore ``atime`` since that does not indicate
-        that a file was modified (https://github.com/ansible-collections/community.internal_test_tools/pull/54).
-      minor_changes:
-      - fetch_url test framework - make behavior more similar to latest ansible-core
-        ``devel`` branch, and include ``closed`` property for response objects (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
-      - open_url test framework - include ``closed`` property for response objects
-        (https://github.com/ansible-collections/community.internal_test_tools/pull/52).
-      release_summary: Feature and bugfix release.
-    fragments:
-    - 0.6.0.yml
-    - 54-files_diff-atime.yml
-    - fetch_url-devel.yml
-    release_date: '2022-01-04'
-  0.6.1:
-    changes:
-      bugfixes:
-      - extra sanity test runner - bump default Docker image fallback to container
-        currently used by ansible-test in devel branch (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
-      - extra sanity test runner - fix default Docker image detection to work with
-        ansible-test from ansible-core 2.12.2 on (https://github.com/ansible-collections/community.internal_test_tools/pull/55).
-      release_summary: Regular bugfix release.
-    fragments:
-    - 0.6.1.yml
-    - 55-run-docker.yml
-    release_date: '2022-03-22'
-  0.7.0:
-    changes:
-      minor_changes:
-      - All software licenses are now in the ``LICENSES/`` directory of the collection
-        root. Moreover, ``SPDX-License-Identifier:`` is used to declare the applicable
-        license for every file that is not automatically generated (https://github.com/ansible-collections/community.internal_test_tools/pull/69).
-      - open_url and fetch_url unit test frameworks - allow to check for ``timeout``,
-        ``url_username``, ``url_password``, and ``force_basic_auth`` settings (https://github.com/ansible-collections/community.internal_test_tools/pull/65).
-      release_summary: Regular feature release.
-    fragments:
-    - 0.7.0.yml
-    - 65-auth-timeout.yml
-    - 69-licenses.yml
-    release_date: '2022-07-19'
-  0.8.0:
-    changes:
-      minor_changes:
-      - The collection repository conforms to the `REUSE specification <https://reuse.software/spec/>`__
-        except for the changelog fragments (https://github.com/ansible-collections/community.internal_test_tools/pull/75).
-      release_summary: Maintenance release with updated documentation and licensing
-        information.
-    fragments:
-    - 0.8.0.yml
-    - licenses.yml
-    release_date: '2022-09-11'
-  0.9.0:
-    changes:
-      deprecated_features:
-      - The meta/runtime.yml helper tool ``tools/meta_runtime.py`` is deprecated and
-        will be removed soon. If you need it, please comment on the issue and/or stick
-        to a version of community.internal_test_tools that is known to still includes
-        it (https://github.com/ansible-collections/community.internal_test_tools/issues/79,
-        https://github.com/ansible-collections/community.internal_test_tools/pull/90).
-      minor_changes:
-      - Let the extra sanity test runner report bad test descriptors as errors (https://github.com/ansible-collections/community.internal_test_tools/pull/89).
-      - Use Python 3.10 instead of Python 3.8 for the extra sanity test runner (https://github.com/ansible-collections/community.internal_test_tools/pull/88).
-      release_summary: Feature release with improved extra sanity test runner.
-    fragments:
-    - 0.9.0.yml
-    - 88-runner.yml
-    - 89-runner.yml
-    - meta-runtime-deprecate.yml
-    release_date: '2023-04-26'

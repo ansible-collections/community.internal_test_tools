@@ -37,3 +37,5 @@ title: Community Internal Test Tools Collection
 trivial_section_name: trivial
 use_fqcn: true
 add_plugin_period: true
+changelog_nice_yaml: true
+changelog_sort: version
