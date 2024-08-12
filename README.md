@@ -13,6 +13,24 @@ This collection provides useful test tools for other collections. It is **NOT** 
 
 Please note that this collection does **not** support Windows targets.
 
+## Code of Conduct
+
+We follow [Ansible Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html) in all our interactions within this project.
+
+If you encounter abusive behavior violating the [Ansible Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html), please refer to the [policy violations](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html#policy-violations) section of the Code of Conduct for information on how to raise a complaint.
+
+## Communication
+
+* Join the Ansible forum:
+  * [Tag `internal-test-tools`](https://forum.ansible.com/tag/internal-test-tools): discuss the collection and the test tools it provides.
+  * [Collection Development](https://forum.ansible.com/c/project/collection-development/27): discuss development and testing of collections.
+  * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+  * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
+
+* The Ansible [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn): used to announce releases and important changes.
+
+For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
+
 ## Tested with Ansible
 
 Tested with the current Ansible 2.9, ansible-base 2.10, ansible-core 2.11, ansible-core 2.12, ansible-core 2.13, ansible-core 2.14, ansible-core 2.15, ansible-core 2.16, and ansible-core 2.17 releases and the current development version of ansible-core. Ansible versions before 2.9.10 are not supported.

@@ -19,6 +19,9 @@ communication:
     - topic: Ansible Community Working Group
       room: '#community:ansible.com'
   forums:
-    - topic: Ansible Forum
-      # The following URL directly points to the "Collection Development" section
+    - topic: "Ansible Forum: Discussions about community.internal_test_tools"
+      # The following URL directly points to the "internal-test-tools" tag
+      url: https://forum.ansible.com/tag/internal-test-tools
+    - topic: "Ansible Forum: Discussions on collection development"
+      # The following URL directly points to the "Collection Development" category
       url: https://forum.ansible.com/c/project/collection-development/27
