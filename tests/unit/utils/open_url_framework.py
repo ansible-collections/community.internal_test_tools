@@ -59,14 +59,13 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
-from mock import MagicMock
-
 from ansible.module_utils.six.moves.urllib.error import HTTPError
 
 from ._utils import (
     CallBase as _CallBase,
     validate_call as _validate_call,
 )
+from ..compat.mock import MagicMock
 
 
 class OpenUrlCall(_CallBase):
