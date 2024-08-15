@@ -23,7 +23,7 @@ If you encounter abusive behavior violating the [Ansible Code of Conduct](https:
 
 * Join the Ansible forum:
   * [Tag `internal-test-tools`](https://forum.ansible.com/tag/internal-test-tools): discuss the collection and the test tools it provides.
-  * [Collection Development](https://forum.ansible.com/c/project/collection-development/27): discuss development and testing of collections.
+  * [Collection Development](https://forum.ansible.com/c/project/collection-development/27): discuss development and testing of collections. Please add the `internal-test-tools` tag when starting new discussions involving this collection.
   * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
   * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
 
