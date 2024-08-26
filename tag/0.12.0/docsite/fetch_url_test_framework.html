@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fetch_url Test Framework &mdash; Community.Internal_test_tools Collection  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="open_url Test Framework" href="open_url_test_framework.html" />
+    <link rel="prev" title="Checking for file modifications with files_collect and files_diff" href="files_diff.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="https://ansible-collections.github.io/community.internal_test_tools/branch/main/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Community.Internal_test_tools Collection Docs</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Community.Internal_test_tools Collection
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Community.Internal_Test_Tools Release Notes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="files_diff.html">Checking for file modifications with <code class="docutils literal notranslate"><span class="pre">files_collect</span></code> and <code class="docutils literal notranslate"><span class="pre">files_diff</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fetch_url</span></code> Test Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-unit-test">Example unit test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="open_url_test_framework.html"><code class="docutils literal notranslate"><span class="pre">open_url</span></code> Test Framework</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_fetch_url_test_module_module.html">community.internal_test_tools._fetch_url_test_module module – Test module for fetch_url test framework (DO NOT USE THIS!)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files_collect_module.html">community.internal_test_tools.files_collect module – Collect state of files and directories on disk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../files_diff_module.html">community.internal_test_tools.files_diff module – Check whether there were changes since files_collect was called</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_open_url_test_lookup_lookup.html">community.internal_test_tools._open_url_test_lookup lookup – Test plugin for the open_url test framework (DO NOT USE THIS!)</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Community.Internal_test_tools Collection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">fetch_url</span></code> Test Framework</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="fetch-url-test-framework">
+<span id="ansible-collections-community-internal-test-tools-docsite-fetch-url-test-framework"></span><h1><code class="docutils literal notranslate"><span class="pre">fetch_url</span></code> Test Framework<a class="headerlink" href="#fetch-url-test-framework" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">fetch_url</span></code> test framework is a small framework for testing modules which use <code class="docutils literal notranslate"><span class="pre">fetch_url()</span></code> from <code class="docutils literal notranslate"><span class="pre">ansible.module_utils.urls</span></code> to communicate with a HTTP service. It is available from <code class="docutils literal notranslate"><span class="pre">ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_url_module_framework</span></code>.</p>
+<p>The main interface consists of the classes <code class="docutils literal notranslate"><span class="pre">FetchUrlCall</span></code> and <code class="docutils literal notranslate"><span class="pre">BaseTestModule</span></code>. A test is expected to be inherited from <code class="docutils literal notranslate"><span class="pre">BaseTestModule</span></code>. The class provides two methods, <code class="docutils literal notranslate"><span class="pre">run_module_success</span></code> and <code class="docutils literal notranslate"><span class="pre">run_module_failed</span></code>, which expect next to the module’s Python module and the arguments a list of <code class="docutils literal notranslate"><span class="pre">FetchUrlCall</span></code> objects which correspond to the expected <code class="docutils literal notranslate"><span class="pre">fetch_url()</span></code> calls made by the module for the given input. The methods return the result returned by <code class="docutils literal notranslate"><span class="pre">module.fail_json()</span></code> and <code class="docutils literal notranslate"><span class="pre">module.exit_json()</span></code>, respectively.</p>
+<p>Several unit tests using this framework can be found in <a class="reference external" href="https://github.com/ansible-collections/community.hrobot/tree/main/tests/unit/plugins/modules">the community.hrobot module unit tests</a>.</p>
+<section id="example-unit-test">
+<h2>Example unit test<a class="headerlink" href="#example-unit-test" title="Link to this heading"></a></h2>
+<p>An example test could look as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_url_module_framework</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FetchUrlCall</span><span class="p">,</span>
+    <span class="n">BaseTestModule</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">ansible_collections.community.general.plugins.module_utils.hetzner</span> <span class="kn">import</span> <span class="n">BASE_URL</span>
+<span class="kn">from</span> <span class="nn">ansible_collections.community.general.plugins.modules.net_tools</span> <span class="kn">import</span> <span class="n">hetzner_firewall_info</span>
+
+<span class="k">class</span> <span class="nc">TestHetznerFirewallInfo</span><span class="p">(</span><span class="n">BaseTestModule</span><span class="p">):</span>
+    <span class="c1"># We need to tell the helper under which names the module imports AnsibleModule and fetch_url</span>
+    <span class="n">MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;ansible_collections.community.general.plugins.modules.net_tools.hetzner_firewall_info.AnsibleModule&#39;</span>
+    <span class="p">)</span>
+    <span class="n">MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;ansible_collections.community.general.plugins.module_utils.hetzner.fetch_url&#39;</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_absent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_module_success</span><span class="p">(</span><span class="n">mocker</span><span class="p">,</span> <span class="n">hetzner_firewall_info</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;hetzner_user&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hetzner_password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;server_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2.3.4&#39;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">[</span>
+            <span class="n">FetchUrlCall</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">result_json</span><span class="p">({</span>
+                <span class="s1">&#39;firewall&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;server_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2.3.4&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;server_number&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;disabled&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;rules&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="p">},</span>
+                <span class="p">},</span>
+            <span class="p">})</span>
+            <span class="o">.</span><span class="n">expect_url</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">/firewall/1.2.3.4&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">)),</span>
+        <span class="p">])</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;changed&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;disabled&#39;</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;server_ip&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1.2.3.4&#39;</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;server_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>This test makes sure that if the <a class="reference external" href="https://docs.ansible.com/ansible/devel/collections/community/general/hetzner_firewall_info_module.html#ansible-collections-community-general-hetzner-firewall-info-module" title="(in Ansible vdevel)"><span>community.general.hetzner_firewall_info</span></a> module is called with the given arguments, one <code class="docutils literal notranslate"><span class="pre">fetch_url()</span></code> call is made to <code class="docutils literal notranslate"><span class="pre">GET</span></code> the URL, and if this call is returned with a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> and the given JSON object, that the module will return <code class="docutils literal notranslate"><span class="pre">result</span></code> which is then checked by the <code class="docutils literal notranslate"><span class="pre">assert</span></code> statements.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="files_diff.html" class="btn btn-neutral float-left" title="Checking for file modifications with files_collect and files_diff" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="open_url_test_framework.html" class="btn btn-neutral float-right" title="open_url Test Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Community.Internal_test_tools Contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>
