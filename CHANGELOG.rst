@@ -4,6 +4,25 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.12.0
+=======
+
+Release Summary
+---------------
+
+Feature release.
+
+Minor Changes
+-------------
+
+- fetch_url and open_url unit test frameworks - use the ``tests.unit.compat.mock`` module everywhere so that ``unittest.mock`` is used instead of ``mock`` on Python 3 (https://github.com/ansible-collections/community.internal_test_tools/pull/130).
+- open_url and fetch_url unit test frameworks - allow to check for form value arrays (https://github.com/ansible-collections/community.internal_test_tools/pull/125).
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- Removed the ``ansible_builtin_runtime`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/111, https://github.com/ansible-collections/community.internal_test_tools/pull/131).
+
 v0.11.0
 =======
 

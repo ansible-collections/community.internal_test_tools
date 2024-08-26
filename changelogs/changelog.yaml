@@ -255,3 +255,21 @@ releases:
       - 112-test-plugins.yml
       - tools-deprecation.yml
     release_date: '2024-01-21'
+  0.12.0:
+    changes:
+      minor_changes:
+        - fetch_url and open_url unit test frameworks - use the ``tests.unit.compat.mock``
+          module everywhere so that ``unittest.mock`` is used instead of ``mock``
+          on Python 3 (https://github.com/ansible-collections/community.internal_test_tools/pull/130).
+        - open_url and fetch_url unit test frameworks - allow to check for form value
+          arrays (https://github.com/ansible-collections/community.internal_test_tools/pull/125).
+      release_summary: Feature release.
+      removed_features:
+        - Removed the ``ansible_builtin_runtime`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/111,
+          https://github.com/ansible-collections/community.internal_test_tools/pull/131).
+    fragments:
+      - 0.12.0.yml
+      - 125-form.yml
+      - 130-compat-mock.yaml
+      - 131-remove-builtin-runtime-tool.yml
+    release_date: '2024-08-26'

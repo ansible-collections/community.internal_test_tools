@@ -1,2 +1,0 @@
-removed_features:
-  - "Removed the ``ansible_builtin_runtime`` tool (https://github.com/ansible-collections/community.internal_test_tools/issues/111, https://github.com/ansible-collections/community.internal_test_tools/pull/131)."

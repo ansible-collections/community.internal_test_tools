@@ -1,5 +1,0 @@
----
-minor_changes:
-  - "fetch_url and open_url unit test frameworks - use the ``tests.unit.compat.mock`` module everywhere so that
-    ``unittest.mock`` is used instead of ``mock`` on Python 3
-    (https://github.com/ansible-collections/community.internal_test_tools/pull/130)."
