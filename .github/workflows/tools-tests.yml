@@ -47,7 +47,7 @@ jobs:
         working-directory: ./ansible_collections/community/internal_test_tools
 
       - name: Upload coverage stats
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: false
           flags: tools
