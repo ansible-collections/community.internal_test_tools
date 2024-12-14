@@ -101,6 +101,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ./collection-checkout/ansible_collections/community/internal_test_tools
+          persist-credentials: false
 
       - name: Install ansible-core (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
