@@ -19,7 +19,7 @@ import subprocess
 import sys
 
 
-DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:5.4.0'
+DEFAULT_DOCKER_CONTAINER_FALLBACK = 'quay.io/ansible/default-test-container:11.3.0'
 
 
 COLORS = {
@@ -252,7 +252,7 @@ def main():
         run(['docker', 'cp', root, '{0}:{1}'.format(container_name, os.path.dirname(root))], use_color=use_color)
         # run(['docker', 'exec', container_name, '/bin/sh', '-c', 'ls -lah ; pwd'])
         command = ['docker', 'exec', container_name]
-        command.extend(['python3.10', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
+        command.extend(['python3.13', os.path.relpath(os.path.join(my_dir, 'runner.py'), cwd)])
         command.extend(['--cleanup', '--install-requirements', '--output', output_filename])
         if use_color:
             command.extend(['--color'])

@@ -18,7 +18,7 @@ import sys
 
 
 SEPARATOR = '=' * 74
-DEFAULT_PYTHON = '3.10'
+DEFAULT_PYTHON = '3.13'
 
 COLORS = {
     'emph': 1,
@@ -301,7 +301,8 @@ def setup(tests, use_color=True):
             '-m',
             'pip',
             'install',
-            '--disable-pip-version-check'
+            '--disable-pip-version-check',
+            '--break-system-packages',
         ] + reqs
         env = os.environ.copy()
         # Allow to break system packages (PEP-668). Since we have an isolated environment, this shouldn't be a problem
