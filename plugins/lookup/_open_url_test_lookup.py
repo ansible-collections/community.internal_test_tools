@@ -8,8 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
-DOCUMENTATION = """
----
+DOCUMENTATION = r"""
 name: _open_url_test_lookup
 short_description: Test plugin for the open_url test framework (DO NOT USE THIS!)
 version_added: 0.3.0
@@ -17,74 +16,74 @@ author:
   - Felix Fontein (@felixfontein)
 description:
   - B(DO NOT USE THIS)!
-
 options:
-    _terms:
-        description: URLs to query.
-        required: true
-        type: list
-        elements: str
-    method:
-        description: HTTP method.
-        type: str
-        default: GET
-    headers:
-        description: HTTP headers.
-        type: dict
-    data:
-        description: Data to send (Base64 encoded).
-        type: str
-    timeout:
-        description:
-            - Timeout in seconds
-        type: float
-        version_added: 0.7.0
-    url_username:
-        description:
-            - The username for use with HTTP Basic Authentication.
-        type: str
-        version_added: 0.7.0
-    url_password:
-        description:
-            - The password for use with HTTP Basic Authentication.
-        type: str
-        version_added: 0.7.0
-    force_basic_auth:
-        description:
-            - Force passing C(Authorization) header on the first request when O(url_username) and O(url_password) are used.
-        type: bool
-        version_added: 0.7.0
+  _terms:
+    description: URLs to query.
+    required: true
+    type: list
+    elements: str
+  method:
+    description: HTTP method.
+    type: str
+    default: GET
+  headers:
+    description: HTTP headers.
+    type: dict
+  data:
+    description: Data to send (Base64 encoded).
+    type: str
+  timeout:
+    description:
+      - Timeout in seconds.
+    type: float
+    version_added: 0.7.0
+  url_username:
+    description:
+      - The username for use with HTTP Basic Authentication.
+    type: str
+    version_added: 0.7.0
+  url_password:
+    description:
+      - The password for use with HTTP Basic Authentication.
+    type: str
+    version_added: 0.7.0
+  force_basic_auth:
+    description:
+      - Force passing C(Authorization) header on the first request when O(url_username) and O(url_password) are used.
+    type: bool
+    version_added: 0.7.0
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Do a lookup
   ansible.builtin.debug:
-    msg: "{{ lookup('community.internal_test_tools.open_url_test_lookup', 'https://example.com', method='GET', headers={'foo': 'bar'}) }}"
+    msg: "{{ lookup('community.internal_test_tools.open_url_test_lookup', 'https://example.com', method='GET', headers={'foo':
+      'bar'}) }}"
 """
 
-RETURN = """
+RETURN = r"""
 _raw:
-    description: Results of HTTP calls.
-    type: list
-    elements: dict
-    returned: success
-    contains:
-        status:
-            description: HTTP status of request.
-            type: int
-            sample: 200
-        content:
-            description: Content (Base64 encoded).
-            type: str
-            sample: 1.2.3.4
-        headers:
-            description: Headers.
-            type: dict
-            sample: {}
-    sample:
-        - status: 200
-          content: 1.2.3.4
-          headers: {}
+  description: Results of HTTP calls.
+  type: list
+  elements: dict
+  returned: success
+  contains:
+    status:
+      description: HTTP status of request.
+      type: int
+      sample: 200
+    content:
+      description: Content (Base64 encoded).
+      type: str
+      sample: 1.2.3.4
+    headers:
+      description: Headers.
+      type: dict
+      sample: {}
+  sample:
+    - status: 200
+      content: 1.2.3.4
+      headers: {}
 """
 
 import base64

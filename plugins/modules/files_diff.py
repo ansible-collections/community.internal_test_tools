@@ -9,20 +9,17 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r'''
----
+DOCUMENTATION = r"""
 module: files_diff
 short_description: Check whether there were changes since files_collect was called
 version_added: 0.3.0
 author:
   - Felix Fontein (@felixfontein)
 description:
-  - This module checks whether any changes (timestamps, attributes, content) were made to files
-    and directories that M(community.internal_test_tools.files_collect) collected information on
-    earlier.
+  - This module checks whether any changes (timestamps, attributes, content) were made to files and directories that M(community.internal_test_tools.files_collect)
+    collected information on earlier.
 notes:
   - Supports C(check_mode). The module never modifies anything, so check mode behavior is identical to regular behavior.
-
 options:
   state:
     required: true
@@ -34,9 +31,9 @@ options:
       - Whether to fail when differences are found, instead of simply returning RV(changed=true).
     type: bool
     default: false
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Recursively collect information on all files in output_dir
   community.internal_test_tools.files_collect:
     directories:
@@ -48,9 +45,9 @@ EXAMPLES = r'''
 - name: Verify whether any file changed in output_dir
   community.internal_test_tools.files_diff:
     state: "{{ state.state }}"
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 changed:
   description:
     - Whether any file or directory changed.
@@ -60,8 +57,8 @@ changed:
   sample: true
 changed_content:
   description:
-    - Whether any file content changed. This does not consider added or removed files,
-      or files which were converted to links or vice versa.
+    - Whether any file content changed. This does not consider added or removed files, or files which were converted to links
+      or vice versa.
   type: bool
   returned: success
   sample: true
@@ -116,7 +113,7 @@ changed_dirs:
   elements: path
   returned: success
   sample: [dir_a, dir/dir_b]
-'''
+"""
 
 import os
 import base64

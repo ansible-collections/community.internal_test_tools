@@ -9,8 +9,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r'''
----
+DOCUMENTATION = r"""
 module: _fetch_url_test_module
 short_description: Test module for fetch_url test framework (DO NOT USE THIS!)
 version_added: 0.1.1
@@ -20,7 +19,6 @@ description:
   - B(DO NOT USE THIS)!
 notes:
   - Does not support C(check_mode).
-
 options:
   call_sequence:
     description: List of HTTP calls to make.
@@ -52,7 +50,7 @@ options:
         version_added: 0.3.0
       timeout:
         description:
-          - Timeout in seconds
+          - Timeout in seconds.
         type: float
         version_added: 0.7.0
       url_username:
@@ -67,7 +65,8 @@ options:
         version_added: 0.7.0
       force_basic_auth:
         description:
-          - Force passing C(Authorization) header on the first request when O(call_sequence[].url_username) and O(call_sequence[].url_password) are used.
+          - Force passing C(Authorization) header on the first request when O(call_sequence[].url_username) and O(call_sequence[].url_password)
+            are used.
         type: bool
         version_added: 0.7.0
   fail_me:
@@ -80,15 +79,15 @@ options:
     type: bool
     default: false
     version_added: 0.3.0
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Does nothing
   community.internal_test_tools.fetch_url_test_module:
     call_sequence: []
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 call_results:
   description: Results of HTTP calls.
   type: list
@@ -111,7 +110,7 @@ call_results:
     - status: 200
       content: 1.2.3.4
       headers: {}
-'''
+"""
 
 import base64
 
