@@ -16,7 +16,8 @@ version_added: 0.3.0
 author:
   - Felix Fontein (@felixfontein)
 description:
-  - This module checks whether any changes (timestamps, attributes, content) were made to files and directories that M(community.internal_test_tools.files_collect)
+  - This module checks whether any changes (timestamps, attributes, content) were made to files
+    and directories that M(community.internal_test_tools.files_collect)
     collected information on earlier.
 notes:
   - Supports C(check_mode). The module never modifies anything, so check mode behavior is identical to regular behavior.
