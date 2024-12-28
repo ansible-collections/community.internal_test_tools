@@ -59,7 +59,7 @@ changed:
 changed_content:
   description:
     - Whether any file content changed. This does not consider added or removed files, or files which were converted to links
-      or vice versa.
+      or converted from links.
   type: bool
   returned: success
   sample: true
