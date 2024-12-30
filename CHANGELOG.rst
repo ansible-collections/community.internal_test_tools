@@ -4,6 +4,21 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.13.0
+=======
+
+Release Summary
+---------------
+
+Feature release.
+
+Minor Changes
+-------------
+
+- extra sanity tests runner - add ``--break-system-packages`` to ``pip`` invocations (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+- extra sanity tests runner - bump default Python version used for tests to 3.13 (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+- extra sanity tests runner - update fallback image name and use Python 3.13 inside the container (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+
 v0.12.0
 =======
 

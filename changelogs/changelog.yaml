@@ -273,3 +273,17 @@ releases:
       - 130-compat-mock.yaml
       - 131-remove-builtin-runtime-tool.yml
     release_date: '2024-08-26'
+  0.13.0:
+    changes:
+      minor_changes:
+        - extra sanity tests runner - add ``--break-system-packages`` to ``pip`` invocations
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+        - extra sanity tests runner - bump default Python version used for tests to
+          3.13 (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+        - extra sanity tests runner - update fallback image name and use Python 3.13
+          inside the container (https://github.com/ansible-collections/community.internal_test_tools/pull/137).
+      release_summary: Feature release.
+    fragments:
+      - 0.13.0.yml
+      - 137-runner.yml
+    release_date: '2024-12-30'
