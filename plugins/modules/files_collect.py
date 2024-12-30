@@ -19,8 +19,18 @@ description:
   - This module collects the state (timestamps, attributes, content) of files and directories on disk and returns them. Use
     together with M(community.internal_test_tools.files_diff) to verify later on whether something changed, and if yes, what
     exactly changed.
-notes:
-  - Supports C(check_mode). The module never modifies anything, so check mode behavior is identical to regular behavior.
+extends_documentation_fragment:
+  - community.internal_test_tools.attributes
+  - community.internal_test_tools.attributes.idempotent_not_modify_state
+attributes:
+  check_mode:
+    support: full
+    details:
+      - This action does not modify state.
+  diff_mode:
+    support: none
+    details:
+      - This action does not modify state.
 options:
   files:
     description:

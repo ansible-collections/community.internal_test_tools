@@ -19,8 +19,19 @@ description:
   - This module checks whether any changes (timestamps, attributes, content) were made to files
     and directories that M(community.internal_test_tools.files_collect)
     collected information on earlier.
-notes:
-  - Supports C(check_mode). The module never modifies anything, so check mode behavior is identical to regular behavior.
+extends_documentation_fragment:
+  - community.internal_test_tools.attributes
+  - community.internal_test_tools.attributes.idempotent_not_modify_state
+attributes:
+  check_mode:
+    support: full
+    details:
+      - This action does not modify state.
+  diff_mode:
+    support: partial
+    details:
+      - This action does not modify state.
+      - In diff mode, shows the differences of the current state compared to O(state).
 options:
   state:
     required: true
