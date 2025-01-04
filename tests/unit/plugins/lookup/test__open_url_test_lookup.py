@@ -64,12 +64,15 @@ class TestLookupModule(TestCase):
             .expect_form_value_absent('firstname')
             .expect_url('http://example.org'),
             OpenUrlCall('POST', 400)
-            .result_error()
+            .result_error_json({})
             .expect_url('http://example.example'),
+            OpenUrlCall('POST', 410)
+            .result_error()
+            .expect_url('http://boo'),
         ])
         with patch('ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url', open_url):
             result = self.lookup.run(
-                ['http://example.com', 'http://example.org', 'http://example.example'],
+                ['http://example.com', 'http://example.org', 'http://example.example', 'http://boo'],
                 [],
                 method='POST',
                 headers=dict(foo='bar'),
@@ -77,11 +80,13 @@ class TestLookupModule(TestCase):
             )
         open_url.assert_is_done()
 
-        assert len(result) == 3
+        assert len(result) == 4
         assert result[0]['status'] == 200
         assert result[1]['status'] == 500
         assert result[2]['status'] == 400
-        assert result[2]['content'] == ''
+        assert result[2]['content'] == base64.b64encode(b'{}').decode('utf-8')
+        assert result[3]['status'] == 410
+        assert result[3]['content'] == ''
 
     def test_error(self):
         open_url = OpenUrlProxy([

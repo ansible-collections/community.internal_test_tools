@@ -123,7 +123,7 @@ class _ReadResponse(object):
     def read(self):
         if PY2:
             raise TypeError('response already read')
-        return b''
+        return b''  # pragma: no cover
 
 
 class _FetchUrlProxy(object):

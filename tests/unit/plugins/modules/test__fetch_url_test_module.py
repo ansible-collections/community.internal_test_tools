@@ -132,6 +132,23 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['status'] == 400
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
+    def test_with_json_result(self, mocker):
+        result = self.run_module_success(mocker, _fetch_url_test_module, {
+            'call_sequence': [
+                {
+                    'url': 'http://example.com/?foo',
+                }
+            ],
+        }, [
+            FetchUrlCall('GET', 400)
+            .result_error_json('meh', {})
+            .expect_url('http://example.com/', without_query=True, without_fragment=True)
+            .expect_query_values('foo', ''),
+        ])
+        assert len(result['call_results']) == 1
+        assert result['call_results'][0]['status'] == 400
+        assert result['call_results'][0]['content'] == base64.b64encode(b'{}').decode('utf-8')
+
     def test_with_no_result(self, mocker):
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
