@@ -59,6 +59,8 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
+import json
+
 from ansible.module_utils.six.moves.urllib.error import HTTPError
 
 from ._utils import (
@@ -110,6 +112,12 @@ class OpenUrlCall(_CallBase):
             assert self.body is None, 'Result must not be given if error body is provided'
         assert self.exception_generator is None, 'Exception generator must not be given if error is provided'
         return self
+
+    def result_error_json(self, json_body):
+        '''
+        Builder method to set return body of the ``open_url()`` call (as a JSON object) in case of an error.
+        '''
+        return self.result_error(body=json.dumps(json_body).encode('utf-8'))
 
 
 class OpenUrlProxy(object):
