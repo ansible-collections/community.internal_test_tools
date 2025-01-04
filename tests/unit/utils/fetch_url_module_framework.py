@@ -67,6 +67,8 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
+import json
+
 import pytest
 
 import ansible.module_utils.basic  # noqa: F401, pylint: disable=unused-import
@@ -107,6 +109,12 @@ class FetchUrlCall(_CallBase):
             self.error_data['body'] = body
             assert self.body is None, 'Result must not be given if error body is provided'
         return self
+
+    def result_error_json(self, msg, json_body):
+        '''
+        Builder method to set return body of the call (as a JSON object) in case of an error.
+        '''
+        return self.result_error(msg, body=json.dumps(json_body).encode('utf-8'))
 
 
 class _ReadResponse(object):
