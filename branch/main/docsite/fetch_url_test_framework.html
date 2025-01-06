@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>fetch_url Test Framework &mdash; Community.Internal_test_tools Collection  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=41de9001" />
       <link rel="stylesheet" type="text/css" href="../_static/css/ansible.css?v=c5b67dd2" />
       <link rel="stylesheet" type="text/css" href="../_static/antsibull-minimal.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/rtd-ethical-ads.css?v=289b023e" />
@@ -126,15 +126,15 @@
 <section id="example-unit-test">
 <h2>Example unit test<a class="headerlink" href="#example-unit-test" title="Link to this heading"></a></h2>
 <p>An example test could look as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_url_module_framework</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansible_collections.community.internal_test_tools.tests.unit.utils.fetch_url_module_framework</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">FetchUrlCall</span><span class="p">,</span>
     <span class="n">BaseTestModule</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">ansible_collections.community.general.plugins.module_utils.hetzner</span> <span class="kn">import</span> <span class="n">BASE_URL</span>
-<span class="kn">from</span> <span class="nn">ansible_collections.community.general.plugins.modules.net_tools</span> <span class="kn">import</span> <span class="n">hetzner_firewall_info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansible_collections.community.general.plugins.module_utils.hetzner</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_URL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansible_collections.community.general.plugins.modules.net_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">hetzner_firewall_info</span>
 
-<span class="k">class</span> <span class="nc">TestHetznerFirewallInfo</span><span class="p">(</span><span class="n">BaseTestModule</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TestHetznerFirewallInfo</span><span class="p">(</span><span class="n">BaseTestModule</span><span class="p">):</span>
     <span class="c1"># We need to tell the helper under which names the module imports AnsibleModule and fetch_url</span>
     <span class="n">MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;ansible_collections.community.general.plugins.modules.net_tools.hetzner_firewall_info.AnsibleModule&#39;</span>
@@ -143,7 +143,7 @@
         <span class="s1">&#39;ansible_collections.community.general.plugins.module_utils.hetzner.fetch_url&#39;</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">test_absent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_absent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_module_success</span><span class="p">(</span><span class="n">mocker</span><span class="p">,</span> <span class="n">hetzner_firewall_info</span><span class="p">,</span> <span class="p">{</span>
             <span class="s1">&#39;hetzner_user&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="s1">&#39;hetzner_password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
