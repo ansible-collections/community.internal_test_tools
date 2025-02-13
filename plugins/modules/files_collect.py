@@ -138,7 +138,7 @@ def add_file(module, files, path, check_content=True, allow_not_existing=False):
         else:
             result['sha256'] = hashlib.sha256(content).hexdigest()
     else:
-        module.fail_json('The path "{path}" is not a file or symlink - this is not yet supported!'.format(path=path))
+        module.fail_json('The path "{path}" is not a file or symlink - this is not yet supported!'.format(path=path))  # pragma: no cover
 
 
 def main():
