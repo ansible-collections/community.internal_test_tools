@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.14.0
+=======
+
+Release Summary
+---------------
+
+Feature release.
+
+Minor Changes
+-------------
+
+- fetch_url and open_url unit test frameworks - add helper methods ``result_error_json()`` to set JSON bodies for error results (https://github.com/ansible-collections/community.internal_test_tools/pull/140).
+
 v0.13.0
 =======
 

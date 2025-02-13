@@ -1,3 +1,0 @@
-minor_changes:
-  - "fetch_url and open_url unit test frameworks - add helper methods ``result_error_json()`` to set JSON bodies for error results
-     (https://github.com/ansible-collections/community.internal_test_tools/pull/140)."
