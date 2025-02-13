@@ -381,8 +381,8 @@ def validate_call(call, method, url, headers, data, timeout=10, url_username=Non
     if call.expected_content_predicate:
         try:
             assert call.expected_content_predicate(data), 'Predicate has falsy result'
-        except Exception as e:
-            raise AssertionError(
+        except Exception as e:  # pragma: no cover
+            raise AssertionError(  # pragma: no cover
                 'Content does not match predicate for call: {0}\n\n{1}'.format(
                     e, traceback.format_exc()))
     if call.form_parse:
