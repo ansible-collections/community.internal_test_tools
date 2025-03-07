@@ -1,0 +1,3 @@
+breaking_changes:
+  - "The helper function ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()`` is now
+     a context manager. Please adapt uses accordingly (https://github.com/ansible-collections/community.internal_test_tools/pull/144)."
