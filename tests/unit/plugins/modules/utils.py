@@ -16,6 +16,9 @@ from ansible.module_utils.common.text.converters import to_bytes
 
 @_contextlib.contextmanager
 def set_module_args(args):
+    """
+    Context manager that sets module arguments for AnsibleModule
+    """
     if '_ansible_remote_tmp' not in args:
         args['_ansible_remote_tmp'] = '/tmp'
     if '_ansible_keep_remote_files' not in args:
@@ -27,25 +30,43 @@ def set_module_args(args):
 
 
 class AnsibleExitJson(Exception):
+    """
+    Exception raised by exit_json() to signal that the module exited successful.
+    """
     pass
 
 
 class AnsibleFailJson(Exception):
+    """
+    Exception raised by fail_json() to signal that the module failed.
+    """
     pass
 
 
 def exit_json(*args, **kwargs):
+    """
+    Mock replacement for AnsibleModule.exit_json() that raises AnsibleExitJson.
+    """
     if 'changed' not in kwargs:
         kwargs['changed'] = False
     raise AnsibleExitJson(kwargs)
 
 
 def fail_json(*args, **kwargs):
+    """
+    Mock replacement for AnsibleModule.fail_json() that raises AnsibleFailJson.
+    """
     kwargs['failed'] = True
     raise AnsibleFailJson(kwargs)
 
 
 class ModuleTestCase(unittest.TestCase):
+    """
+    Provides some infrastructure for using unittest.TestCase.
+
+    Note that unittest.TestCase is not the recommended way of writing Ansible unit tests, but there
+    still are a lot of existing tests in this form.
+    """
 
     def setUp(self):
         self.mock_module = patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json)
