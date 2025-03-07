@@ -222,8 +222,8 @@ class BaseTestModule(object):
         mocker.patch(self.MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL, fetch_url)
         mocker.patch(self.MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE + '.exit_json', exit_json)
         mocker.patch(self.MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE + '.fail_json', fail_json)
-        set_module_args(arguments)
-        module.main()
+        with set_module_args(arguments):
+            module.main()
 
     def run_module_success(self, mocker, module, arguments, fetch_url_calls):
         '''
