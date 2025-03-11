@@ -44,7 +44,7 @@ jobs:
     runs-on: >-
       ${{ contains(fromJson(
           '["stable-2.9", "stable-2.10", "stable-2.11"]'
-      ), matrix.ansible) && 'ubuntu-20.04' || 'ubuntu-latest' }}
+      ), matrix.ansible) && 'ubuntu-22.04' || 'ubuntu-latest' }}
     steps:
       - name: Perform sanity testing
         uses: felixfontein/ansible-test-gh-action@main
@@ -65,7 +65,7 @@ jobs:
     runs-on: >-
       ${{ contains(fromJson(
           '["stable-2.9", "stable-2.10", "stable-2.11"]'
-      ), matrix.ansible) && 'ubuntu-20.04' || 'ubuntu-latest' }}
+      ), matrix.ansible) && 'ubuntu-22.04' || 'ubuntu-latest' }}
     name: Units (Ⓐ${{ matrix.ansible }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
@@ -134,7 +134,7 @@ jobs:
     runs-on: >-
       ${{ contains(fromJson(
           '["stable-2.9", "stable-2.10", "stable-2.11"]'
-      ), matrix.ansible) && 'ubuntu-20.04' || 'ubuntu-latest' }}
+      ), matrix.ansible) && 'ubuntu-22.04' || 'ubuntu-latest' }}
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     strategy:
       fail-fast: false
