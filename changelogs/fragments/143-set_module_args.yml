@@ -1,0 +1,19 @@
+bugfixes:
+  - "Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()``
+     (https://github.com/ansible-collections/community.internal_test_tools/pull/143)."
+  - "Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.mock.loader.DictDataLoader``
+     (https://github.com/ansible-collections/community.internal_test_tools/pull/143)."
+minor_changes:
+  - >-
+    Provide helper utility ``ansible_collections.community.internal_test_tools.tests.unit.utils.trust`` for tests that
+    need to handle both ansible-core versions with and without Data Tagging:
+
+
+    * The helper functions ``make_trusted()`` and ``make_untrusted()`` mark a value as trusted respectively untrusted (with Data Tagging), or as safe or unsafe (before Data Tagging).
+
+    * The function ``is_trusted()`` allows to check with all versions of ansible-core whether a value is trusted (not unsafe) or not trusted (unsafe).
+
+    * The constant ``SUPPORTS_DATA_TAGGING`` allows to decide whether ansible-core supports Data Tagging or not.
+
+
+    (https://github.com/ansible-collections/community.internal_test_tools/pull/143)
