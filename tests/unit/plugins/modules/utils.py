@@ -75,3 +75,14 @@ class ModuleTestCase(unittest.TestCase):
         self.mock_sleep.start()
         self.addCleanup(self.mock_module.stop)
         self.addCleanup(self.mock_sleep.stop)
+
+
+def extract_warnings_texts(result):
+    """
+    Given the results dictionary of a module, extracts the warnings as a list of strings.
+    """
+    warnings = []
+    if result.get('warnings'):
+        for warning in result['warnings']:
+            warnings.append(warning)
+    return warnings

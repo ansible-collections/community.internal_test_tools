@@ -1,0 +1,5 @@
+minor_changes:
+  - >-
+    Provide helper utility function ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.extract_warnings_texts()``
+    to extract warnings as strings from module results
+    (https://github.com/ansible-collections/community.internal_test_tools/pull/147)
