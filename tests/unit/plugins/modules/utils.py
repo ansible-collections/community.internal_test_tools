@@ -14,6 +14,12 @@ from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
 
 
+try:
+    from ansible.module_utils.common.messages import WarningSummary as _WarningSummary
+except ImportError:
+    _WarningSummary = None
+
+
 @_contextlib.contextmanager
 def set_module_args(args):
     """
@@ -92,5 +98,8 @@ def extract_warnings_texts(result):
     warnings = []
     if result.get('warnings'):
         for warning in result['warnings']:
+            if _WarningSummary and isinstance(warning, _WarningSummary):
+                warnings.append(warning.details[0].msg)
+                continue
             warnings.append(warning)
     return warnings
