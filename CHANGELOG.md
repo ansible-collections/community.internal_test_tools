@@ -2,83 +2,99 @@
 
 **Topics**
 
-- <a href="#v0-14-0">v0\.14\.0</a>
+- <a href="#v0-15-0">v0\.15\.0</a>
     - <a href="#release-summary">Release Summary</a>
     - <a href="#minor-changes">Minor Changes</a>
-- <a href="#v0-13-0">v0\.13\.0</a>
+    - <a href="#breaking-changes--porting-guide">Breaking Changes / Porting Guide</a>
+- <a href="#v0-14-0">v0\.14\.0</a>
     - <a href="#release-summary-1">Release Summary</a>
     - <a href="#minor-changes-1">Minor Changes</a>
-- <a href="#v0-12-0">v0\.12\.0</a>
+- <a href="#v0-13-0">v0\.13\.0</a>
     - <a href="#release-summary-2">Release Summary</a>
     - <a href="#minor-changes-2">Minor Changes</a>
-    - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
-- <a href="#v0-11-0">v0\.11\.0</a>
+- <a href="#v0-12-0">v0\.12\.0</a>
     - <a href="#release-summary-3">Release Summary</a>
     - <a href="#minor-changes-3">Minor Changes</a>
-    - <a href="#breaking-changes--porting-guide">Breaking Changes / Porting Guide</a>
+    - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
+- <a href="#v0-11-0">v0\.11\.0</a>
+    - <a href="#release-summary-4">Release Summary</a>
+    - <a href="#minor-changes-4">Minor Changes</a>
+    - <a href="#breaking-changes--porting-guide-1">Breaking Changes / Porting Guide</a>
     - <a href="#deprecated-features">Deprecated Features</a>
     - <a href="#bugfixes">Bugfixes</a>
 - <a href="#v0-10-1">v0\.10\.1</a>
-    - <a href="#release-summary-4">Release Summary</a>
-- <a href="#v0-10-0">v0\.10\.0</a>
     - <a href="#release-summary-5">Release Summary</a>
+- <a href="#v0-10-0">v0\.10\.0</a>
+    - <a href="#release-summary-6">Release Summary</a>
     - <a href="#removed-features-previously-deprecated-1">Removed Features \(previously deprecated\)</a>
     - <a href="#known-issues">Known Issues</a>
 - <a href="#v0-9-0">v0\.9\.0</a>
-    - <a href="#release-summary-6">Release Summary</a>
-    - <a href="#minor-changes-4">Minor Changes</a>
-    - <a href="#deprecated-features-1">Deprecated Features</a>
-- <a href="#v0-8-0">v0\.8\.0</a>
     - <a href="#release-summary-7">Release Summary</a>
     - <a href="#minor-changes-5">Minor Changes</a>
-- <a href="#v0-7-0">v0\.7\.0</a>
+    - <a href="#deprecated-features-1">Deprecated Features</a>
+- <a href="#v0-8-0">v0\.8\.0</a>
     - <a href="#release-summary-8">Release Summary</a>
     - <a href="#minor-changes-6">Minor Changes</a>
-- <a href="#v0-6-1">v0\.6\.1</a>
+- <a href="#v0-7-0">v0\.7\.0</a>
     - <a href="#release-summary-9">Release Summary</a>
+    - <a href="#minor-changes-7">Minor Changes</a>
+- <a href="#v0-6-1">v0\.6\.1</a>
+    - <a href="#release-summary-10">Release Summary</a>
     - <a href="#bugfixes-1">Bugfixes</a>
 - <a href="#v0-6-0">v0\.6\.0</a>
-    - <a href="#release-summary-10">Release Summary</a>
-    - <a href="#minor-changes-7">Minor Changes</a>
-    - <a href="#bugfixes-2">Bugfixes</a>
-- <a href="#v0-5-0">v0\.5\.0</a>
     - <a href="#release-summary-11">Release Summary</a>
     - <a href="#minor-changes-8">Minor Changes</a>
-    - <a href="#breaking-changes--porting-guide-1">Breaking Changes / Porting Guide</a>
-    - <a href="#bugfixes-3">Bugfixes</a>
-- <a href="#v0-4-0">v0\.4\.0</a>
+    - <a href="#bugfixes-2">Bugfixes</a>
+- <a href="#v0-5-0">v0\.5\.0</a>
     - <a href="#release-summary-12">Release Summary</a>
     - <a href="#minor-changes-9">Minor Changes</a>
+    - <a href="#breaking-changes--porting-guide-2">Breaking Changes / Porting Guide</a>
+    - <a href="#bugfixes-3">Bugfixes</a>
+- <a href="#v0-4-0">v0\.4\.0</a>
+    - <a href="#release-summary-13">Release Summary</a>
+    - <a href="#minor-changes-10">Minor Changes</a>
     - <a href="#bugfixes-4">Bugfixes</a>
 - <a href="#v0-3-0">v0\.3\.0</a>
-    - <a href="#minor-changes-10">Minor Changes</a>
+    - <a href="#minor-changes-11">Minor Changes</a>
     - <a href="#bugfixes-5">Bugfixes</a>
     - <a href="#new-plugins">New Plugins</a>
         - <a href="#lookup">Lookup</a>
     - <a href="#new-modules">New Modules</a>
 - <a href="#v0-2-1">v0\.2\.1</a>
-    - <a href="#release-summary-13">Release Summary</a>
+    - <a href="#release-summary-14">Release Summary</a>
 - <a href="#v0-2-0">v0\.2\.0</a>
     - <a href="#major-changes">Major Changes</a>
 - <a href="#v0-1-1">v0\.1\.1</a>
-    - <a href="#release-summary-14">Release Summary</a>
+    - <a href="#release-summary-15">Release Summary</a>
     - <a href="#new-modules-1">New Modules</a>
 
-<a id="v0-14-0"></a>
-## v0\.14\.0
+<a id="v0-15-0"></a>
+## v0\.15\.0
 
 <a id="release-summary"></a>
 ### Release Summary
 
-Feature release\.
+Feature release preparing Data Tagging support\.
 
 <a id="minor-changes"></a>
 ### Minor Changes
 
-* fetch\_url and open\_url unit test frameworks \- add helper methods <code>result\_error\_json\(\)</code> to set JSON bodies for error results \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/140](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/140)\)\.
+* Provide helper utility <code>ansible\_collections\.community\.internal\_test\_tools\.tests\.unit\.utils\.trust</code> for tests that need to handle both ansible\-core versions with and without Data Tagging\:
 
-<a id="v0-13-0"></a>
-## v0\.13\.0
+  - The helper functions <code>make\_trusted\(\)</code> and <code>make\_untrusted\(\)</code> mark a value as trusted respectively untrusted \(with Data Tagging\)\, or as safe or unsafe \(before Data Tagging\)\.
+  - The function <code>is\_trusted\(\)</code> allows to check with all versions of ansible\-core whether a value is trusted \(not unsafe\) or not trusted \(unsafe\)\.
+  - The constant <code>SUPPORTS\_DATA\_TAGGING</code> allows to decide whether ansible\-core supports Data Tagging or not\.
+
+  Note that Data Tagging support right now is not implemented and will be added later \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/146](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/146)\)
+* Provide helper utility function <code>ansible\_collections\.community\.internal\_test\_tools\.tests\.unit\.plugins\.modules\.utils\.extract\_warnings\_texts\(\)</code> to extract warnings as strings from module results \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/147](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/147)\)
+
+<a id="breaking-changes--porting-guide"></a>
+### Breaking Changes / Porting Guide
+
+* The helper function <code>ansible\_collections\.community\.internal\_test\_tools\.tests\.unit\.plugins\.modules\.utils\.set\_module\_args\(\)</code> is now a context manager\. Please adapt uses accordingly \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/144](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/144)\)\.
+
+<a id="v0-14-0"></a>
+## v0\.14\.0
 
 <a id="release-summary-1"></a>
 ### Release Summary
@@ -88,12 +104,10 @@ Feature release\.
 <a id="minor-changes-1"></a>
 ### Minor Changes
 
-* extra sanity tests runner \- add <code>\-\-break\-system\-packages</code> to <code>pip</code> invocations \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
-* extra sanity tests runner \- bump default Python version used for tests to 3\.13 \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
-* extra sanity tests runner \- update fallback image name and use Python 3\.13 inside the container \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
+* fetch\_url and open\_url unit test frameworks \- add helper methods <code>result\_error\_json\(\)</code> to set JSON bodies for error results \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/140](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/140)\)\.
 
-<a id="v0-12-0"></a>
-## v0\.12\.0
+<a id="v0-13-0"></a>
+## v0\.13\.0
 
 <a id="release-summary-2"></a>
 ### Release Summary
@@ -101,6 +115,21 @@ Feature release\.
 Feature release\.
 
 <a id="minor-changes-2"></a>
+### Minor Changes
+
+* extra sanity tests runner \- add <code>\-\-break\-system\-packages</code> to <code>pip</code> invocations \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
+* extra sanity tests runner \- bump default Python version used for tests to 3\.13 \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
+* extra sanity tests runner \- update fallback image name and use Python 3\.13 inside the container \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/137)\)\.
+
+<a id="v0-12-0"></a>
+## v0\.12\.0
+
+<a id="release-summary-3"></a>
+### Release Summary
+
+Feature release\.
+
+<a id="minor-changes-3"></a>
 ### Minor Changes
 
 * fetch\_url and open\_url unit test frameworks \- use the <code>tests\.unit\.compat\.mock</code> module everywhere so that <code>unittest\.mock</code> is used instead of <code>mock</code> on Python 3 \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/130](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/130)\)\.
@@ -114,17 +143,17 @@ Feature release\.
 <a id="v0-11-0"></a>
 ## v0\.11\.0
 
-<a id="release-summary-3"></a>
+<a id="release-summary-4"></a>
 ### Release Summary
 
 Feature\, bugfix\, and maintenance release\.
 
-<a id="minor-changes-3"></a>
+<a id="minor-changes-4"></a>
 ### Minor Changes
 
 * extra sanity test runner \- make sure that a <code>ansible\_collections</code> ancestor directory is also copied into the Docker container \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/103](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/103)\)\.
 
-<a id="breaking-changes--porting-guide"></a>
+<a id="breaking-changes--porting-guide-1"></a>
 ### Breaking Changes / Porting Guide
 
 * The internal test module <code>fetch\_url\_test\_module</code> has been renamed to <code>\_fetch\_url\_test\_module</code>\, and the internal test lookup plugin <code>open\_url\_test\_lookup</code> has been renamed to <code>\_open\_url\_test\_lookup</code>\. This emphasizes that these plugins are private and not supposed to be used by end\-users  \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/112](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/112)\)\.
@@ -142,7 +171,7 @@ Feature\, bugfix\, and maintenance release\.
 <a id="v0-10-1"></a>
 ## v0\.10\.1
 
-<a id="release-summary-4"></a>
+<a id="release-summary-5"></a>
 ### Release Summary
 
 Maintenance release to test whether publishing community collections works\.
@@ -150,7 +179,7 @@ Maintenance release to test whether publishing community collections works\.
 <a id="v0-10-0"></a>
 ## v0\.10\.0
 
-<a id="release-summary-5"></a>
+<a id="release-summary-6"></a>
 ### Release Summary
 
 Maintenance release with updated documentation and removal of a deprecated tool\.
@@ -176,12 +205,12 @@ for the rendered HTML version of the documentation of the latest release\.
 <a id="v0-9-0"></a>
 ## v0\.9\.0
 
-<a id="release-summary-6"></a>
+<a id="release-summary-7"></a>
 ### Release Summary
 
 Feature release with improved extra sanity test runner\.
 
-<a id="minor-changes-4"></a>
+<a id="minor-changes-5"></a>
 ### Minor Changes
 
 * Let the extra sanity test runner report bad test descriptors as errors \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/89](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/89)\)\.
@@ -195,12 +224,12 @@ Feature release with improved extra sanity test runner\.
 <a id="v0-8-0"></a>
 ## v0\.8\.0
 
-<a id="release-summary-7"></a>
+<a id="release-summary-8"></a>
 ### Release Summary
 
 Maintenance release with updated documentation and licensing information\.
 
-<a id="minor-changes-5"></a>
+<a id="minor-changes-6"></a>
 ### Minor Changes
 
 * The collection repository conforms to the [REUSE specification](https\://reuse\.software/spec/) except for the changelog fragments \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/75](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/75)\)\.
@@ -208,12 +237,12 @@ Maintenance release with updated documentation and licensing information\.
 <a id="v0-7-0"></a>
 ## v0\.7\.0
 
-<a id="release-summary-8"></a>
+<a id="release-summary-9"></a>
 ### Release Summary
 
 Regular feature release\.
 
-<a id="minor-changes-6"></a>
+<a id="minor-changes-7"></a>
 ### Minor Changes
 
 * All software licenses are now in the <code>LICENSES/</code> directory of the collection root\. Moreover\, <code>SPDX\-License\-Identifier\:</code> is used to declare the applicable license for every file that is not automatically generated \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/69](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/69)\)\.
@@ -222,7 +251,7 @@ Regular feature release\.
 <a id="v0-6-1"></a>
 ## v0\.6\.1
 
-<a id="release-summary-9"></a>
+<a id="release-summary-10"></a>
 ### Release Summary
 
 Regular bugfix release\.
@@ -236,12 +265,12 @@ Regular bugfix release\.
 <a id="v0-6-0"></a>
 ## v0\.6\.0
 
-<a id="release-summary-10"></a>
+<a id="release-summary-11"></a>
 ### Release Summary
 
 Feature and bugfix release\.
 
-<a id="minor-changes-7"></a>
+<a id="minor-changes-8"></a>
 ### Minor Changes
 
 * fetch\_url test framework \- make behavior more similar to latest ansible\-core <code>devel</code> branch\, and include <code>closed</code> property for response objects \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/52](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/52)\)\.
@@ -256,12 +285,12 @@ Feature and bugfix release\.
 <a id="v0-5-0"></a>
 ## v0\.5\.0
 
-<a id="release-summary-11"></a>
+<a id="release-summary-12"></a>
 ### Release Summary
 
 Feature release with various tool improvements\.
 
-<a id="minor-changes-8"></a>
+<a id="minor-changes-9"></a>
 ### Minor Changes
 
 * <code>fetch\_url</code> and <code>open\_url</code> test frameworks \- output number of expected and actual calls when number of actual calls is too low\.
@@ -271,7 +300,7 @@ Feature release with various tool improvements\.
 * extra sanity test runner \- bump default Python version from 3\.7 to 3\.8 \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/49](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/49)\)\.
 * meta\_runtime tool \- allow to specify collection root directory for all subcommands \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/51](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/51)\)\.
 
-<a id="breaking-changes--porting-guide-1"></a>
+<a id="breaking-changes--porting-guide-2"></a>
 ### Breaking Changes / Porting Guide
 
 * ansible\_builtin\_runtime tool \- renamed <code>check\-ansible\-base\-redirects</code> subcommand to <code>check\-ansible\-core\-redirects</code> \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/51](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/51)\)\.
@@ -286,12 +315,12 @@ Feature release with various tool improvements\.
 <a id="v0-4-0"></a>
 ## v0\.4\.0
 
-<a id="release-summary-12"></a>
+<a id="release-summary-13"></a>
 ### Release Summary
 
 Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url</code> test framework\.
 
-<a id="minor-changes-9"></a>
+<a id="minor-changes-10"></a>
 ### Minor Changes
 
 * fetch\_url and open\_url testing frameworks \- allow to check query parameters of URLs \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/33](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/33)\)\.
@@ -306,7 +335,7 @@ Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url
 <a id="v0-3-0"></a>
 ## v0\.3\.0
 
-<a id="minor-changes-10"></a>
+<a id="minor-changes-11"></a>
 ### Minor Changes
 
 * Added a framework for testing plugins using <code>open\_url</code> from <code>ansible\.module\_utils\.urls</code> \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/24](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/24)\)\.
@@ -336,7 +365,7 @@ Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url
 <a id="v0-2-1"></a>
 ## v0\.2\.1
 
-<a id="release-summary-13"></a>
+<a id="release-summary-14"></a>
 ### Release Summary
 
 Re\-release because Galaxy did not accept a tag with spaces in <code>galaxy\.yml</code>\. No other changes besides that the changelog moved to the root directory\.
@@ -352,7 +381,7 @@ Re\-release because Galaxy did not accept a tag with spaces in <code>galaxy\.yml
 <a id="v0-1-1"></a>
 ## v0\.1\.1
 
-<a id="release-summary-14"></a>
+<a id="release-summary-15"></a>
 ### Release Summary
 
 Initial release\.

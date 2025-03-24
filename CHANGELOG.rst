@@ -4,6 +4,31 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.15.0
+=======
+
+Release Summary
+---------------
+
+Feature release preparing Data Tagging support.
+
+Minor Changes
+-------------
+
+- Provide helper utility ``ansible_collections.community.internal_test_tools.tests.unit.utils.trust`` for tests that need to handle both ansible-core versions with and without Data Tagging:
+
+  * The helper functions ``make_trusted()`` and ``make_untrusted()`` mark a value as trusted respectively untrusted (with Data Tagging), or as safe or unsafe (before Data Tagging).
+  * The function ``is_trusted()`` allows to check with all versions of ansible-core whether a value is trusted (not unsafe) or not trusted (unsafe).
+  * The constant ``SUPPORTS_DATA_TAGGING`` allows to decide whether ansible-core supports Data Tagging or not.
+
+  Note that Data Tagging support right now is not implemented and will be added later (https://github.com/ansible-collections/community.internal_test_tools/pull/146)
+- Provide helper utility function ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.extract_warnings_texts()`` to extract warnings as strings from module results (https://github.com/ansible-collections/community.internal_test_tools/pull/147)
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- The helper function ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()`` is now a context manager. Please adapt uses accordingly (https://github.com/ansible-collections/community.internal_test_tools/pull/144).
+
 v0.14.0
 =======
 
