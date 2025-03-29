@@ -9,9 +9,19 @@ from ansible.module_utils.six import string_types as _string_types
 from ansible.utils.unsafe_proxy import AnsibleUnsafe as _AnsibleUnsafe
 from ansible.utils.unsafe_proxy import wrap_var as _make_unsafe
 
+try:
+    # This requires ansible-core with Data Tagging
+    from ansible.template import (
+        trust_as_template as _trust_value,
+        is_trusted_as_template as _is_trusted,
+    )
+except ImportError:
+    _trust_value = None
+    _is_trusted = None
+
 
 # Whether ansible-core supports Data Tagging
-SUPPORTS_DATA_TAGGING = False
+SUPPORTS_DATA_TAGGING = _trust_value is not None
 
 
 def make_trusted(input):
@@ -23,6 +33,8 @@ def make_trusted(input):
 
     Note that this does not work recursively on data structures.
     """
+    if _trust_value and isinstance(input, str):
+        input = _trust_value(input)
     return input
 
 
@@ -43,7 +55,10 @@ def is_trusted(input):
     """
     Given a value, checks whether it is trusted or not.
 
-    This uses Data Tagging methods when ansible-core supports Data Tagging (not yet implemented),
+    This uses Data Tagging methods when ansible-core supports Data Tagging,
     and checks for AnsibleUnsafe for older ansible-core versions.
     """
+    if _is_trusted:
+        return _is_trusted(input)
+
     return not isinstance(input, _AnsibleUnsafe)
