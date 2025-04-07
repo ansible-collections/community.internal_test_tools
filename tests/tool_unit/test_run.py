@@ -5,8 +5,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from distutils.version import LooseVersion
-
 import pytest
 
 from ansible.release import __version__ as ansible_core_version
@@ -15,6 +13,11 @@ from tools.run import (
     get_default_container_2_12,
     get_default_container_pre_2_12,
 )
+
+try:
+    from ansible.module_utils.compat.version import LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 
 
 @pytest.mark.skipif(LooseVersion(ansible_core_version) < LooseVersion('2.12'), reason='Only applies for ansible-core 2.12+')
