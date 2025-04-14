@@ -102,7 +102,7 @@ jobs:
         working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
 
       # See the reports at https://codecov.io/gh/ansible_collections/community.internal_test_tools
-      - uses: codecov/codecov-action@v5.4.0
+      - uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: false
           working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
