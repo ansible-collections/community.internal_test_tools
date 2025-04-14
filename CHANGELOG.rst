@@ -4,6 +4,21 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.16.0
+=======
+
+Release Summary
+---------------
+
+Feature and maintenance release with Data Tagging support.
+
+Bugfixes
+--------
+
+- Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.mock.loader.DictDataLoader`` (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+- Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()`` (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+- Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.trust`` (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+
 v0.15.0
 =======
 

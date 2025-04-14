@@ -330,3 +330,17 @@ releases:
       - 146-trust.yml
       - 147-warnings.yml
     release_date: '2025-03-24'
+  0.16.0:
+    changes:
+      bugfixes:
+        - Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.mock.loader.DictDataLoader``
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+        - Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()``
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+        - Support ansible-core's data tagging changes in ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.trust``
+          (https://github.com/ansible-collections/community.internal_test_tools/pull/143).
+      release_summary: Feature and maintenance release with Data Tagging support.
+    fragments:
+      - 0.16.0.yml
+      - 143-data-tagging.yml
+    release_date: '2025-04-14'
