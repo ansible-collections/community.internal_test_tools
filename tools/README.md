@@ -8,6 +8,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 ## Extra sanity test runner
 
+> [!WARNING]
+> The extra sanity test runner is deprecated.
+> Consider using [antsibull-nox](https://ansible.readthedocs.io/projects/antsibull-nox/) instead.
+
 This is a small tool to run sanity tests similar to the [ansible-core specific code-smell tests](https://github.com/ansible/ansible/tree/devel/test/sanity/code-smell) and the [code-smell tests integrated into `ansible-test sanity`](https://github.com/ansible/ansible/tree/devel/test/lib/ansible_test/_data/sanity/code-smell).
 
 It does not have useful features such as change detection, but it can be restricted to certain targets. The hope is that eventually, ansible-test will have a plugin infrastructure which allows it to run such tests itself.

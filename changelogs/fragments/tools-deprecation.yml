@@ -1,0 +1,4 @@
+deprecated_features:
+  - "The extra sanity test runner is deprecated.
+     Consider using `antsibull-nox <https://ansible.readthedocs.io/projects/antsibull-nox/>`__ instead
+     (https://github.com/ansible-collections/community.internal_test_tools/pull/150)."
