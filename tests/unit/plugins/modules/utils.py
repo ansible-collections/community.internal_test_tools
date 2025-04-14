@@ -14,6 +14,12 @@ from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
 
 
+try:
+    from ansible.module_utils.common.messages import WarningSummary as _WarningSummary
+except ImportError:
+    _WarningSummary = None
+
+
 @_contextlib.contextmanager
 def set_module_args(args):
     """
@@ -24,9 +30,17 @@ def set_module_args(args):
     if '_ansible_keep_remote_files' not in args:
         args['_ansible_keep_remote_files'] = False
 
-    serialized_args = to_bytes(json.dumps({'ANSIBLE_MODULE_ARGS': args}))
-    with patch.object(basic, '_ANSIBLE_ARGS', serialized_args):
-        yield
+    try:
+        from ansible.module_utils.testing import patch_module_args
+    except ImportError:
+        # Before data tagging support was merged, this was the way to go:
+        serialized_args = to_bytes(json.dumps({'ANSIBLE_MODULE_ARGS': args}))
+        with patch.object(basic, '_ANSIBLE_ARGS', serialized_args):
+            yield
+    else:
+        # With data tagging support, we have a new helper for this:
+        with patch_module_args(args):
+            yield
 
 
 class AnsibleExitJson(Exception):
@@ -84,5 +98,8 @@ def extract_warnings_texts(result):
     warnings = []
     if result.get('warnings'):
         for warning in result['warnings']:
+            if _WarningSummary and isinstance(warning, _WarningSummary):
+                warnings.append(warning.details[0].msg)
+                continue
             warnings.append(warning)
     return warnings
