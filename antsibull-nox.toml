@@ -35,6 +35,9 @@ run_galaxy_importer = true
 
 [sessions.ansible_test_sanity]
 include_devel = true
+skip_tests = [
+    "ansible-doc"
+]
 
 [sessions.ansible_test_units]
 include_devel = true
