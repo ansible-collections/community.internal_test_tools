@@ -53,3 +53,53 @@ jobs:
           fail_ci_if_error: false
           flags: tools
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  units:
+    runs-on: ubuntu-latest
+    name: Tools unit tests
+    strategy:
+      # As soon as the first unit test fails, cancel the others to free up the CI queue
+      fail-fast: true
+      matrix:
+        ansible:
+          - stable-2.9
+          - stable-2.10
+          - stable-2.11
+          - stable-2.12
+          - stable-2.13
+          - stable-2.14
+          - stable-2.15
+          - stable-2.16
+          - stable-2.17
+          - stable-2.18
+          - devel
+
+    steps:
+      # Run unit tests for tools
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          path: ./collection-checkout/ansible_collections/community/internal_test_tools
+          persist-credentials: false
+
+      - name: Install ansible-core (${{ matrix.ansible }})
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+
+      - name: Install requirements for tools unit tests
+        run: pip install pytest pytest-cov --disable-pip-version-check
+
+      - name: Run unit test for tools
+        run: python -m pytest --cov-branch --cov=tools --cov=tests/tool_unit/ --cov-report term-missing -vv tests/tool_unit/
+        working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+
+      - name: Combine coverage for tools
+        run: coverage xml -i
+        working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+
+      # See the reports at https://codecov.io/gh/ansible_collections/community.internal_test_tools
+      - uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: false
+          working-directory: ./collection-checkout/ansible_collections/community/internal_test_tools
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: units
