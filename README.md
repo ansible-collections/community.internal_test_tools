@@ -6,7 +6,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 # Internal Test Tools Collection
 [![Documentation](https://img.shields.io/badge/docs-brightgreen.svg)](https://ansible-collections.github.io/community.internal_test_tools/branch/main/)
-[![CI](https://github.com/ansible-collections/community.internal_test_tools/actions/workflows/ansible-test.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.internal_test_tools/actions)
+[![CI](https://github.com/ansible-collections/community.internal_test_tools/actions/workflows/nox.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.internal_test_tools/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/community.internal_test_tools)](https://codecov.io/gh/ansible-collections/community.internal_test_tools)
 [![REUSE status](https://api.reuse.software/badge/github.com/ansible-collections/community.internal_test_tools)](https://api.reuse.software/info/github.com/ansible-collections/community.internal_test_tools)
 
