@@ -344,3 +344,14 @@ releases:
       - 0.16.0.yml
       - 143-data-tagging.yml
     release_date: '2025-04-14'
+  0.17.0:
+    changes:
+      deprecated_features:
+        - The extra sanity test runner is deprecated. Consider using `antsibull-nox
+          <https://ansible.readthedocs.io/projects/antsibull-nox/>`__ instead (https://github.com/ansible-collections/community.internal_test_tools/pull/150).
+      release_summary: Maintenance release with deprecation of the extra sanity test
+        runner.
+    fragments:
+      - 0.17.0.yml
+      - tools-deprecation.yml
+    release_date: '2025-04-21'

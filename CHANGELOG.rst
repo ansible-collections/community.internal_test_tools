@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.17.0
+=======
+
+Release Summary
+---------------
+
+Maintenance release with deprecation of the extra sanity test runner.
+
+Deprecated Features
+-------------------
+
+- The extra sanity test runner is deprecated. Consider using `antsibull-nox <https://ansible.readthedocs.io/projects/antsibull-nox/>`__ instead (https://github.com/ansible-collections/community.internal_test_tools/pull/150).
+
 v0.16.0
 =======
 
