@@ -5,7 +5,7 @@
 
 namespace: community
 name: internal_test_tools
-version: 0.16.0
+version: 0.17.0
 readme: README.md
 authors:
   - Ansible (https://github.com/ansible)
