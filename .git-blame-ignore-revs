@@ -1,0 +1,6 @@
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Reformat YAML: https://github.com/ansible-collections/community.internal_test_tools/pull/152
+d352b5f35d72a99e833c01a229c55d751ac89d7c
