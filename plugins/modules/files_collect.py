@@ -76,6 +76,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Recursively collect information on all files in output_dir
   community.internal_test_tools.files_collect:
     directories:

@@ -82,6 +82,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Does nothing
   community.internal_test_tools.fetch_url_test_module:
     call_sequence: []
