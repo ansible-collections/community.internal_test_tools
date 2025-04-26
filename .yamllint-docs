@@ -10,11 +10,12 @@ ignore: |
 
 rules:
   line-length:
-    max: 300
+    max: 160
     level: error
   document-start:
-    present: true
-  document-end: false
+    present: false
+  document-end:
+    present: false
   truthy:
     level: error
     allowed-values:
