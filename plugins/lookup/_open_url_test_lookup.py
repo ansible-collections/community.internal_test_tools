@@ -55,6 +55,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Do a lookup
   ansible.builtin.debug:
     msg: "{{ lookup('community.internal_test_tools.open_url_test_lookup', 'https://example.com', method='GET', headers={'foo':
