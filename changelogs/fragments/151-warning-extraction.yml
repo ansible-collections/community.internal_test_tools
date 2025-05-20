@@ -1,0 +1,3 @@
+bugfixes:
+  - "Adjust ``ansible-collections.ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.extract_warnings_texts()`` to breaking
+     changes in ansible-core ``devel`` branch (https://github.com/ansible-collections/community.internal_test_tools/pull/151)."
