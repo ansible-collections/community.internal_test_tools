@@ -15,6 +15,7 @@ from ansible.module_utils.common.text.converters import to_bytes
 
 
 try:
+    # For the original DT implementation. No longer working.
     from ansible.module_utils.common.messages import WarningSummary as _WarningSummary
 except ImportError:
     _WarningSummary = None
@@ -99,7 +100,15 @@ def extract_warnings_texts(result):
     if result.get('warnings'):
         for warning in result['warnings']:
             if _WarningSummary and isinstance(warning, _WarningSummary):
+                # This works with the original Data Tagging implementation
                 warnings.append(warning.details[0].msg)
                 continue
+            if not isinstance(warning, (str, dict)):
+                # This should handle https://github.com/ansible/ansible/pull/85181 which broke the above code
+                try:
+                    warnings.append(warning.event.msg)
+                    continue
+                except AttributeError:
+                    pass
             warnings.append(warning)
     return warnings
