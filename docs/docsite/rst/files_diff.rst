@@ -8,7 +8,7 @@
 Checking for file modifications with ``files_collect`` and ``files_diff``
 =========================================================================
 
-The :ref:`community.internal_test_tools collection <plugins_in_community.internal_test_tools>` offers two modules:
+The :anscollection:`community.internal_test_tools collection <community.internal_test_tools#collection>` offers two modules:
 
 * :ansplugin:`community.internal_test_tools.files_collect#module`: collect state of files or directories;
 * :ansplugin:`community.internal_test_tools.files_diff#module`: check these files or directories for changes.
