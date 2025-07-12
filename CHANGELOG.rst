@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.17.1
+=======
+
+Release Summary
+---------------
+
+Bugfix release.
+
+Bugfixes
+--------
+
+- Adjust ``ansible-collections.ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.extract_warnings_texts()`` to breaking changes in ansible-core ``devel`` branch. Unfortunately `no stable API to query this information is available in ansible-core 2.19 <https://github.com/ansible/ansible/pull/85327#issuecomment-3050622410>`__ (https://github.com/ansible-collections/community.internal_test_tools/pull/151).
+
 v0.17.0
 =======
 
