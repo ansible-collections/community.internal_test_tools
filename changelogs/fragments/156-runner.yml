@@ -1,0 +1,3 @@
+removed_features:
+  - "The deprecated extra sanity test runner has been removed. Consider using `antsibull-nox <https://ansible.readthedocs.io/projects/antsibull-nox/>`__ instead
+     (https://github.com/ansible-collections/community.internal_test_tools/pull/156)."

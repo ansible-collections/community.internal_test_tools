@@ -47,7 +47,6 @@ We publish [**latest commit** collection documentation](https://ansible-collecti
 - [`tests/unit/plugins/modules/utils.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/plugins/modules/utils.py/)
 - [`tests/unit/utils/fetch_url_module_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/utils/fetch_url_module_framework.py)
 - [`tests/unit/utils/open_url_framework.py`](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tests/unit/utils/open_url_framework.py)
-- [extra sanity test runner (DEPRECATED!)](https://github.com/ansible-collections/community.internal_test_tools/tree/main/tools/README.md)
 
 ## Contributing to this collection
 
