@@ -367,3 +367,14 @@ releases:
       - 0.17.1.yml
       - 151-warning-extraction.yml
     release_date: '2025-07-12'
+  0.18.0:
+    changes:
+      release_summary: Major release with a removed feature.
+      removed_features:
+        - The deprecated extra sanity test runner has been removed. Consider using
+          `antsibull-nox <https://ansible.readthedocs.io/projects/antsibull-nox/>`__
+          instead (https://github.com/ansible-collections/community.internal_test_tools/pull/156).
+    fragments:
+      - 0.18.0.yml
+      - 156-runner.yml
+    release_date: '2025-08-03'

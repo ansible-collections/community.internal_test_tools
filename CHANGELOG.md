@@ -2,65 +2,68 @@
 
 **Topics**
 
-- <a href="#v0-17-1">v0\.17\.1</a>
+- <a href="#v0-18-0">v0\.18\.0</a>
     - <a href="#release-summary">Release Summary</a>
+    - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
+- <a href="#v0-17-1">v0\.17\.1</a>
+    - <a href="#release-summary-1">Release Summary</a>
     - <a href="#bugfixes">Bugfixes</a>
 - <a href="#v0-17-0">v0\.17\.0</a>
-    - <a href="#release-summary-1">Release Summary</a>
+    - <a href="#release-summary-2">Release Summary</a>
     - <a href="#deprecated-features">Deprecated Features</a>
 - <a href="#v0-16-0">v0\.16\.0</a>
-    - <a href="#release-summary-2">Release Summary</a>
+    - <a href="#release-summary-3">Release Summary</a>
     - <a href="#bugfixes-1">Bugfixes</a>
 - <a href="#v0-15-0">v0\.15\.0</a>
-    - <a href="#release-summary-3">Release Summary</a>
+    - <a href="#release-summary-4">Release Summary</a>
     - <a href="#minor-changes">Minor Changes</a>
     - <a href="#breaking-changes--porting-guide">Breaking Changes / Porting Guide</a>
 - <a href="#v0-14-0">v0\.14\.0</a>
-    - <a href="#release-summary-4">Release Summary</a>
+    - <a href="#release-summary-5">Release Summary</a>
     - <a href="#minor-changes-1">Minor Changes</a>
 - <a href="#v0-13-0">v0\.13\.0</a>
-    - <a href="#release-summary-5">Release Summary</a>
+    - <a href="#release-summary-6">Release Summary</a>
     - <a href="#minor-changes-2">Minor Changes</a>
 - <a href="#v0-12-0">v0\.12\.0</a>
-    - <a href="#release-summary-6">Release Summary</a>
-    - <a href="#minor-changes-3">Minor Changes</a>
-    - <a href="#removed-features-previously-deprecated">Removed Features \(previously deprecated\)</a>
-- <a href="#v0-11-0">v0\.11\.0</a>
     - <a href="#release-summary-7">Release Summary</a>
+    - <a href="#minor-changes-3">Minor Changes</a>
+    - <a href="#removed-features-previously-deprecated-1">Removed Features \(previously deprecated\)</a>
+- <a href="#v0-11-0">v0\.11\.0</a>
+    - <a href="#release-summary-8">Release Summary</a>
     - <a href="#minor-changes-4">Minor Changes</a>
     - <a href="#breaking-changes--porting-guide-1">Breaking Changes / Porting Guide</a>
     - <a href="#deprecated-features-1">Deprecated Features</a>
     - <a href="#bugfixes-2">Bugfixes</a>
 - <a href="#v0-10-1">v0\.10\.1</a>
-    - <a href="#release-summary-8">Release Summary</a>
-- <a href="#v0-10-0">v0\.10\.0</a>
     - <a href="#release-summary-9">Release Summary</a>
-    - <a href="#removed-features-previously-deprecated-1">Removed Features \(previously deprecated\)</a>
+- <a href="#v0-10-0">v0\.10\.0</a>
+    - <a href="#release-summary-10">Release Summary</a>
+    - <a href="#removed-features-previously-deprecated-2">Removed Features \(previously deprecated\)</a>
     - <a href="#known-issues">Known Issues</a>
 - <a href="#v0-9-0">v0\.9\.0</a>
-    - <a href="#release-summary-10">Release Summary</a>
+    - <a href="#release-summary-11">Release Summary</a>
     - <a href="#minor-changes-5">Minor Changes</a>
     - <a href="#deprecated-features-2">Deprecated Features</a>
 - <a href="#v0-8-0">v0\.8\.0</a>
-    - <a href="#release-summary-11">Release Summary</a>
+    - <a href="#release-summary-12">Release Summary</a>
     - <a href="#minor-changes-6">Minor Changes</a>
 - <a href="#v0-7-0">v0\.7\.0</a>
-    - <a href="#release-summary-12">Release Summary</a>
+    - <a href="#release-summary-13">Release Summary</a>
     - <a href="#minor-changes-7">Minor Changes</a>
 - <a href="#v0-6-1">v0\.6\.1</a>
-    - <a href="#release-summary-13">Release Summary</a>
+    - <a href="#release-summary-14">Release Summary</a>
     - <a href="#bugfixes-3">Bugfixes</a>
 - <a href="#v0-6-0">v0\.6\.0</a>
-    - <a href="#release-summary-14">Release Summary</a>
+    - <a href="#release-summary-15">Release Summary</a>
     - <a href="#minor-changes-8">Minor Changes</a>
     - <a href="#bugfixes-4">Bugfixes</a>
 - <a href="#v0-5-0">v0\.5\.0</a>
-    - <a href="#release-summary-15">Release Summary</a>
+    - <a href="#release-summary-16">Release Summary</a>
     - <a href="#minor-changes-9">Minor Changes</a>
     - <a href="#breaking-changes--porting-guide-2">Breaking Changes / Porting Guide</a>
     - <a href="#bugfixes-5">Bugfixes</a>
 - <a href="#v0-4-0">v0\.4\.0</a>
-    - <a href="#release-summary-16">Release Summary</a>
+    - <a href="#release-summary-17">Release Summary</a>
     - <a href="#minor-changes-10">Minor Changes</a>
     - <a href="#bugfixes-6">Bugfixes</a>
 - <a href="#v0-3-0">v0\.3\.0</a>
@@ -70,17 +73,30 @@
         - <a href="#lookup">Lookup</a>
     - <a href="#new-modules">New Modules</a>
 - <a href="#v0-2-1">v0\.2\.1</a>
-    - <a href="#release-summary-17">Release Summary</a>
+    - <a href="#release-summary-18">Release Summary</a>
 - <a href="#v0-2-0">v0\.2\.0</a>
     - <a href="#major-changes">Major Changes</a>
 - <a href="#v0-1-1">v0\.1\.1</a>
-    - <a href="#release-summary-18">Release Summary</a>
+    - <a href="#release-summary-19">Release Summary</a>
     - <a href="#new-modules-1">New Modules</a>
+
+<a id="v0-18-0"></a>
+## v0\.18\.0
+
+<a id="release-summary"></a>
+### Release Summary
+
+Major release with a removed feature\.
+
+<a id="removed-features-previously-deprecated"></a>
+### Removed Features \(previously deprecated\)
+
+* The deprecated extra sanity test runner has been removed\. Consider using [antsibull\-nox](https\://ansible\.readthedocs\.io/projects/antsibull\-nox/) instead \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/156](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/156)\)\.
 
 <a id="v0-17-1"></a>
 ## v0\.17\.1
 
-<a id="release-summary"></a>
+<a id="release-summary-1"></a>
 ### Release Summary
 
 Bugfix release\.
@@ -93,7 +109,7 @@ Bugfix release\.
 <a id="v0-17-0"></a>
 ## v0\.17\.0
 
-<a id="release-summary-1"></a>
+<a id="release-summary-2"></a>
 ### Release Summary
 
 Maintenance release with deprecation of the extra sanity test runner\.
@@ -106,7 +122,7 @@ Maintenance release with deprecation of the extra sanity test runner\.
 <a id="v0-16-0"></a>
 ## v0\.16\.0
 
-<a id="release-summary-2"></a>
+<a id="release-summary-3"></a>
 ### Release Summary
 
 Feature and maintenance release with Data Tagging support\.
@@ -121,7 +137,7 @@ Feature and maintenance release with Data Tagging support\.
 <a id="v0-15-0"></a>
 ## v0\.15\.0
 
-<a id="release-summary-3"></a>
+<a id="release-summary-4"></a>
 ### Release Summary
 
 Feature release preparing Data Tagging support\.
@@ -146,7 +162,7 @@ Feature release preparing Data Tagging support\.
 <a id="v0-14-0"></a>
 ## v0\.14\.0
 
-<a id="release-summary-4"></a>
+<a id="release-summary-5"></a>
 ### Release Summary
 
 Feature release\.
@@ -159,7 +175,7 @@ Feature release\.
 <a id="v0-13-0"></a>
 ## v0\.13\.0
 
-<a id="release-summary-5"></a>
+<a id="release-summary-6"></a>
 ### Release Summary
 
 Feature release\.
@@ -174,7 +190,7 @@ Feature release\.
 <a id="v0-12-0"></a>
 ## v0\.12\.0
 
-<a id="release-summary-6"></a>
+<a id="release-summary-7"></a>
 ### Release Summary
 
 Feature release\.
@@ -185,7 +201,7 @@ Feature release\.
 * fetch\_url and open\_url unit test frameworks \- use the <code>tests\.unit\.compat\.mock</code> module everywhere so that <code>unittest\.mock</code> is used instead of <code>mock</code> on Python 3 \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/130](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/130)\)\.
 * open\_url and fetch\_url unit test frameworks \- allow to check for form value arrays \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/125](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/125)\)\.
 
-<a id="removed-features-previously-deprecated"></a>
+<a id="removed-features-previously-deprecated-1"></a>
 ### Removed Features \(previously deprecated\)
 
 * Removed the <code>ansible\_builtin\_runtime</code> tool \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/issues/111](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/issues/111)\, [https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/131](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/131)\)\.
@@ -193,7 +209,7 @@ Feature release\.
 <a id="v0-11-0"></a>
 ## v0\.11\.0
 
-<a id="release-summary-7"></a>
+<a id="release-summary-8"></a>
 ### Release Summary
 
 Feature\, bugfix\, and maintenance release\.
@@ -221,7 +237,7 @@ Feature\, bugfix\, and maintenance release\.
 <a id="v0-10-1"></a>
 ## v0\.10\.1
 
-<a id="release-summary-8"></a>
+<a id="release-summary-9"></a>
 ### Release Summary
 
 Maintenance release to test whether publishing community collections works\.
@@ -229,7 +245,7 @@ Maintenance release to test whether publishing community collections works\.
 <a id="v0-10-0"></a>
 ## v0\.10\.0
 
-<a id="release-summary-9"></a>
+<a id="release-summary-10"></a>
 ### Release Summary
 
 Maintenance release with updated documentation and removal of a deprecated tool\.
@@ -242,7 +258,7 @@ ansible\-core 2\.15 or later to see it as it is intended\. Alternatively you can
 look at [the docsite](https\://ansible\-collections\.github\.io/community\.internal\_test\_tools/branch/main/)
 for the rendered HTML version of the documentation of the latest release\.
 
-<a id="removed-features-previously-deprecated-1"></a>
+<a id="removed-features-previously-deprecated-2"></a>
 ### Removed Features \(previously deprecated\)
 
 * Removed the deprecated <code>meta/runtime\.yml</code> tool \([https\://github\.com/ansible\-collections/community\.internal\_test\_tools/issues/79](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/issues/79)\, [https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/91](https\://github\.com/ansible\-collections/community\.internal\_test\_tools/pull/91)\)\.
@@ -255,7 +271,7 @@ for the rendered HTML version of the documentation of the latest release\.
 <a id="v0-9-0"></a>
 ## v0\.9\.0
 
-<a id="release-summary-10"></a>
+<a id="release-summary-11"></a>
 ### Release Summary
 
 Feature release with improved extra sanity test runner\.
@@ -274,7 +290,7 @@ Feature release with improved extra sanity test runner\.
 <a id="v0-8-0"></a>
 ## v0\.8\.0
 
-<a id="release-summary-11"></a>
+<a id="release-summary-12"></a>
 ### Release Summary
 
 Maintenance release with updated documentation and licensing information\.
@@ -287,7 +303,7 @@ Maintenance release with updated documentation and licensing information\.
 <a id="v0-7-0"></a>
 ## v0\.7\.0
 
-<a id="release-summary-12"></a>
+<a id="release-summary-13"></a>
 ### Release Summary
 
 Regular feature release\.
@@ -301,7 +317,7 @@ Regular feature release\.
 <a id="v0-6-1"></a>
 ## v0\.6\.1
 
-<a id="release-summary-13"></a>
+<a id="release-summary-14"></a>
 ### Release Summary
 
 Regular bugfix release\.
@@ -315,7 +331,7 @@ Regular bugfix release\.
 <a id="v0-6-0"></a>
 ## v0\.6\.0
 
-<a id="release-summary-14"></a>
+<a id="release-summary-15"></a>
 ### Release Summary
 
 Feature and bugfix release\.
@@ -335,7 +351,7 @@ Feature and bugfix release\.
 <a id="v0-5-0"></a>
 ## v0\.5\.0
 
-<a id="release-summary-15"></a>
+<a id="release-summary-16"></a>
 ### Release Summary
 
 Feature release with various tool improvements\.
@@ -365,7 +381,7 @@ Feature release with various tool improvements\.
 <a id="v0-4-0"></a>
 ## v0\.4\.0
 
-<a id="release-summary-16"></a>
+<a id="release-summary-17"></a>
 ### Release Summary
 
 Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url</code> test framework\.
@@ -415,7 +431,7 @@ Add bugfixes for and new features to the <code>open\_url</code>/<code>fetch\_url
 <a id="v0-2-1"></a>
 ## v0\.2\.1
 
-<a id="release-summary-17"></a>
+<a id="release-summary-18"></a>
 ### Release Summary
 
 Re\-release because Galaxy did not accept a tag with spaces in <code>galaxy\.yml</code>\. No other changes besides that the changelog moved to the root directory\.
@@ -431,7 +447,7 @@ Re\-release because Galaxy did not accept a tag with spaces in <code>galaxy\.yml
 <a id="v0-1-1"></a>
 ## v0\.1\.1
 
-<a id="release-summary-18"></a>
+<a id="release-summary-19"></a>
 ### Release Summary
 
 Initial release\.
