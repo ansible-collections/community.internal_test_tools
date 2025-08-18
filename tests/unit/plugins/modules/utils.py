@@ -34,14 +34,17 @@ def set_module_args(args):
     try:
         from ansible.module_utils.testing import patch_module_args
     except ImportError:
-        # Before data tagging support was merged, this was the way to go:
-        serialized_args = to_bytes(json.dumps({'ANSIBLE_MODULE_ARGS': args}))
-        with patch.object(basic, '_ANSIBLE_ARGS', serialized_args):
-            yield
+        pass
     else:
         # With data tagging support, we have a new helper for this:
         with patch_module_args(args):
             yield
+        return
+
+    # Before data tagging support was merged, this was the way to go:
+    serialized_args = to_bytes(json.dumps({'ANSIBLE_MODULE_ARGS': args}))
+    with patch.object(basic, '_ANSIBLE_ARGS', serialized_args):
+        yield
 
 
 class AnsibleExitJson(Exception):
