@@ -1,0 +1,5 @@
+plugins/modules/_fetch_url_test_module.py pylint:ansible-bad-import-from
+tests/unit/mock/procenv.py pylint:ansible-bad-import-from
+tests/unit/mock/yaml_helper.py pylint:ansible-bad-import-from
+tests/unit/utils/fetch_url_module_framework.py pylint:ansible-bad-import-from
+tests/unit/utils/trust.py pylint:ansible-bad-import-from
