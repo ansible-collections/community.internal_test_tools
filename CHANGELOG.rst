@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.18.1
+=======
+
+Release Summary
+---------------
+
+Bugfix release.
+
+Bugfixes
+--------
+
+- Refactor ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()`` so that neither branch is executed during exception handling, to avoid backtraces in pytest when errors happen somewhere else (https://github.com/ansible-collections/community.internal_test_tools/issues/159, https://github.com/ansible-collections/community.internal_test_tools/pull/160).
+
 v0.18.0
 =======
 

@@ -378,3 +378,15 @@ releases:
       - 0.18.0.yml
       - 156-runner.yml
     release_date: '2025-08-03'
+  0.18.1:
+    changes:
+      bugfixes:
+        - Refactor ``ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils.set_module_args()``
+          so that neither branch is executed during exception handling, to avoid backtraces
+          in pytest when errors happen somewhere else (https://github.com/ansible-collections/community.internal_test_tools/issues/159,
+          https://github.com/ansible-collections/community.internal_test_tools/pull/160).
+      release_summary: Bugfix release.
+    fragments:
+      - 0.18.1.yml
+      - 160-set-module-args.yml
+    release_date: '2025-08-31'
