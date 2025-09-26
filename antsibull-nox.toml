@@ -4,6 +4,11 @@
 
 [collection_sources]
 
+[vcs]
+vcs = "git"
+development_branch = "main"
+stable_branches = [ "stable-*" ]
+
 [sessions]
 
 [sessions.lint]
