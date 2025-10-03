@@ -68,13 +68,12 @@ __metaclass__ = type
 
 
 import json
+import sys
 
 import pytest
 
 import ansible.module_utils.basic  # noqa: F401, pylint: disable=unused-import
 import ansible.module_utils.urls  # noqa: F401, pylint: disable=unused-import
-
-from ansible.module_utils.six import PY2
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import MagicMock
 from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
@@ -121,7 +120,7 @@ class _ReadResponse(object):
     closed = True
 
     def read(self):
-        if PY2:
+        if sys.version_info[0] == 2:
             raise TypeError('response already read')
         return b''  # pragma: no cover
 
