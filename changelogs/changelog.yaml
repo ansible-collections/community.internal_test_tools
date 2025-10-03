@@ -390,3 +390,13 @@ releases:
       - 0.18.1.yml
       - 160-set-module-args.yml
     release_date: '2025-08-31'
+  0.18.2:
+    changes:
+      bugfixes:
+        - Avoid using ``ansible.module_utils.six`` to avoid deprecation warnings with
+          ansible-core 2.20 (https://github.com/ansible-collections/community.internal_test_tools/pull/162).
+      release_summary: Maintenance release.
+    fragments:
+      - 0.18.2.yml
+      - 162-six.yml
+    release_date: '2025-10-03'

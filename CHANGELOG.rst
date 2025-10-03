@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.18.2
+=======
+
+Release Summary
+---------------
+
+Maintenance release.
+
+Bugfixes
+--------
+
+- Avoid using ``ansible.module_utils.six`` to avoid deprecation warnings with ansible-core 2.20 (https://github.com/ansible-collections/community.internal_test_tools/pull/162).
+
 v0.18.1
 =======
 
