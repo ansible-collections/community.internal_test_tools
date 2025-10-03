@@ -5,9 +5,15 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible.module_utils.six import string_types as _string_types
+import sys as _sys
+
 from ansible.utils.unsafe_proxy import AnsibleUnsafe as _AnsibleUnsafe
 from ansible.utils.unsafe_proxy import wrap_var as _make_unsafe
+
+if _sys.version_info[0] == 2:
+    _string_types = (str, unicode)  # noqa: F821, pylint: disable=undefined-variable
+else:
+    _string_types = (bytes, str)
 
 try:
     # This requires ansible-core with Data Tagging

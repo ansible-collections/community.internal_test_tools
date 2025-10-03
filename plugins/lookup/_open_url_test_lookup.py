@@ -92,9 +92,14 @@ import base64
 from ansible.errors import AnsibleLookupError
 from ansible.plugins.lookup import LookupBase
 from ansible.module_utils.urls import open_url
-from ansible.module_utils.six.moves.urllib.error import HTTPError
 
 from ansible.utils.display import Display
+
+try:
+    from urllib.error import HTTPError
+except ImportError:
+    # Python 2.x fallback:
+    from urllib2 import HTTPError
 
 display = Display()
 

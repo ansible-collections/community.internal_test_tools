@@ -61,13 +61,17 @@ __metaclass__ = type
 
 import json
 
-from ansible.module_utils.six.moves.urllib.error import HTTPError
-
 from ._utils import (
     CallBase as _CallBase,
     validate_call as _validate_call,
 )
 from ..compat.mock import MagicMock
+
+try:
+    from urllib.error import HTTPError
+except ImportError:
+    # Python 2.x fallback:
+    from urllib2 import HTTPError
 
 
 class OpenUrlCall(_CallBase):

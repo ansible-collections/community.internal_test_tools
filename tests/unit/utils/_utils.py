@@ -10,7 +10,12 @@ import json
 import traceback
 
 from ansible.module_utils.common.text.converters import to_native
-from ansible.module_utils.six.moves.urllib.parse import parse_qs
+
+try:
+    from urllib.parse import parse_qs
+except ImportError:
+    # Python 2.x fallback:
+    from urlparse import parse_qs
 
 
 def _extract_query(url):
