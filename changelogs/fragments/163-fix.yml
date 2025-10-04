@@ -1,0 +1,2 @@
+bugfixes:
+  - "Fix accidental type extensions (https://github.com/ansible-collections/community.internal_test_tools/pull/163)."
