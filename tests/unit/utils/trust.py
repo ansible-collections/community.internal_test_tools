@@ -11,9 +11,9 @@ from ansible.utils.unsafe_proxy import AnsibleUnsafe as _AnsibleUnsafe
 from ansible.utils.unsafe_proxy import wrap_var as _make_unsafe
 
 if _sys.version_info[0] == 2:
-    _string_types = (str, unicode)  # noqa: F821, pylint: disable=undefined-variable
+    _string_types = (basestring,)  # noqa: F821, pylint: disable=undefined-variable
 else:
-    _string_types = (bytes, str)
+    _string_types = (str,)
 
 try:
     # This requires ansible-core with Data Tagging
