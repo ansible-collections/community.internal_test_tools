@@ -400,3 +400,12 @@ releases:
       - 0.18.2.yml
       - 162-six.yml
     release_date: '2025-10-03'
+  0.18.3:
+    changes:
+      bugfixes:
+        - Fix accidental type extensions (https://github.com/ansible-collections/community.internal_test_tools/pull/163).
+      release_summary: Maintenance release.
+    fragments:
+      - 0.18.3.yml
+      - 163-fix.yml
+    release_date: '2025-10-05'

@@ -4,6 +4,19 @@ Community Internal Test Tools Collection Release Notes
 
 .. contents:: Topics
 
+v0.18.3
+=======
+
+Release Summary
+---------------
+
+Maintenance release.
+
+Bugfixes
+--------
+
+- Fix accidental type extensions (https://github.com/ansible-collections/community.internal_test_tools/pull/163).
+
 v0.18.2
 =======
 
