@@ -71,7 +71,7 @@ try:
     from urllib.error import HTTPError
 except ImportError:
     # Python 2.x fallback:
-    from urllib2 import HTTPError
+    from urllib2 import HTTPError  # type: ignore
 
 
 class OpenUrlCall(_CallBase):

@@ -15,7 +15,7 @@ try:
     from urllib.parse import parse_qs
 except ImportError:
     # Python 2.x fallback:
-    from urlparse import parse_qs
+    from urlparse import parse_qs  # type: ignore
 
 
 def _extract_query(url):
