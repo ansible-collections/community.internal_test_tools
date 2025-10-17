@@ -7,16 +7,28 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
+import sys
+
+if sys.version_info[0] >= 3:
+    import typing as t
+
+    if t.TYPE_CHECKING:
+        from os import stat_result
+
+        from ansible.module_utils.basic import AnsibleModule
+
 
 STATE_VERSION = 1
 
 
 def read_file(module, path):
+    # type: (AnsibleModule, str | bytes) -> bytes
     with open(path, 'rb') as f:
         return f.read()
 
 
 def extract_stat(stat):
+    # type: (stat_result) -> dict[str, t.Any]
     result = {
         'mode': oct(stat.st_mode)[2:],
         'inode': stat.st_ino,

@@ -7,22 +7,26 @@ __metaclass__ = type
 
 import contextlib as _contextlib
 import json
+import sys
 
 from ansible_collections.community.internal_test_tools.tests.unit.compat import unittest
 from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import patch
 from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
 
+if sys.version_info[0] >= 3:
+    import typing as t
 
 try:
     # For the original DT implementation. No longer working.
-    from ansible.module_utils.common.messages import WarningSummary as _WarningSummary
+    from ansible.module_utils.common.messages import WarningSummary as _WarningSummary  # type: ignore
 except ImportError:
     _WarningSummary = None
 
 
 @_contextlib.contextmanager
 def set_module_args(args):
+    # type: (dict[str, t.Any]) -> t.Generator[None]
     """
     Context manager that sets module arguments for AnsibleModule
     """
@@ -51,17 +55,16 @@ class AnsibleExitJson(Exception):
     """
     Exception raised by exit_json() to signal that the module exited successful.
     """
-    pass
 
 
 class AnsibleFailJson(Exception):
     """
     Exception raised by fail_json() to signal that the module failed.
     """
-    pass
 
 
 def exit_json(*args, **kwargs):
+    # type: (*t.Any, **t.Any) -> t.NoReturn
     """
     Mock replacement for AnsibleModule.exit_json() that raises AnsibleExitJson.
     """
@@ -71,6 +74,7 @@ def exit_json(*args, **kwargs):
 
 
 def fail_json(*args, **kwargs):
+    # type: (*t.Any, **t.Any) -> t.NoReturn
     """
     Mock replacement for AnsibleModule.fail_json() that raises AnsibleFailJson.
     """
@@ -87,6 +91,7 @@ class ModuleTestCase(unittest.TestCase):
     """
 
     def setUp(self):
+        # type: () -> None
         self.mock_module = patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json)
         self.mock_module.start()
         self.mock_sleep = patch('time.sleep')
@@ -96,6 +101,7 @@ class ModuleTestCase(unittest.TestCase):
 
 
 def extract_warnings_texts(result):
+    # type: (dict[str, t.Any]) -> list[str]
     """
     Given the results dictionary of a module, extracts the warnings as a list of strings.
     """

@@ -60,6 +60,7 @@ __metaclass__ = type
 
 
 import json
+import sys
 
 from ._utils import (
     CallBase as _CallBase,
@@ -73,6 +74,14 @@ except ImportError:
     # Python 2.x fallback:
     from urllib2 import HTTPError  # type: ignore
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
+    if t.TYPE_CHECKING:
+        from collections.abc import Callable
+        from datetime import datetime
+        from http.cookiejar import CookieJar
+
 
 class OpenUrlCall(_CallBase):
     '''
@@ -83,14 +92,16 @@ class OpenUrlCall(_CallBase):
     '''
 
     def __init__(self, method, status):
+        # type: (str, int) -> None
         '''
         Create a ``open_url()`` expected call. Must be passed information on the expected
         HTTP method and the HTTP status returned by the call.
         '''
         super(OpenUrlCall, self).__init__(method, status)
-        self.exception_generator = None
+        self.exception_generator = None  # type: Callable[[], BaseException] | None
 
     def exception(self, exception_generator):
+        # type: (Callable[[], BaseException]) -> t.Self
         '''
         Builder method to raise an exception in the ``open_url()`` call.
         Must be a function that returns an exception.
@@ -101,6 +112,7 @@ class OpenUrlCall(_CallBase):
         return self
 
     def result(self, body):
+        # type: (bytes) -> t.Self
         '''
         Builder method to set return body of the ``open_url()`` call. Must be a bytes string.
         '''
@@ -108,6 +120,7 @@ class OpenUrlCall(_CallBase):
         return super(OpenUrlCall, self).result(body)
 
     def result_error(self, body=None):
+        # type: (bytes | None) -> t.Self
         '''
         Builder method to set return body of the ``open_url()`` call in case of an error.
         '''
@@ -118,6 +131,7 @@ class OpenUrlCall(_CallBase):
         return self
 
     def result_error_json(self, json_body):
+        # type: (t.Any) -> t.Self
         '''
         Builder method to set return body of the ``open_url()`` call (as a JSON object) in case of an error.
         '''
@@ -133,19 +147,38 @@ class OpenUrlProxy(object):
     calls are made.
     '''
     def __init__(self, calls):
+        # type: (list[OpenUrlCall]) -> None
         '''
         Create instance with expected list of calls.
         '''
         self.calls = calls
         self.index = 0
 
-    def __call__(self, url, data=None, headers=None, method=None, use_proxy=True,
-                 force=False, last_mod_time=None, timeout=10, validate_certs=True,
-                 url_username=None, url_password=None, http_agent=None,
-                 force_basic_auth=False, follow_redirects='urllib2',
-                 client_cert=None, client_key=None, cookies=None,
-                 use_gssapi=False, unix_socket=None, ca_path=None,
-                 unredirected_headers=None):
+    def __call__(
+        self,
+        url,  # type: str
+        data=None,  # type: str | bytes | None
+        headers=None,  # type: dict[str, str] | None
+        method=None,  # type: str | None
+        use_proxy=True,  # type: bool
+        force=False,  # type: bool
+        last_mod_time=None,  # type: datetime | None
+        timeout=10,  # type: int | float
+        validate_certs=True,  # type: bool
+        url_username=None,  # type: str | None
+        url_password=None,  # type: str | None
+        http_agent=None,  # type: str | None
+        force_basic_auth=False,  # type: bool
+        follow_redirects='urllib2',  # type: str
+        client_cert=None,  # type: str | None
+        client_key=None,  # type: str | None
+        cookies=None,  # type: CookieJar | None
+        use_gssapi=False,  # type: bool
+        unix_socket=None,  # type: str | None
+        ca_path=None,  # type: str | None
+        unredirected_headers=None,  # type: dict[str, str] | None
+    ):
+        # type: (...) -> object
         '''
         A call to ``open_url()``.
         '''
@@ -182,10 +215,17 @@ class OpenUrlProxy(object):
                 res.read = MagicMock(return_value=body)
             else:
                 res.read = MagicMock(side_effect=AttributeError('read'))
-            raise HTTPError(url, call.status, 'Error', info, res)
+            raise HTTPError(
+                url,
+                call.status,
+                'Error',
+                info,  # type: ignore
+                res,
+            )
         assert False, 'OpenUrlCall data has neither body nor error data'
 
     def assert_is_done(self):
+        # type: () -> None
         '''
         Assert that all expected ``open_url()`` calls have been made.
         '''

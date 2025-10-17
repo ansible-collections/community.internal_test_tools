@@ -119,8 +119,12 @@ import sys
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
 
 def copy_value_if_not_none(src, key, dest):
+    # type: (dict[str, t.Any], str, dict[str, t.Any]) -> None
     if key in src and src[key] is not None:
         dest[key] = src[key]
     else:
@@ -128,6 +132,7 @@ def copy_value_if_not_none(src, key, dest):
 
 
 def main():
+    # type: () -> None
     argument_spec = dict(
         call_sequence=dict(type='list', elements='dict', required=True, options=dict(
             url=dict(type='str', required=True),
@@ -186,7 +191,7 @@ def main():
 
     all_results = dict(
         call_results=results,
-    )
+    )  # type: dict[str, t.Any]
     if module.params['set_changed']:
         all_results['changed'] = True
 

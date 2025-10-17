@@ -132,6 +132,7 @@ import os
 import base64
 import difflib
 import hashlib
+import sys
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -141,8 +142,12 @@ from ansible_collections.community.internal_test_tools.plugins.module_utils.stat
     extract_stat,
 )
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
 
 def compare_stat(ex_stat, path, differences_neg, differences_pos):
+    # type: (dict[str, t.Any], str, list[str], list[str]) -> None
     stat = extract_stat(os.lstat(path))
     for k in stat:
         if stat[k] != ex_stat[k]:
@@ -150,7 +155,17 @@ def compare_stat(ex_stat, path, differences_neg, differences_pos):
             differences_pos.append('+  {key}: {value}'.format(key=k, value=stat[k]))
 
 
-def check_file(module, path, file, global_differences, changed_files, changed_files_content, added_files, removed_files):
+def check_file(
+    module,  # type: AnsibleModule
+    path,  # type: str
+    file,  # type: dict[str, t.Any]
+    global_differences,  # type: list[str]
+    changed_files,  # type: set[str]
+    changed_files_content,  # type: set[str]
+    added_files,  # type: set[str]
+    removed_files,  # type: set[str]
+):
+    # type: (...) -> None
     differences_neg = []
     differences_pos = []
     differences = []
@@ -212,10 +227,12 @@ def check_file(module, path, file, global_differences, changed_files, changed_fi
 
 
 def is_state(state):
+    # type: (dict[str, t.Any]) -> bool
     return 'files' in state and 'directories' in state and state.get('version') == STATE_VERSION
 
 
 def main():
+    # type: () -> None
     argument_spec = dict(
         state=dict(required=True, type='dict'),
         fail_on_diffs=dict(type='bool', default=False),
@@ -233,14 +250,14 @@ def main():
         else:
             module.fail_json(msg='The value of the state parameter must be the result of community.internal_test_tools.files_collect')
 
-    differences = []
-    added_files = set()
-    removed_files = set()
-    changed_files = set()
-    changed_files_content = set()
-    added_dirs = set()
-    removed_dirs = set()
-    changed_dirs = set()
+    differences = []  # type: list[str]
+    added_files = set()  # type: set[str]
+    removed_files = set()  # type: set[str]
+    changed_files = set()  # type: set[str]
+    changed_files_content = set()  # type: set[str]
+    added_dirs = set()  # type: set[str]
+    removed_dirs = set()  # type: set[str]
+    changed_dirs = set()  # type: set[str]
 
     for path, file in sorted(state['files'].items()):
         check_file(module, path, file, differences, changed_files, changed_files_content, added_files, removed_files)
@@ -251,8 +268,8 @@ def main():
             continue
         changed = False
         if 'stat' in directory:
-            differences_neg = []
-            differences_pos = []
+            differences_neg = []  # type: list[str]
+            differences_pos = []  # type: list[str]
             compare_stat(directory['stat'], path, differences_neg, differences_pos)
             if differences_neg or differences_pos:
                 changed = True
@@ -312,7 +329,7 @@ def main():
         ),
     )
     if result['changed'] and module.params['fail_on_diffs']:
-        module.fail_json(msg='Found differences!', **result)
+        module.fail_json(msg='Found differences!', **result)  # type: ignore
     module.exit_json(**result)
 
 

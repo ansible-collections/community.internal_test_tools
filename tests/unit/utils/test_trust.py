@@ -13,6 +13,7 @@ from .trust import (
 
 
 def test_trust():
+    # type: () -> None
     trusted = make_trusted("foo")
     untrusted = make_untrusted("bar")
     assert is_trusted(trusted)

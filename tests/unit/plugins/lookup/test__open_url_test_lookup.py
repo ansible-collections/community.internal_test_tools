@@ -26,9 +26,11 @@ from ansible_collections.community.internal_test_tools.tests.unit.compat.mock im
 
 class TestLookupModule(TestCase):
     def setUp(self):
+        # type: () -> None
         self.lookup = lookup_loader.get("community.internal_test_tools._open_url_test_lookup")
 
     def test_basic(self):
+        # type: () -> None
         open_url = OpenUrlProxy([
             OpenUrlCall('GET', 200)
             .result_str('hello')
@@ -48,6 +50,7 @@ class TestLookupModule(TestCase):
         assert result[0]['content'] == base64.b64encode('hello'.encode('utf-8')).decode('utf-8')
 
     def test_multiple(self):
+        # type: () -> None
         open_url = OpenUrlProxy([
             OpenUrlCall('POST', 200)
             .result_json({'1': 2})
@@ -89,6 +92,7 @@ class TestLookupModule(TestCase):
         assert result[3]['content'] == ''
 
     def test_error(self):
+        # type: () -> None
         open_url = OpenUrlProxy([
             OpenUrlCall('PUT', 404)
             .exception(lambda: Exception('foo bar!'))
@@ -111,6 +115,7 @@ class TestLookupModule(TestCase):
         assert e.value.message == 'Error while PUTing http://example.com?foo: foo bar!'
 
     def test_error_in_test(self):
+        # type: () -> None
         open_url = OpenUrlProxy([
             OpenUrlCall('GET', 204)
             .expect_url('http://example.com#asdf', without_query=True)

@@ -104,6 +104,7 @@ state:
 import os
 import base64
 import hashlib
+import sys
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -113,9 +114,19 @@ from ansible_collections.community.internal_test_tools.plugins.module_utils.stat
     extract_stat,
 )
 
+if sys.version_info[0] >= 3:
+    import typing as t
 
-def add_file(module, files, path, check_content=True, allow_not_existing=False):
-    result = {}
+
+def add_file(
+    module,  # type: AnsibleModule
+    files,  # type: dict[str, dict[str, t.Any]]
+    path,  # type: str
+    check_content=True,  # type: bool
+    allow_not_existing=False,  # type: bool
+):
+    # type: (...) -> None
+    result = {}  # type: dict[str, t.Any]
     files[path] = result
 
     if not os.path.exists(path):
@@ -143,6 +154,7 @@ def add_file(module, files, path, check_content=True, allow_not_existing=False):
 
 
 def main():
+    # type: () -> None
     argument_spec = dict(
         files=dict(type='list', elements='dict', options=dict(
             path=dict(type='path', required=True),
@@ -160,8 +172,8 @@ def main():
         supports_check_mode=True,
     )
 
-    files = dict()
-    directories = dict()
+    files = dict()  # type: dict[str, dict[str, t.Any]]
+    directories = dict()  # type: dict[str, dict[str, t.Any]]
 
     for file in module.params['files'] or []:
         add_file(
@@ -182,7 +194,7 @@ def main():
                     check_content=directory['check_content'],
                     allow_not_existing=False,
                 )
-            directory_entry = {}
+            directory_entry = {}  # type: dict[str, t.Any]
             directories[os.path.join(directory['path'], dirpath)] = directory_entry
 
             stat = os.lstat(os.path.join(directory['path'], dirpath))

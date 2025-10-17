@@ -88,6 +88,7 @@ _raw:
 """
 
 import base64
+import sys
 
 from ansible.errors import AnsibleLookupError
 from ansible.plugins.lookup import LookupBase
@@ -99,18 +100,23 @@ try:
     from urllib.error import HTTPError
 except ImportError:
     # Python 2.x fallback:
-    from urllib2 import HTTPError
+    from urllib2 import HTTPError  # type: ignore
+
+if sys.version_info[0] >= 3:
+    import typing as t
 
 display = Display()
 
 
 class LookupModule(LookupBase):
     def set_non_none_option(self, dest, key):
+        # type: (dict[str, t.Any], str) -> None
         value = self.get_option(key)
         if value is not None:
             dest[key] = value
 
     def run(self, terms, variables=None, **kwargs):
+        # type: (list[str], None | dict[str, t.Any], **t.Any) -> list[dict[str, t.Any]]
         self.set_options(direct=kwargs)
 
         method = self.get_option('method')
@@ -118,19 +124,19 @@ class LookupModule(LookupBase):
         if data is not None:
             data = base64.b64decode(data)
 
-        result = []
+        result = []  # type: list[dict[str, t.Any]]
 
         for url in terms:
-            kwargs = {}
-            self.set_non_none_option(kwargs, 'headers')
-            self.set_non_none_option(kwargs, 'timeout')
-            self.set_non_none_option(kwargs, 'url_username')
-            self.set_non_none_option(kwargs, 'url_password')
-            self.set_non_none_option(kwargs, 'force_basic_auth')
+            oukwargs = {}  # type: dict[str, t.Any]
+            self.set_non_none_option(oukwargs, 'headers')
+            self.set_non_none_option(oukwargs, 'timeout')
+            self.set_non_none_option(oukwargs, 'url_username')
+            self.set_non_none_option(oukwargs, 'url_password')
+            self.set_non_none_option(oukwargs, 'force_basic_auth')
             if data is not None:
-                kwargs['data'] = data
+                oukwargs['data'] = data
             try:
-                response = open_url(url, method=method, **kwargs)
+                response = open_url(url, method=method, **oukwargs)
                 content = response.read()
                 headers = dict(sorted(response.headers.items()))
                 code = response.code

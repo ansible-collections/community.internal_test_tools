@@ -83,6 +83,16 @@ from ._utils import (
     validate_call as _validate_call,
 )
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
+    if t.TYPE_CHECKING:
+        from datetime import datetime
+        from http.cookiejar import CookieJar
+        from types import ModuleType
+
+        from ansible.module_utils.basic import AnsibleModule
+
 
 class FetchUrlCall(_CallBase):
     '''
@@ -93,6 +103,7 @@ class FetchUrlCall(_CallBase):
     '''
 
     def __init__(self, method, status):
+        # type: (str, int) -> None
         '''
         Create a ``fetch_url()`` expected call. Must be passed information on the expected
         HTTP method and the HTTP status returned by the call.
@@ -100,6 +111,7 @@ class FetchUrlCall(_CallBase):
         super(FetchUrlCall, self).__init__(method, status)
 
     def result_error(self, msg, body=None):
+        # type: (str, str | bytes | None) -> t.Self
         '''
         Builder method to set return body of the call in case of an error.
         '''
@@ -110,6 +122,7 @@ class FetchUrlCall(_CallBase):
         return self
 
     def result_error_json(self, msg, json_body):
+        # type: (str, t.Any) -> t.Self
         '''
         Builder method to set return body of the call (as a JSON object) in case of an error.
         '''
@@ -120,6 +133,7 @@ class _ReadResponse(object):
     closed = True
 
     def read(self):
+        # type: () -> bytes
         if sys.version_info[0] == 2:
             raise TypeError('response already read')
         return b''  # pragma: no cover
@@ -134,15 +148,30 @@ class _FetchUrlProxy(object):
     calls are made.
     '''
     def __init__(self, calls):
+        # type: (list[FetchUrlCall]) -> None
         '''
         Create instance with expected list of calls.
         '''
         self.calls = calls
         self.index = 0
 
-    def __call__(self, module, url, data=None, headers=None, method=None,
-                 use_proxy=True, force=False, last_mod_time=None, timeout=10,
-                 use_gssapi=False, unix_socket=None, ca_path=None, cookies=None):
+    def __call__(
+        self,
+        module,  # type: AnsibleModule
+        url,  # type: str
+        data=None,  # type: str | bytes | None
+        headers=None,  # type: dict[str, str] | None
+        method=None,  # type: str | None
+        use_proxy=True,  # type: bool
+        force=False,  # type: bool
+        last_mod_time=None,  # type: datetime | None
+        timeout=10,  # type: int | float
+        use_gssapi=False,  # type: bool
+        unix_socket=None,  # type: str | None
+        ca_path=None,  # type: str | None
+        cookies=None,  # type: CookieJar | None
+    ):
+        # type: (...) -> tuple[object, dict[str, t.Any]]
         '''
         A call to ``fetch_url()``.
         '''
@@ -163,9 +192,10 @@ class _FetchUrlProxy(object):
             info[k.lower()] = v
         info.update(call.error_data)
         if call.body is not None:
-            res = MagicMock()
-            res.read = MagicMock(return_value=call.body)
-            res.closed = False
+            res_mock = MagicMock()
+            res_mock.read = MagicMock(return_value=call.body)
+            res_mock.closed = False
+            res = res_mock  # type: object
         elif call.error_data:
             res = _ReadResponse()
             if 'body' not in info:
@@ -175,6 +205,7 @@ class _FetchUrlProxy(object):
         return (res, info)
 
     def assert_is_done(self):
+        # type: () -> None
         '''
         Assert that all expected ``fetch_url()`` calls have been made.
         '''
@@ -186,7 +217,8 @@ class ModuleExitException(Exception):
     Sentry exception to track regular module exit.
     '''
     def __init__(self, kwargs):
-        self.kwargs = kwargs
+        # type: (**t.Any) -> None
+        self.kwargs = kwargs  # type: dict[str, t.Any]
 
 
 class ModuleFailException(Exception):
@@ -194,7 +226,8 @@ class ModuleFailException(Exception):
     Sentry exception to track regular module failure.
     '''
     def __init__(self, kwargs):
-        self.kwargs = kwargs
+        # type: (**t.Any) -> None
+        self.kwargs = kwargs  # type: dict[str, t.Any]
 
 
 class BaseTestModule(object):
@@ -210,11 +243,15 @@ class BaseTestModule(object):
     MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL = 'ansible.module_utils.urls.fetch_url'
 
     def run_module(self, mocker, module, arguments, fetch_url):
+        # type: (t.Any, ModuleType, dict[str, t.Any], _FetchUrlProxy) -> None
+
         def exit_json(module, **kwargs):
+            # type: (AnsibleModule, **t.Any) -> t.NoReturn
             module._return_formatted(kwargs)
             raise ModuleExitException(kwargs)
 
         def fail_json(module, **kwargs):
+            # type: (AnsibleModule, **t.Any) -> t.NoReturn
             module._return_formatted(kwargs)
             raise ModuleFailException(kwargs)
 
@@ -225,6 +262,7 @@ class BaseTestModule(object):
             module.main()
 
     def run_module_success(self, mocker, module, arguments, fetch_url_calls):
+        # type: (t.Any, ModuleType, dict[str, t.Any], list[FetchUrlCall] | None) -> dict[str, t.Any]
         '''
         Run module given by Python module ``module`` with the arguments ``arguments``
         and expected ``fetch_url()`` calls ``fetch_url_calls``. Expect module to exit.
@@ -237,6 +275,7 @@ class BaseTestModule(object):
         return e.value.kwargs
 
     def run_module_failed(self, mocker, module, arguments, fetch_url_calls):
+        # type: (t.Any, ModuleType, dict[str, t.Any], list[FetchUrlCall] | None) -> dict[str, t.Any]
         '''
         Run module given by Python module ``module`` with the arguments ``arguments``
         and expected ``fetch_url()`` calls ``fetch_url_calls``. Expect module to fail.

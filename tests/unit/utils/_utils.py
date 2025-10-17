@@ -7,6 +7,7 @@ __metaclass__ = type
 
 
 import json
+import sys
 import traceback
 
 from ansible.module_utils.common.text.converters import to_native
@@ -17,8 +18,15 @@ except ImportError:
     # Python 2.x fallback:
     from urlparse import parse_qs  # type: ignore
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
+    if t.TYPE_CHECKING:
+        from collections.abc import Callable, Sequence
+
 
 def _extract_query(url):
+    # type: (str) -> dict[str, list[str]]
     query_index = url.find('?')
     fragment_index = url.find('#')
     if query_index > fragment_index and fragment_index > 0:
@@ -33,6 +41,7 @@ def _extract_query(url):
 
 
 def _reduce_url(url, remove_query=False, remove_fragment=False):
+    # type: (str, bool, bool) -> str
     fragment_index = url.find('#')
     if remove_fragment and fragment_index > 0:
         url = url[:fragment_index]
@@ -58,6 +67,7 @@ class CallBase(object):
     '''
 
     def __init__(self, method, status):
+        # type: (str, int) -> None
         '''
         Create an expected call. Must be passed information on the expected
         HTTP method and the HTTP status returned by the call.
@@ -66,29 +76,29 @@ class CallBase(object):
             'HTTP method names are case-sensitive and should be upper-case (RFCs 7230 and 7231)'
         self.method = method
         self.status = status
-        self.body = None
-        self.headers = {}
-        self.error_data = {}
-        self.expected_url = None
+        self.body = None  # type: bytes | None
+        self.headers = {}  # type: dict[str, str]
+        self.error_data = {}  # type: dict[str, t.Any]
+        self.expected_url = None  # type: str | None
         self.expected_url_without_query = False
         self.expected_url_without_fragment = False
-        self.expected_headers = {}
-        self.expected_query = {}
-        self.expected_content = None
-        self.expected_content_predicate = None
+        self.expected_headers = {}  # type: dict[str, str | None]
+        self.expected_query = {}  # type: dict[str, list[str]]
+        self.expected_content = None  # type: str | bytes | None
+        self.expected_content_predicate = None  # type: Callable[[str | bytes | None], bool] | None
         self.form_parse = False
-        self.form_present = set()
-        self.form_values = {}
-        self.form_values_one = {}
+        self.form_present = set()  # type: set[str]
+        self.form_values = {}  # type: dict[str, list[str]]
         self.json_parse = False
-        self.json_present = set()
-        self.json_absent = set()
-        self.json_values = {}
-        self.timeout = None
-        self.basic_auth = None
-        self.force_basic_auth = None
+        self.json_present = set()  # type: set[tuple[str | int, ...]]
+        self.json_absent = set()  # type: set[tuple[str | int, ...]]
+        self.json_values = {}  # type: dict[tuple[str | int, ...], t.Any]
+        self.timeout = None  # type: int | float | None
+        self.basic_auth = None  # type: tuple[str, str] | None
+        self.force_basic_auth = None  # type: bool | None
 
     def result(self, body):
+        # type: (bytes) -> t.Self
         '''
         Builder method to set return body of the call. Must be a bytes string.
         '''
@@ -97,18 +107,21 @@ class CallBase(object):
         return self
 
     def result_str(self, str_body):
+        # type: (str) -> t.Self
         '''
         Builder method to set return body of the call as a text string.
         '''
         return self.result(str_body.encode('utf-8'))
 
     def result_json(self, json_body):
+        # type: (t.Any) -> t.Self
         '''
         Builder method to set return body of the call as a JSON object.
         '''
         return self.result(json.dumps(json_body).encode('utf-8'))
 
     def expect_url(self, url, without_query=False, without_fragment=False):
+        # type: (str, bool, bool) -> t.Self
         '''
         Builder method to set the expected URL for the call.
         '''
@@ -118,6 +131,7 @@ class CallBase(object):
         return self
 
     def expect_query_values(self, parameter, *values):
+        # type: (str, *str) -> t.Self
         '''
         Builder method to set an expected query parameter for the call.
         '''
@@ -125,6 +139,7 @@ class CallBase(object):
         return self
 
     def return_header(self, name, value):
+        # type: (str, str) -> t.Self
         '''
         Builder method to set a returned header for the call.
         '''
@@ -133,6 +148,7 @@ class CallBase(object):
         return self
 
     def expect_header(self, name, value):
+        # type: (str, str) -> t.Self
         '''
         Builder method to set an expected header value for a call.
         '''
@@ -140,6 +156,7 @@ class CallBase(object):
         return self
 
     def expect_header_unset(self, name):
+        # type: (str) -> t.Self
         '''
         Builder method to set an expected non-set header for a call.
         '''
@@ -147,6 +164,7 @@ class CallBase(object):
         return self
 
     def expect_content(self, content):
+        # type: (str | bytes) -> t.Self
         '''
         Builder method to set an expected content for a call.
         '''
@@ -154,6 +172,7 @@ class CallBase(object):
         return self
 
     def expect_content_predicate(self, content_predicate):
+        # type: (Callable[[str | bytes | None], bool]) -> t.Self
         '''
         Builder method to set an expected content predicate for a call.
         '''
@@ -161,6 +180,7 @@ class CallBase(object):
         return self
 
     def expect_form_present(self, key):
+        # type: (str) -> t.Self
         '''
         Builder method to set an expected form field for a call.
         '''
@@ -170,6 +190,7 @@ class CallBase(object):
         return self
 
     def expect_form_values(self, key, values):
+        # type: (str, list[str]) -> t.Self
         '''
         Builder method to set an expected form value for a call.
         '''
@@ -180,6 +201,7 @@ class CallBase(object):
         return self
 
     def expect_form_value(self, key, value):
+        # type: (str, str) -> t.Self
         '''
         Builder method to set an expected form value for a call.
         '''
@@ -189,6 +211,7 @@ class CallBase(object):
         return self
 
     def expect_form_value_absent(self, key):
+        # type: (str) -> t.Self
         '''
         Builder method to set an expectedly absent form field for a call.
         '''
@@ -198,6 +221,7 @@ class CallBase(object):
         return self
 
     def expect_json_present(self, key):
+        # type: (Sequence[str | int]) -> t.Self
         '''
         Builder method to set an expected JSON field for a call.
         The key must be a sequence: strings denote fields in objects, integers denote array indices.
@@ -208,6 +232,7 @@ class CallBase(object):
         return self
 
     def expect_json_value(self, key, value):
+        # type: (Sequence[str | int], t.Any) -> t.Self
         '''
         Builder method to set an expected JSON value for a call.
         The key must be a sequence: strings denote fields in objects, integers denote array indices.
@@ -218,6 +243,7 @@ class CallBase(object):
         return self
 
     def expect_json_value_absent(self, key):
+        # type: (Sequence[str | int]) -> t.Self
         '''
         Builder method to set an expectedly absent JSON field for a call.
         The key must be a sequence: strings denote fields in objects, integers denote array indices.
@@ -228,6 +254,7 @@ class CallBase(object):
         return self
 
     def expect_timeout(self, timeout):
+        # type: (int | float) -> t.Self
         '''
         Builder method to set an expected timeout for a call.
         '''
@@ -235,21 +262,24 @@ class CallBase(object):
         return self
 
     def expect_basic_auth(self, username, password):
+        # type: (str, str) -> t.Self
         '''
-        Builder method to set an expected timeout for a call.
+        Builder method to set expected basic authentication credentials for a call.
         '''
         self.basic_auth = (username, password)
         return self
 
     def expect_force_basic_auth(self, force):
+        # type: (bool) -> t.Self
         '''
-        Builder method to set an expected timeout for a call.
+        Builder method to set force_basic_auth for a call.
         '''
         self.force_basic_auth = force
         return self
 
 
 def _validate_form(call, data):
+    # type: (CallBase, bytes | str | None) -> None
     '''
     Validate form contents.
     '''
@@ -266,6 +296,7 @@ def _validate_form(call, data):
 
 
 def _format_json_key(key):
+    # type: (tuple[str | int, ...] | list[str | int]) -> str
     result = []
     first = True
     for k in key:
@@ -280,6 +311,7 @@ def _format_json_key(key):
 
 
 def _descend_json(data, key):
+    # type: (t.Any, tuple[str | int, ...] | list[str | int]) -> tuple[t.Any, bool]
     if not key:
         return data, True
     for index, k in enumerate(key[:-1]):
@@ -308,6 +340,7 @@ def _descend_json(data, key):
 
 
 def _validate_json(call, data):
+    # type: (CallBase, str | bytes) -> None
     '''
     Validate JSON contents.
     '''
@@ -325,6 +358,7 @@ def _validate_json(call, data):
 
 
 def _validate_query(call, url):
+    # type: (CallBase, str) -> None
     '''
     Validate query parameters of a call.
     '''
@@ -339,6 +373,7 @@ def _validate_query(call, url):
 
 
 def _validate_headers(call, headers):
+    # type: (CallBase, dict[str, str] | None) -> None
     '''
     Validate headers of a call.
     '''
@@ -346,16 +381,28 @@ def _validate_headers(call, headers):
     if headers is not None:
         for k, v in headers.items():
             given_headers[k.lower()] = v
-    for k, v in call.expected_headers.items():
-        if v is None:
+    for k, ev in call.expected_headers.items():
+        if ev is None:
             assert k.lower() not in given_headers, 'Header "{0}" specified for call, but should not be'.format(k)
         else:
-            assert given_headers.get(k.lower()) == v, \
+            assert given_headers.get(k.lower()) == ev, \
                 'Header "{0}" specified for call, but with wrong value ({1!r} instead of {2!r})'.format(
-                    k, given_headers.get(k.lower()), v)
+                    k, given_headers.get(k.lower()), ev)
 
 
-def validate_call(call, method, url, headers, data, timeout=10, url_username=None, url_password=None, force_basic_auth=None):
+def validate_call(
+    call,  # type: CallBase
+    method,  # type: str | None
+    url,  # type: str
+    headers,  # type: dict[str, str] | None
+    data,  # type: str | bytes | None
+    timeout=10,  # type: int | float
+    url_username=None,  # type: str | None
+    url_password=None,  # type: str | None
+    force_basic_auth=None,  # type: bool | None
+):
+    # type: (...) -> None
+    method = method or 'GET'
     assert method == call.method, 'Expected method does not match for call: {0!r} instead of {1!r}'.format(
         method, call.method)
     if call.expected_url is not None:
@@ -393,4 +440,5 @@ def validate_call(call, method, url, headers, data, timeout=10, url_username=Non
     if call.form_parse:
         _validate_form(call, data)
     if call.json_parse:
+        assert data is not None, "Data must be provided"
         _validate_json(call, data)
