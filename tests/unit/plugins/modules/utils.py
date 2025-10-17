@@ -36,7 +36,7 @@ def set_module_args(args):
         args['_ansible_keep_remote_files'] = False
 
     try:
-        from ansible.module_utils.testing import patch_module_args
+        from ansible.module_utils.testing import patch_module_args  # type: ignore
     except ImportError:
         pass
     else:
