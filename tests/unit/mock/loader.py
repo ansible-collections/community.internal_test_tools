@@ -7,73 +7,98 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import os
+import sys
 
 from ansible.errors import AnsibleParserError
 from ansible.parsing.dataloader import DataLoader
 from ansible.module_utils.common.text.converters import to_bytes, to_text
 from ansible_collections.community.internal_test_tools.tests.unit.utils.trust import make_trusted as _make_trusted
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
+    if t.TYPE_CHECKING:
+        from ansible.parsing.vault import PromptVaultSecret
+
 
 class DictDataLoader(DataLoader):
 
     def __init__(self, file_mapping=None):
+        # type: (dict[str, str] | None) -> None
         file_mapping = {} if file_mapping is None else file_mapping
         assert isinstance(file_mapping, dict)
 
         super(DictDataLoader, self).__init__()
 
+        self._known_directories = []  # type: list[str]
         self._file_mapping = file_mapping
         self._build_known_directories()
-        self._vault_secrets = None
+        self._vault_secrets = None  # type: list[tuple[str, PromptVaultSecret]] | None
 
-    def load_from_file(self, path, cache='all', unsafe=False, json_only=False, trusted_as_template=False):  # pylint: disable=arguments-renamed
-        path = to_text(path)
-        if path in self._file_mapping:
-            data = self._file_mapping[path]
+    def load_from_file(
+        self,
+        path,  # type: str | bytes
+        cache='all',  # type: str
+        unsafe=False,  # type: bool
+        json_only=False,  # type: bool
+        trusted_as_template=False,  # type: bool
+    ):  # pylint: disable=arguments-renamed
+        # type: (...) -> str | None
+        t_path = to_text(path)
+        if t_path in self._file_mapping:
+            data = self._file_mapping[t_path]
             if trusted_as_template:
                 data = _make_trusted(data)
-            return self.load(data, os.path.abspath(path))
+            return self.load(data, os.path.abspath(t_path))  # type: ignore
         return None
 
     # TODO: the real _get_file_contents returns a bytestring, so we actually convert the
     #       unicode/text it's created with to utf-8
     def _get_file_contents(self, file_name):
-        path = to_text(file_name)
-        if path in self._file_mapping:
-            return (to_bytes(self._file_mapping[path]), False)
+        # type: (str | bytes) -> tuple[bytes, bool]
+        t_path = to_text(file_name)
+        if t_path in self._file_mapping:
+            return (to_bytes(self._file_mapping[t_path]), False)
         else:
-            raise AnsibleParserError("file not found: %s" % path)
+            raise AnsibleParserError("file not found: %s" % t_path)
 
     def path_exists(self, path):
-        path = to_text(path)
-        return path in self._file_mapping or path in self._known_directories
+        # type: (str | bytes) -> bool
+        t_path = to_text(path)
+        return t_path in self._file_mapping or t_path in self._known_directories
 
     def is_file(self, path):
-        path = to_text(path)
-        return path in self._file_mapping
+        # type: (str | bytes) -> bool
+        t_path = to_text(path)
+        return t_path in self._file_mapping
 
     def is_directory(self, path):
-        path = to_text(path)
-        return path in self._known_directories
+        # type: (str | bytes) -> bool
+        t_path = to_text(path)
+        return t_path in self._known_directories
 
     def list_directory(self, path):
+        # type: (str | bytes) -> list[str]
         ret = []
-        path = to_text(path)
+        t_path = to_text(path)
         for x in (list(self._file_mapping.keys()) + self._known_directories):
-            if x.startswith(path):
-                if os.path.dirname(x) == path:
+            if x.startswith(t_path):
+                if os.path.dirname(x) == t_path:
                     ret.append(os.path.basename(x))
         return ret
 
     def is_executable(self, path):
+        # type: (str | bytes) -> bool
         # FIXME: figure out a way to make paths return true for this
         return False
 
     def _add_known_directory(self, directory):
+        # type: (str) -> None
         if directory not in self._known_directories:
             self._known_directories.append(directory)
 
     def _build_known_directories(self):
+        # type: () -> None
         self._known_directories = []
         for path in self._file_mapping:
             dirname = os.path.dirname(path)
@@ -82,6 +107,7 @@ class DictDataLoader(DataLoader):
                 dirname = os.path.dirname(dirname)
 
     def push(self, path, content):
+        # type: (str, str) -> None
         rebuild_dirs = False
         if path not in self._file_mapping:
             rebuild_dirs = True
@@ -92,16 +118,20 @@ class DictDataLoader(DataLoader):
             self._build_known_directories()
 
     def pop(self, path):
+        # type: (str) -> None
         if path in self._file_mapping:
             del self._file_mapping[path]
             self._build_known_directories()
 
     def clear(self):
+        # type: () -> None
         self._file_mapping = dict()
         self._known_directories = []
 
     def get_basedir(self):
+        # type: () -> str
         return os.getcwd()
 
     def set_vault_secrets(self, vault_secrets):
+        # type: (list[tuple[str, PromptVaultSecret]] | None) -> None
         self._vault_secrets = vault_secrets

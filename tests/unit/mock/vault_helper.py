@@ -18,6 +18,7 @@ class TextVaultSecret(VaultSecret):
     we keep track of the encoding so we encode it to the same bytes.'''
 
     def __init__(self, text, encoding=None, errors=None, _bytes=None):
+        # type: (str, str | None, str | None, bytes | None) -> None
         super(TextVaultSecret, self).__init__()
         self.text = text
         self.encoding = encoding or 'utf-8'
@@ -26,5 +27,6 @@ class TextVaultSecret(VaultSecret):
 
     @property
     def bytes(self):
+        # type: () -> bytes
         '''The text encoded with encoding, unless we specifically set _bytes.'''
-        return self._bytes or to_bytes(self.text, encoding=self.encoding, errors=self.errors)
+        return self._bytes or to_bytes(self.text, encoding=self.encoding, errors=self.errors)  # type: ignore

@@ -6,6 +6,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import base64
+import sys
 
 import pytest
 
@@ -25,12 +26,16 @@ from ansible_collections.community.internal_test_tools.tests.unit.plugins.module
     AnsibleFailJson,
 )
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
 
 class TestFetchURLTestModule(BaseTestModule):
     MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE = 'ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.AnsibleModule'
     MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL = 'ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.fetch_url'
 
     def test_basic_str(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -50,6 +55,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_auth(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -72,6 +78,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_bytes(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -91,6 +98,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_basic_json(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -108,6 +116,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['headers']['foo'] == 'bar'
 
     def test_with_data(self, mocker):
+        # type: (t.Any) -> None
         mocker.patch('ansible_collections.community.internal_test_tools.plugins.modules._fetch_url_test_module.open', mock_open(read_data=b'\x00\x01\x02'))
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
@@ -133,6 +142,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_with_json_result(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -150,6 +160,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'{}').decode('utf-8')
 
     def test_with_no_result(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -167,6 +178,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == ''
 
     def test_failure(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_failed(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -185,6 +197,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['content'] == base64.b64encode(b'1234').decode('utf-8')
 
     def test_form(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -208,6 +221,7 @@ class TestFetchURLTestModule(BaseTestModule):
         assert result['call_results'][0]['status'] == 200
 
     def test_json(self, mocker):
+        # type: (t.Any) -> None
         result = self.run_module_success(mocker, _fetch_url_test_module, {
             'call_sequence': [
                 {
@@ -233,6 +247,7 @@ class TestFetchURLTestModule2(ModuleTestCase):
     # Test for ModuleTestCase
 
     def test_basic(self):
+        # type: () -> None
         with pytest.raises(AnsibleExitJson) as e:
             with set_module_args({
                 'call_sequence': [],
@@ -245,6 +260,7 @@ class TestFetchURLTestModule2(ModuleTestCase):
         assert e.value.args[0]['call_results'] == []
 
     def test_basic_changed(self):
+        # type: () -> None
         with pytest.raises(AnsibleExitJson) as e:
             with set_module_args({
                 'call_sequence': [],
@@ -256,6 +272,7 @@ class TestFetchURLTestModule2(ModuleTestCase):
         assert e.value.args[0]['call_results'] == []
 
     def test_fail(self):
+        # type: () -> None
         with pytest.raises(AnsibleFailJson) as e:
             with set_module_args({
                 'call_sequence': [],

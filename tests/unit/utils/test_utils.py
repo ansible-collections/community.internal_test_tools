@@ -22,6 +22,7 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils._utils i
 
 
 def test_extract_query():
+    # type: () -> None
     assert _extract_query('a?b#c') == {'b': ['']}
     assert _extract_query('a#c') == {}
     assert _extract_query('a#c?b') == {}
@@ -31,6 +32,7 @@ def test_extract_query():
 
 
 def test_reduce_url():
+    # type: () -> None
     assert _reduce_url('a?b#c') == 'a?b#c'
     assert _reduce_url('a?b#c', remove_query=True) == 'a#c'
     assert _reduce_url('a?b#c', remove_fragment=True) == 'a?b'
@@ -45,6 +47,7 @@ def test_reduce_url():
 
 
 def test_validate_form():
+    # type: () -> None
     _validate_form(
         CallBase('GET', 200)
         .expect_form_present('a')
@@ -52,16 +55,17 @@ def test_validate_form():
         .expect_form_value_absent('b'),
         'a=b&c=d')
     with pytest.raises(AssertionError):
-        assert _validate_form(CallBase('GET', 200).expect_form_value('c', 'd'), 'c=d&c=e')
+        _validate_form(CallBase('GET', 200).expect_form_value('c', 'd'), 'c=d&c=e')
     with pytest.raises(AssertionError):
-        assert _validate_form(CallBase('GET', 200).expect_form_present('a'), 'c=d')
+        _validate_form(CallBase('GET', 200).expect_form_present('a'), 'c=d')
     with pytest.raises(AssertionError):
-        assert _validate_form(CallBase('GET', 200).expect_form_value('c', 'a'), 'c=d')
+        _validate_form(CallBase('GET', 200).expect_form_value('c', 'a'), 'c=d')
     with pytest.raises(AssertionError):
-        assert _validate_form(CallBase('GET', 200).expect_form_value_absent('c'), 'c=d')
+        _validate_form(CallBase('GET', 200).expect_form_value_absent('c'), 'c=d')
 
 
 def test_format_json_key():
+    # type: () -> None
     assert _format_json_key([]) == ''
     assert _format_json_key(['a']) == 'a'
     assert _format_json_key([1]) == '[1]'
@@ -71,6 +75,7 @@ def test_format_json_key():
 
 
 def test_descend_json():
+    # type: () -> None
     assert _descend_json('foo', []) == ('foo', True)
     assert _descend_json({}, []) == ({}, True)
     assert _descend_json({}, ['a']) == (None, False)
@@ -105,6 +110,7 @@ def test_descend_json():
 
 
 def test_validate_json():
+    # type: () -> None
     _validate_json(
         CallBase('GET', 200)
         .expect_json_present(['a'])
@@ -118,26 +124,28 @@ def test_validate_json():
         .expect_json_value_absent([2]),
         '["a", "d"]')
     with pytest.raises(AssertionError):
-        assert _validate_json(CallBase('GET', 200).expect_json_present(['a']), '{"c":"d"}')
+        _validate_json(CallBase('GET', 200).expect_json_present(['a']), '{"c":"d"}')
     with pytest.raises(AssertionError):
-        assert _validate_json(CallBase('GET', 200).expect_json_value(['c'], 'a'), '{"c":"d"}')
+        _validate_json(CallBase('GET', 200).expect_json_value(['c'], 'a'), '{"c":"d"}')
     with pytest.raises(AssertionError):
-        assert _validate_json(CallBase('GET', 200).expect_json_value_absent(['c']), '{"c":"d"}')
+        _validate_json(CallBase('GET', 200).expect_json_value_absent(['c']), '{"c":"d"}')
 
 
 def test_validate_query():
+    # type: () -> None
     _validate_query(
         CallBase('GET', 200)
         .expect_query_values('b', 'c', 'd')
         .expect_query_values('e', 'f'),
         'a?b=c&b=d&e=f')
     with pytest.raises(AssertionError):
-        assert _validate_query(CallBase('GET', 200).expect_query_values('a'), 'a?b=c&b=d&e=f')
+        _validate_query(CallBase('GET', 200).expect_query_values('a'), 'a?b=c&b=d&e=f')
     with pytest.raises(AssertionError):
-        assert _validate_query(CallBase('GET', 200).expect_query_values('b', 'e'), 'a?b=c&b=d&e=f')
+        _validate_query(CallBase('GET', 200).expect_query_values('b', 'e'), 'a?b=c&b=d&e=f')
 
 
 def test_validate_headers():
+    # type: () -> None
     _validate_headers(
         CallBase('GET', 200)
         .expect_header('content-type', 'foo')
@@ -150,12 +158,12 @@ def test_validate_headers():
             'bar': 'baz',
         })
     with pytest.raises(AssertionError):
-        assert _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {})
+        _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {})
     with pytest.raises(AssertionError):
-        assert _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {'foo': 'baz'})
+        _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {'foo': 'baz'})
     with pytest.raises(AssertionError):
-        assert _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {'foo': 'BAR'})
+        _validate_headers(CallBase('GET', 200).expect_header('foo', 'bar'), {'foo': 'BAR'})
     with pytest.raises(AssertionError):
-        assert _validate_headers(CallBase('GET', 200).expect_header_unset('foo'), {'foo': 'bar'})
+        _validate_headers(CallBase('GET', 200).expect_header_unset('foo'), {'foo': 'bar'})
     with pytest.raises(AssertionError):
-        assert _validate_headers(CallBase('GET', 200).expect_header_unset('foo'), {'Foo': 'bar'})
+        _validate_headers(CallBase('GET', 200).expect_header_unset('foo'), {'Foo': 'bar'})

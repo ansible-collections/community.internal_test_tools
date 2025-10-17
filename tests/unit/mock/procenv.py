@@ -7,17 +7,21 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-import sys
 import json
+import sys
 
 from contextlib import contextmanager
 from io import BytesIO, StringIO
 from ansible_collections.community.internal_test_tools.tests.unit.compat import unittest
 from ansible.module_utils.common.text.converters import to_bytes
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
 
 @contextmanager
 def swap_stdin_and_argv(stdin_data='', argv_data=tuple()):
+    # type: (str, tuple[str, ...] | list[str]) -> t.Generator[None]
     """
     context manager that temporarily masks the test runner's values for stdin and argv
     """
@@ -26,13 +30,13 @@ def swap_stdin_and_argv(stdin_data='', argv_data=tuple()):
 
     if sys.version_info[0] > 2:
         fake_stream = StringIO(stdin_data)
-        fake_stream.buffer = BytesIO(to_bytes(stdin_data))
+        fake_stream.buffer = BytesIO(to_bytes(stdin_data))  # type: ignore
     else:
         fake_stream = BytesIO(to_bytes(stdin_data))
 
     try:
         sys.stdin = fake_stream
-        sys.argv = argv_data
+        sys.argv = list(argv_data)
 
         yield
     finally:
@@ -42,6 +46,7 @@ def swap_stdin_and_argv(stdin_data='', argv_data=tuple()):
 
 @contextmanager
 def swap_stdout():
+    # type: () -> t.Generator[StringIO]
     """
     context manager that temporarily replaces stdout for tests that need to verify output
     """
@@ -62,6 +67,7 @@ def swap_stdout():
 
 class ModuleTestCase(unittest.TestCase):
     def setUp(self, module_args=None):
+        # type: (dict[str, t.Any] | None) -> None
         if module_args is None:
             module_args = {'_ansible_remote_tmp': '/tmp', '_ansible_keep_remote_files': False}
 
@@ -72,5 +78,6 @@ class ModuleTestCase(unittest.TestCase):
         self.stdin_swap.__enter__()
 
     def tearDown(self):
+        # type: () -> None
         # unittest doesn't have a clean place to use a context manager, so we have to enter/exit manually
         self.stdin_swap.__exit__(None, None, None)

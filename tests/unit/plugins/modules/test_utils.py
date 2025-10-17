@@ -10,7 +10,7 @@ import pytest
 from .utils import extract_warnings_texts
 
 try:
-    from ansible.module_utils.common.messages import (
+    from ansible.module_utils.common.messages import (  # type: ignore
         WarningSummary as _WarningSummary,
         Detail as _Detail,
     )
@@ -20,6 +20,7 @@ except ImportError:
 
 
 def test_extract_warnings_texts_1():
+    # type: () -> None
     assert extract_warnings_texts({}) == []
     assert extract_warnings_texts({'warnings': None}) == []
     assert extract_warnings_texts({'warnings': []}) == []
@@ -28,5 +29,6 @@ def test_extract_warnings_texts_1():
 
 @pytest.mark.skipif(_WarningSummary is None or _Detail is None, reason="ansible-core does not support Data Tagging")
 def test_extract_warnings_texts_2():
+    # type: () -> None
     assert extract_warnings_texts({'warnings': [_WarningSummary(details=(_Detail(msg='foo'), ))]}) == ['foo']
     assert extract_warnings_texts({'warnings': [_WarningSummary(details=(_Detail(msg='foo'), _Detail(msg='bar')))]}) == ['foo']

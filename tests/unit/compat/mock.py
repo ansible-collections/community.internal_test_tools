@@ -25,6 +25,6 @@ except ImportError:
     # Python 2
     # pylint: disable=wildcard-import,unused-wildcard-import
     try:
-        from mock import *  # noqa: F401, pylint: disable=unused-import
+        from mock import *  # type: ignore # noqa: F401, pylint: disable=unused-import
     except ImportError:  # pragma: no cover
         print('You need the mock library installed on python2.x to run tests')  # pragma: no cover

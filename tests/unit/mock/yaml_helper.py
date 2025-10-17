@@ -2,33 +2,42 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# TODO: try to get rid of `type: ignore`...
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import io
 import sys
+
 import yaml
 
 from ansible.parsing.yaml.loader import AnsibleLoader
 from ansible.parsing.yaml.dumper import AnsibleDumper
 
+if sys.version_info[0] >= 3:
+    import typing as t
+
 
 class YamlTestUtils(object):
     """Mixin class to combine with a unittest.TestCase subclass."""
     def _loader(self, stream):
+        # type: (object) -> object
         """Vault related tests will want to override this.
 
         Vault cases should setup a AnsibleLoader that has the vault password."""
         return AnsibleLoader(stream)
 
     def _dump_stream(self, obj, stream, dumper=None):
+        # type: (t.Any, object, object | None) -> None | str
         """Dump to a py2-unicode or py3-string stream."""
         if sys.version_info[0] > 2:
-            return yaml.dump(obj, stream, Dumper=dumper)
+            return yaml.dump(obj, stream, Dumper=dumper)  # type: ignore
         else:
             return yaml.dump(obj, stream, Dumper=dumper, encoding=None)
 
     def _dump_string(self, obj, dumper=None):
+        # type: (t.Any, object | None) -> str
         """Dump to a py2-unicode or py3-string"""
         if sys.version_info[0] > 2:
             return yaml.dump(obj, Dumper=dumper)
@@ -36,6 +45,8 @@ class YamlTestUtils(object):
             return yaml.dump(obj, Dumper=dumper, encoding=None)
 
     def _dump_load_cycle(self, obj):
+        # type: (t.Any) -> None
+
         # Each pass though a dump or load revs the 'generation'
         # obj to yaml string
         string_from_object_dump = self._dump_string(obj, dumper=AnsibleDumper)
@@ -44,30 +55,31 @@ class YamlTestUtils(object):
         stream_from_object_dump = io.StringIO(string_from_object_dump)
         loader = self._loader(stream_from_object_dump)
         # load the yaml stream to create a new instance of the object (gen 2)
-        obj_2 = loader.get_data()
+        obj_2 = loader.get_data()  # type: ignore
 
         # dump the gen 2 objects directory to strings
         string_from_object_dump_2 = self._dump_string(obj_2,
                                                       dumper=AnsibleDumper)
 
         # The gen 1 and gen 2 yaml strings
-        self.assertEqual(string_from_object_dump, string_from_object_dump_2)
+        self.assertEqual(string_from_object_dump, string_from_object_dump_2)  # type: ignore
         # the gen 1 (orig) and gen 2 py object
-        self.assertEqual(obj, obj_2)
+        self.assertEqual(obj, obj_2)  # type: ignore
 
         # again! gen 3... load strings into py objects
         stream_3 = io.StringIO(string_from_object_dump_2)
         loader_3 = self._loader(stream_3)
-        obj_3 = loader_3.get_data()
+        obj_3 = loader_3.get_data()  # type: ignore
 
         string_from_object_dump_3 = self._dump_string(obj_3, dumper=AnsibleDumper)
 
-        self.assertEqual(obj, obj_3)
+        self.assertEqual(obj, obj_3)  # type: ignore
         # should be transitive, but...
-        self.assertEqual(obj_2, obj_3)
-        self.assertEqual(string_from_object_dump, string_from_object_dump_3)
+        self.assertEqual(obj_2, obj_3)  # type: ignore
+        self.assertEqual(string_from_object_dump, string_from_object_dump_3)  # type: ignore
 
     def _old_dump_load_cycle(self, obj):
+        # type: (t.Any) -> dict[str, t.Any]
         '''Dump the passed in object to yaml, load it back up, dump again, compare.'''
         stream = io.StringIO()
 
@@ -81,12 +93,12 @@ class YamlTestUtils(object):
 
         loader = self._loader(stream)
         # loader = AnsibleLoader(stream, vault_password=self.vault_password)
-        obj_from_stream = loader.get_data()
+        obj_from_stream = loader.get_data()  # type: ignore
 
         stream_from_string = io.StringIO(yaml_string)
         loader2 = self._loader(stream_from_string)
         # loader2 = AnsibleLoader(stream_from_string, vault_password=self.vault_password)
-        obj_from_string = loader2.get_data()
+        obj_from_string = loader2.get_data()  # type: ignore
 
         stream_obj_from_stream = io.StringIO()
         stream_obj_from_string = io.StringIO()

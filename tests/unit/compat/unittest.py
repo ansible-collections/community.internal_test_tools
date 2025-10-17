@@ -18,7 +18,7 @@ import sys
 if sys.version_info < (2, 7):
     try:
         # Need unittest2 on python2.6
-        from unittest2 import *  # noqa: F401, pylint: disable=unused-import
+        from unittest2 import *  # type: ignore # noqa: F401, pylint: disable=unused-import
     except ImportError:  # pragma: no cover
         print('You need unittest2 installed on python2.6.x to run tests')  # pragma: no cover
 else:
