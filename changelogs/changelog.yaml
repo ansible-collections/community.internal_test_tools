@@ -409,3 +409,12 @@ releases:
       - 0.18.3.yml
       - 163-fix.yml
     release_date: '2025-10-05'
+  0.18.4:
+    changes:
+      bugfixes:
+        - Add typing information (https://github.com/ansible-collections/community.internal_test_tools/pull/165).
+      release_summary: Maintenance release.
+    fragments:
+      - 0.18.4.yml
+      - 165-typing.yml
+    release_date: '2025-10-25'
