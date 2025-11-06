@@ -1,2 +1,0 @@
-plugins/lookup/_open_url_test_lookup.py pylint:ansible-bad-import-from
-tests/unit/utils/open_url_framework.py pylint:ansible-bad-import-from
