@@ -21,8 +21,8 @@ except ImportError:
 if sys.version_info[0] >= 3:
     import typing as t
 
-    if t.TYPE_CHECKING:
-        from collections.abc import Callable, Sequence
+    if t.TYPE_CHECKING:  # pragma: no cover
+        from collections.abc import Callable, Sequence  # pragma: no cover
 
 
 def _extract_query(url):

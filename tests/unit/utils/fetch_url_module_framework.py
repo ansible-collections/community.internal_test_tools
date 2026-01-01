@@ -86,12 +86,12 @@ from ._utils import (
 if sys.version_info[0] >= 3:
     import typing as t
 
-    if t.TYPE_CHECKING:
-        from datetime import datetime
-        from http.cookiejar import CookieJar
-        from types import ModuleType
+    if t.TYPE_CHECKING:  # pragma: no cover
+        from datetime import datetime  # pragma: no cover
+        from http.cookiejar import CookieJar  # pragma: no cover
+        from types import ModuleType  # pragma: no cover
 
-        from ansible.module_utils.basic import AnsibleModule
+        from ansible.module_utils.basic import AnsibleModule  # pragma: no cover
 
 
 class FetchUrlCall(_CallBase):

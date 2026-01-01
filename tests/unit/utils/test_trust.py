@@ -18,3 +18,5 @@ def test_trust():
     untrusted = make_untrusted("bar")
     assert is_trusted(trusted)
     assert not is_trusted(untrusted)
+    some_int = 42
+    assert make_untrusted(some_int) is some_int

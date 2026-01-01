@@ -17,8 +17,8 @@ from ansible_collections.community.internal_test_tools.tests.unit.utils.trust im
 if sys.version_info[0] >= 3:
     import typing as t
 
-    if t.TYPE_CHECKING:
-        from ansible.parsing.vault import PromptVaultSecret
+    if t.TYPE_CHECKING:  # pragma: no cover
+        from ansible.parsing.vault import PromptVaultSecret  # pragma: no cover
 
 
 class DictDataLoader(DataLoader):

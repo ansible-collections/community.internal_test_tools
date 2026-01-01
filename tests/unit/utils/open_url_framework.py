@@ -77,10 +77,10 @@ except ImportError:
 if sys.version_info[0] >= 3:
     import typing as t
 
-    if t.TYPE_CHECKING:
-        from collections.abc import Callable
-        from datetime import datetime
-        from http.cookiejar import CookieJar
+    if t.TYPE_CHECKING:  # pragma: no cover
+        from collections.abc import Callable  # pragma: no cover
+        from datetime import datetime  # pragma: no cover
+        from http.cookiejar import CookieJar  # pragma: no cover
 
 
 class OpenUrlCall(_CallBase):

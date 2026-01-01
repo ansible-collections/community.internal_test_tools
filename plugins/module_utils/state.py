@@ -12,10 +12,10 @@ import sys
 if sys.version_info[0] >= 3:
     import typing as t
 
-    if t.TYPE_CHECKING:
-        from os import stat_result
+    if t.TYPE_CHECKING:  # pragma: no cover
+        from os import stat_result  # pragma: no cover
 
-        from ansible.module_utils.basic import AnsibleModule
+        from ansible.module_utils.basic import AnsibleModule  # pragma: no cover
 
 
 STATE_VERSION = 1
