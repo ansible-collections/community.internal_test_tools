@@ -84,6 +84,7 @@ class CallBase(object):
         self.expected_url_without_fragment = False
         self.expected_headers = {}  # type: dict[str, str | None]
         self.expected_query = {}  # type: dict[str, list[str]]
+        self.expected_query_absent = set()  # type: set[str]
         self.expected_content = None  # type: str | bytes | None
         self.expected_content_predicate = None  # type: Callable[[str | bytes | None], bool] | None
         self.form_parse = False
@@ -136,6 +137,14 @@ class CallBase(object):
         Builder method to set an expected query parameter for the call.
         '''
         self.expected_query[parameter] = list(values)
+        return self
+
+    def expect_query_absent(self, parameter):
+        # type: (str) -> t.Self
+        '''
+        Builder method to set an expected absent query parameter for the call.
+        '''
+        self.expected_query_absent.add(parameter)
         return self
 
     def return_header(self, name, value):
@@ -370,6 +379,8 @@ def _validate_query(call, url):
             assert query.get(k) == v, \
                 'Query parameter "{0}" specified for call, but with wrong value ({1!r} instead of {2!r})'.format(
                     k, query.get(k), v)
+    for k in call.expected_query_absent:
+        assert k not in query, 'Query parameter "{0}" specified for call'.format(k)
 
 
 def _validate_headers(call, headers):
