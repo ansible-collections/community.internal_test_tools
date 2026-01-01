@@ -14,8 +14,8 @@ if _sys.version_info[0] == 2:
     _string_types = (basestring,)  # type: ignore # noqa: F821, pylint: disable=undefined-variable
 else:
     import typing
-    if typing.TYPE_CHECKING:
-        from collections.abc import Callable
+    if typing.TYPE_CHECKING:  # pragma: no cover
+        from collections.abc import Callable  # pragma: no cover
 
     _T = typing.TypeVar("_T")
 
