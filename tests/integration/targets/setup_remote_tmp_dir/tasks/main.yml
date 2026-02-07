@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- name: Make sure we have the ansible_os_family and ansible_distribution_version facts
+- name: Make sure we have the ansible_facts.os_family and ansible_facts.distribution_version facts
   ansible.builtin.setup:
     gather_subset: distribution
   when: ansible_facts == {}
@@ -12,5 +12,5 @@
   ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', files) }}"
   vars:
     files:
-      - "{{ ansible_os_family | lower }}.yml"
+      - "{{ ansible_facts.os_family | lower }}.yml"
       - "default.yml"

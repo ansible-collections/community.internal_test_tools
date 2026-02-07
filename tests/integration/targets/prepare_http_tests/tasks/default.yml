@@ -6,14 +6,14 @@
 - name: RedHat - Enable the dynamic CA configuration feature
   ansible.builtin.command:
     cmd: update-ca-trust force-enable
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: RedHat - Retrieve test cacert
   ansible.builtin.get_url:
     url: "http://ansible.http.tests/cacert.pem"
     dest: "/etc/pki/ca-trust/source/anchors/ansible.pem"
     mode: "0644"
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: Get client cert/key
   ansible.builtin.get_url:
@@ -29,47 +29,47 @@
     url: "http://ansible.http.tests/cacert.pem"
     dest: "/etc/pki/trust/anchors/ansible.pem"
     mode: "0644"
-  when: ansible_os_family == 'Suse'
+  when: ansible_facts.os_family == 'Suse'
 
 - name: Debian - Retrieve test cacert
   ansible.builtin.get_url:
     url: "http://ansible.http.tests/cacert.pem"
     dest: "/usr/local/share/ca-certificates/ansible.crt"
     mode: "0644"
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts.os_family == 'Debian'
 
 - name: Redhat - Update ca trust
   ansible.builtin.command:
     cmd: update-ca-trust extract
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: Debian/Suse - Update ca certificates
   ansible.builtin.command:
     cmd: update-ca-certificates
-  when: ansible_os_family == 'Debian' or ansible_os_family == 'Suse'
+  when: ansible_facts.os_family == 'Debian' or ansible_facts.os_family == 'Suse'
 
 - name: FreeBSD - Retrieve test cacert
   ansible.builtin.get_url:
     url: "http://ansible.http.tests/cacert.pem"
     dest: "/tmp/ansible.pem"
     mode: "0644"
-  when: ansible_os_family == 'FreeBSD'
+  when: ansible_facts.os_family == 'FreeBSD'
 
 - name: FreeBSD - Add cacert to root certificate store
   ansible.builtin.blockinfile:
     path: "/etc/ssl/cert.pem"
     block: "{{ lookup('file', '/tmp/ansible.pem') }}"
     mode: "0644"
-  when: ansible_os_family == 'FreeBSD'
+  when: ansible_facts.os_family == 'FreeBSD'
 
 - name: MacOS - Retrieve test cacert
   ansible.builtin.get_url:
     url: "http://ansible.http.tests/cacert.pem"
     dest: "/usr/local/etc/openssl/certs/ansible.pem"
     mode: "0644"
-  when: ansible_os_family == 'Darwin'
+  when: ansible_facts.os_family == 'Darwin'
 
 - name: MacOS - Update ca certificates
   ansible.builtin.command:
     cmd: /usr/local/opt/openssl/bin/c_rehash
-  when: ansible_os_family == 'Darwin'
+  when: ansible_facts.os_family == 'Darwin'
