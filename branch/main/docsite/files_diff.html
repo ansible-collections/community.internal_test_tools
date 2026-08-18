@@ -136,27 +136,27 @@ the module does not only return <code class="ansible-return-value docutils liter
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Collect file information</span>
 <span class="w">  </span><span class="nt">community.internal_test_tools.files_collect</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">files</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/output_1.pem&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">'</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/output_1.pem'</span>
 <span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert_file_info_data</span>
 
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Convert (idempotent)</span>
 <span class="w">  </span><span class="nt">community.crypto.openssl_privatekey_convert</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">src_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/privatekey_rsa_pass1.pem&#39;</span>
+<span class="w">    </span><span class="nt">src_path</span><span class="p">:</span><span class="w"> </span><span class="s">'</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/privatekey_rsa_pass1.pem'</span>
 <span class="w">    </span><span class="nt">src_passphrase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret</span>
-<span class="w">    </span><span class="nt">dest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/output_1.pem&#39;</span>
+<span class="w">    </span><span class="nt">dest_path</span><span class="p">:</span><span class="w"> </span><span class="s">'</span><span class="cp">{{</span> <span class="nv">remote_tmp_dir</span> <span class="cp">}}</span><span class="s">/output_1.pem'</span>
 <span class="w">    </span><span class="nt">dest_passphrase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hunter2</span>
 <span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pkcs8</span>
 <span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert_idem</span>
 
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check whether file changed</span>
 <span class="w">  </span><span class="nt">community.internal_test_tools.files_diff</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">convert_file_info_data</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">'</span><span class="cp">{{</span> <span class="nv">convert_file_info_data</span> <span class="cp">}}</span><span class="s">'</span>
 <span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert_file_info</span>
 
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify that nothing changed</span>
 <span class="w">  </span><span class="nt">assert</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">that</span><span class="p">:</span>
-<span class="w">      </span><span class="c1"># Check the module&#39;s result</span>
+<span class="w">      </span><span class="c1"># Check the module's result</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert_idem is not changed</span>
 <span class="w">      </span><span class="c1"># Verify that the file was not changed</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">convert_file_info is not changed</span>

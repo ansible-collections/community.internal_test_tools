@@ -137,36 +137,36 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">TestHetznerFirewallInfo</span><span class="p">(</span><span class="n">BaseTestModule</span><span class="p">):</span>
     <span class="c1"># We need to tell the helper under which names the module imports AnsibleModule and fetch_url</span>
     <span class="n">MOCK_ANSIBLE_MODULEUTILS_BASIC_ANSIBLEMODULE</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;ansible_collections.community.general.plugins.modules.net_tools.hetzner_firewall_info.AnsibleModule&#39;</span>
+        <span class="s1">'ansible_collections.community.general.plugins.modules.net_tools.hetzner_firewall_info.AnsibleModule'</span>
     <span class="p">)</span>
     <span class="n">MOCK_ANSIBLE_MODULEUTILS_URLS_FETCH_URL</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;ansible_collections.community.general.plugins.module_utils.hetzner.fetch_url&#39;</span>
+        <span class="s1">'ansible_collections.community.general.plugins.module_utils.hetzner.fetch_url'</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">test_absent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_module_success</span><span class="p">(</span><span class="n">mocker</span><span class="p">,</span> <span class="n">hetzner_firewall_info</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;hetzner_user&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;hetzner_password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;server_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2.3.4&#39;</span><span class="p">,</span>
+            <span class="s1">'hetzner_user'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+            <span class="s1">'hetzner_password'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+            <span class="s1">'server_ip'</span><span class="p">:</span> <span class="s1">'1.2.3.4'</span><span class="p">,</span>
         <span class="p">},</span> <span class="p">[</span>
-            <span class="n">FetchUrlCall</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="n">FetchUrlCall</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
             <span class="o">.</span><span class="n">result_json</span><span class="p">({</span>
-                <span class="s1">&#39;firewall&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;server_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;1.2.3.4&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;server_number&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;disabled&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="s1">&#39;main&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;rules&#39;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s1">'firewall'</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">'server_ip'</span><span class="p">:</span> <span class="s1">'1.2.3.4'</span><span class="p">,</span>
+                    <span class="s1">'server_number'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">'status'</span><span class="p">:</span> <span class="s1">'disabled'</span><span class="p">,</span>
+                    <span class="s1">'port'</span><span class="p">:</span> <span class="s1">'main'</span><span class="p">,</span>
+                    <span class="s1">'rules'</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">'input'</span><span class="p">:</span> <span class="p">[],</span>
                     <span class="p">},</span>
                 <span class="p">},</span>
             <span class="p">})</span>
-            <span class="o">.</span><span class="n">expect_url</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">/firewall/1.2.3.4&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">)),</span>
+            <span class="o">.</span><span class="n">expect_url</span><span class="p">(</span><span class="s1">'</span><span class="si">{0}</span><span class="s1">/firewall/1.2.3.4'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">)),</span>
         <span class="p">])</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;changed&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;disabled&#39;</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;server_ip&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1.2.3.4&#39;</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;firewall&#39;</span><span class="p">][</span><span class="s1">&#39;server_number&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">'changed'</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">'firewall'</span><span class="p">][</span><span class="s1">'status'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'disabled'</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">'firewall'</span><span class="p">][</span><span class="s1">'server_ip'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'1.2.3.4'</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">'firewall'</span><span class="p">][</span><span class="s1">'server_number'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>This test makes sure that if the <a class="reference external" href="https://docs.ansible.com/projects/ansible/devel/collections/community/general/hetzner_firewall_info_module.html#ansible-collections-community-general-hetzner-firewall-info-module" title="(in Ansible devel)"><span>community.general.hetzner_firewall_info</span></a> module is called with the given arguments, one <code class="docutils literal notranslate"><span class="pre">fetch_url()</span></code> call is made to <code class="docutils literal notranslate"><span class="pre">GET</span></code> the URL, and if this call is returned with a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> and the given JSON object, that the module will return <code class="docutils literal notranslate"><span class="pre">result</span></code> which is then checked by the <code class="docutils literal notranslate"><span class="pre">assert</span></code> statements.</p>

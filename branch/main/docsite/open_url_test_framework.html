@@ -144,24 +144,24 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TestLookupModule</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span> <span class="o">=</span> <span class="n">lookup_loader</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;community.internal_test_tools._open_url_test_lookup&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span> <span class="o">=</span> <span class="n">lookup_loader</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"community.internal_test_tools._open_url_test_lookup"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">test_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">open_url</span> <span class="o">=</span> <span class="n">OpenUrlProxy</span><span class="p">([</span>
-            <span class="n">OpenUrlCall</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">result_str</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">expect_url</span><span class="p">(</span><span class="s1">&#39;http://example.com&#39;</span><span class="p">),</span>
+            <span class="n">OpenUrlCall</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">result_str</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">expect_url</span><span class="p">(</span><span class="s1">'http://example.com'</span><span class="p">),</span>
         <span class="p">])</span>
-        <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url&#39;</span><span class="p">,</span> <span class="n">open_url</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">'ansible_collections.community.internal_test_tools.plugins.lookup._open_url_test_lookup.open_url'</span><span class="p">,</span> <span class="n">open_url</span><span class="p">):</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-                <span class="p">[</span><span class="s1">&#39;http://example.com&#39;</span><span class="p">],</span>
+                <span class="p">[</span><span class="s1">'http://example.com'</span><span class="p">],</span>
                 <span class="p">[],</span>
             <span class="p">)</span>
         <span class="n">open_url</span><span class="o">.</span><span class="n">assert_is_done</span><span class="p">()</span>
 
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span>
-        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'status'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'content'</span><span class="p">]</span> <span class="o">==</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="s1">'hello'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This test makes sure that if the <a class="reference internal" href="../_open_url_test_lookup_lookup.html#ansible-collections-community-internal-test-tools-open-url-test-lookup-lookup"><span class="std std-ref">community.internal_test_tools._open_url_test_lookup</span></a> lookup makes the requested <code class="docutils literal notranslate"><span class="pre">open_url()</span></code> call.</p>
