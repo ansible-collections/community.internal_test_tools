@@ -1,9 +1,3 @@
-<!--
-Copyright (c) Ansible Project
-GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
-SPDX-License-Identifier: GPL-3.0-or-later
--->
-
 # Internal Test Tools Collection
 [![Documentation](https://img.shields.io/badge/docs-brightgreen.svg)](https://ansible-collections.github.io/community.internal_test_tools/branch/main/)
 [![CI](https://github.com/ansible-collections/community.internal_test_tools/actions/workflows/nox.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.internal_test_tools/actions)
