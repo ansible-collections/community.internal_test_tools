@@ -47,6 +47,7 @@ options:
       - The password for use with HTTP Basic Authentication.
     type: str
     version_added: 0.7.0
+    secret: true
   force_basic_auth:
     description:
       - Force passing C(Authorization) header on the first request when O(url_username) and O(url_password) are used.
