@@ -1,2 +1,3 @@
 plugins/lookup/_open_url_test_lookup.py pylint:ansible-bad-import-from
+plugins/lookup/_open_url_test_lookup.py validate-modules:invalid-documentation  # secret not supported
 tests/unit/utils/open_url_framework.py pylint:ansible-bad-import-from
